@@ -1,0 +1,131 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+            "path" : "pages/HomePage/HomePage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/CanlenderPage/CanlenderPage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/AssetPage/AssetPage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/MinePage/MinePage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/ChartPage/ChartPage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/AddBillPage/AddBillPage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/BillDetail/BillDetail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/ThemeChoose/ThemeChoose",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/SettingPage/SettingPage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F6F6F6",
+		"scrollIndicator":"none", // 不显示滚动条  
+		//本行代码关闭导航栏
+		"app-plus": {"titleNView": false,
+				"scrollIndicator":"none" //当前页面不显示滚动条
+		}
+	},
+	"tabBar": {
+		"selectedColor": "#FCC637",
+		"list": [
+			{
+				"pagePath":"pages/HomePage/HomePage",
+				"text":"首页",
+				"iconPath":"static/homepage.png",
+				"selectedIconPath":"static/selected_homepage.png"
+			},
+			// {
+			// 	"pagePath": "pages/CanlenderPage/CanlenderPage",
+			// 	"text": "日历",
+			// 	"iconPath": "static/calendarpage.png",
+			// 	"selectedIconPath": "static/selected_calendar page.png"
+			// },
+			// {
+			// 	"pagePath": "pages/AssetPage/AssetPage",
+			// 	"text": "资产",
+			// 	"iconPath": "static/assetpage.png",
+			// 	"selectedIconPath": "static/selected_assetpage.png"
+			// },
+			{
+				"pagePath": "pages/ChartPage/ChartPage",
+				"text": "图表",
+				"iconPath": "static/chartpage.png",
+				"selectedIconPath": "static/selected_chartpage.png"
+			},
+			{
+				"pagePath": "pages/MinePage/MinePage",
+				"text": "我的",
+				"iconPath": "static/minepage.png",
+				"selectedIconPath": "static/selected_minepage.png"
+			}
+		]
+	}
+}
