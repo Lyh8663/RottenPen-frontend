@@ -2,9 +2,11 @@
 	<view class="container">
 		<view style="height:var(--status-bar-height);width: 100%;"></view>
 		<view class="topbar">
+			<!-- 账本内容 -->
 			<view class="topbar_view">
 				<image class="accountbook" src="../../static/accountbook.png"></image>
-				<view class="account_type">生活账本</view>
+				<!-- <view class="account_type">生活账本</view> -->
+				
 			</view>
 			<view class="topbar_view">
 				<image class="search" src="../../static/search.png"></image>
@@ -121,7 +123,9 @@
 					{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
 					{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
 					{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
-				]
+				],
+				//放账本内容
+				
 			}
 		},
 		methods: {
@@ -147,6 +151,7 @@
 				}
 				
 			},
+			
 		}
 	}
 	
