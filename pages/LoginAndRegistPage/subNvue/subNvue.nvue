@@ -1,0 +1,322 @@
+<template>
+	<!-- :style="height: this.screenHeight+ 'px',width: this.screenWidth + 'px'" -->
+	<view id="loginSubNVues" class="content">
+		<view class="login-area" v-if="this.index==1">
+			<!-- <text style="font-size: 30px;color: #f00;">这是子窗体</text> -->
+			<view :class="['title','nodisplay']" >
+				<text class="title-main">
+					烂笔头
+				</text>
+				<text class="title-sub">
+					更懂中国用户的记账软件
+				</text>
+			</view>
+			<view class="input-phone">
+				<!-- <view class="phone-icon">
+					<u-image :src="src"></u-image>
+				</view> -->
+				<input class="phone-text" type="text" placeholder="请输入手机号">
+				<view class="">
+					
+				</view>
+			</view>
+			<view class="input-pwd">
+				<input class="pwd-text" type="safe-password" placeholder="请输入密码">
+			</view>
+			<view class="btn">
+				<text class="login-text">
+					登录
+				</text>
+			</view>
+			<view class="tishi-area">
+				<view class=""  @click="toRegist()">
+					<text class="regist-btn">注册</text>
+				</view>
+				<view class="">
+					<text class="or">或</text>
+				</view>
+				<view class="">
+					<text class="bycode-btn" @click="toByCode()">验证码登录</text>
+				</view>
+				<view class="">
+					<text class="or">或</text>
+				</view>
+				<view class="">
+					<text class="otherway-btn">其他方式登录</text>
+				</view>
+			</view>
+		</view>
+		
+		<view class="regist-area" v-if="this.index==2">
+			<view class="regist-title">
+				<text class="title-main">注册</text>
+				<text class="title-sub">请使用手机号</text>
+			</view>
+			<view class="input-phone">
+				<!-- <view class="phone-icon">
+					<u-image :src="src"></u-image>
+				</view> -->
+				<input class="phone-text" type="text" placeholder="请输入手机号" v-model="regist_phone">
+				<view class="">
+				</view>
+			</view>
+			<view class="send-btn" @click="sendCode()">
+				<text class="send-text">发送验证码</text>
+			</view>
+			<view class="input-code">
+				<input class="code-text" type="text" placeholder="请输入短信验证码" v-model="regist_code">
+			</view>
+			<view class="input-pwd">
+				<input class="pwd-text" type="safe-password" placeholder="请输入密码" v-model="regist_password">
+			</view>
+			<view class="regist-btn-area">
+				<text class="regist-btn-text">注册</text>
+			</view>
+			<view class="return-area">
+				<text class="return-text" @click="tologin()">返回</text>
+			</view>
+		</view>
+		<view class="regist-area" v-if="this.index==3">
+			<view class="regist-title">
+				<text class="title-main">验证码登录</text>
+				<text class="title-sub">请使用手机号</text>
+			</view>
+			<view class="input-phone">
+				<!-- <view class="phone-icon">
+					<u-image :src="src"></u-image>
+				</view> -->
+				<input class="phone-text" type="text" placeholder="请输入手机号" v-model="regist_phone">
+				<view class="">
+					<!-- {{this.regist_phone}} -->
+				</view>
+			</view>
+			<view class="send-btn" @click="sendCode()">
+				<text class="send-text">发送验证码</text>
+			</view>
+			<view class="input-code">
+				<input class="code-text" type="text" placeholder="请输入短信验证码" v-model="regist_code">
+			</view>
+			<view class="regist-btn-area">
+				<text class="regist-btn-text">登录</text>
+			</view>
+			<view class="return-area">
+				<text class="return-text" @click="tologin()">返回</text>
+			</view>
+		</view>
+	</view>
+</template>
+ 
+<script>
+	export default {
+		data() {
+			return {
+				screenHeight:'',
+				screenwidth:'',
+				src:'',
+				index:1,
+				regist_phone:'',
+				regist_code:'',
+				regist_password:'',
+			}
+		},
+		methods: {
+			toRegist(){
+				this.index=2;
+				console.log("index: " + this.index)
+			},
+			tologin(){
+				this.index=1;
+				console.log("index: " + this.index)
+			},
+			toByCode(){
+				this.index=3;
+				console.log("index: " + this.index)
+			},
+			sendCode(){
+				//发送短信验证码
+				uni.request({
+					url: 'http://47.100.211.157/lbt/admin-api/system/auth/send-sms-code',
+					method: 'POST',
+					header:{
+						
+					},
+					data: {
+						phone : this.regist_phone
+					},
+					success: res => {
+						uni.showToast({
+							title:"验证码已发送"
+						})
+					},
+					fail: () => {},
+					complete: () => {}
+				});
+
+			}
+		},
+		onLoad(){
+			this.screenHeight = uni.getSystemInfoSync().windowHeight;
+			this.screenwidth = uni.getSystemInfoSync().windowWidth;
+			
+
+		}
+	}
+</script>
+ 
+<style>
+	.content{
+		/* background-color: aquamarine; */
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.title{
+		justify-content: center;
+		align-items: center;
+	}
+	.title-main{
+		/* 把字体调大 */
+		font-size: 60rpx;
+		color: white;
+		text-shadow: #FC0 1px 0 10px;
+		font-weight: 600;
+		/* 把字体加粗 */
+		/* 把字体居中 */
+		/* 给字体加阴影 */
+	}
+	.login-area{
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.title-sub{
+		/* 把字体调大 */
+		font-size: 30rpx;
+		color: white;
+		margin-top: 10rpx;
+		/* 把字体居中 */
+		/* 给字体加阴影 */
+	}
+	.input-phone{
+		border-bottom: white solid 1px;
+		width: 400rpx;
+		margin-top: 50rpx;
+	}
+	.phone-icon{
+		height: 40rpx;
+		width: 40rpx;
+	}
+	.phone-text{
+		font-size: 30rpx;
+		text-align: center;
+	}
+	
+	.input-pwd{
+		border-bottom: white solid 1px;
+		width: 400rpx;
+		margin-top: 50rpx;
+	}
+	.pwd-text{
+		font-size: 30rpx;
+		text-align: center;
+	}
+	
+	.btn{
+		margin-top: 150rpx;
+		height: 70rpx;
+		width: 150rpx;
+		border: white solid 1px;
+		border-radius: 50rpx;
+		align-items: center;
+		justify-content: center;
+		/* color: white; */
+	}
+	.login-text{
+		color: white;
+		font-size: 35rpx;
+		/* background-color: aqua; */
+		/* background: transparent; */
+	}
+	.tishi-area{
+		width: 500rpx;
+		/* display: flex; */
+		align-items: center;
+		justify-content: center;
+	}
+	.regist-btn{
+		font-size: 40rpx;
+		color: white;
+		margin-top: 100rpx;
+		text-decoration: underline;
+	}
+	.or{
+		font-size: 30rpx;
+		color: white;
+		margin-top: 20rpx;
+	}
+	.bycode-btn{
+		font-size: 40rpx;
+		color: white;
+		margin-top: 20rpx;
+		text-decoration: underline;
+	}
+	.otherway-btn{
+		font-size: 40rpx;
+		color: white;
+		margin-top: 20rpx;
+		text-decoration: underline;
+	}
+	.regist-area{
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.regist-title{
+		display: flex;
+		align-items: center;
+	}
+	.send-btn{
+		width: 200rpx;
+		height: 60rpx;
+		border: white solid 0.5px;
+		border-radius: 1000rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-top: 50rpx;
+	}
+	.send-text{
+		color:white;
+		font-size: 30rpx;
+	}
+	.input-code{
+		border-bottom: white solid 1px;
+		width: 250rpx;
+		margin-top: 30rpx;
+	}
+	.code-text{
+		font-size: 30rpx;
+		text-align: center;
+	}
+	.regist-btn-area{
+		margin-top: 100rpx;
+		height: 70rpx;
+		width: 150rpx;
+		border: white solid 1px;
+		border-radius: 50rpx;
+		align-items: center;
+		justify-content: center;
+	}
+	.regist-btn-text{
+		font-size: 35rpx;
+		color: white;
+	}
+	.return-area{
+		margin-top: 100rpx;
+	}
+	.return-text{
+		text-decoration: underline;
+		color: white;
+		font-size: 35rpx;
+	}
+</style>

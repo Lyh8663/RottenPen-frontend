@@ -82,20 +82,24 @@
             }
             
         },
-		{
-			"path" : "pages/TestPage/TestPage",
-			"style" :                                                                                    
-			{
-			    "navigationBarTitleText": "",
-			    "enablePullDownRefresh": false
-			}
-		},
+		
 		{
 			"path" : "pages/LoginAndRegistPage/LoginAndRegistPage",
 			"style" :                                                                                    
 			{
 			    "navigationBarTitleText": "",
-			    "enablePullDownRefresh": false
+			    "enablePullDownRefresh": false,
+				"app-plus": {
+					"subNVues": [{
+						"id":"loginSubNVues",
+						"path":"pages/LoginAndRegistPage/subNvue/subNvue",
+						"style":{
+							"position":"absolute",
+							"width":"100%",
+							"background":"transparent"
+						}
+					}]
+				}
 			}
 		}
     ],

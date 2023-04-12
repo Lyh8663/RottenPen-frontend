@@ -19,12 +19,12 @@
 											{{item.value}}
 										</view>
 										<view class="chosenIcon">
-											<img src="../../static/zhangbengouzi.png" alt="" v-if="optionType==item.value">
+											<image src="../../static/zhangbengouzi.png" alt="" v-if="optionType==item.value"></image>
 										</view>
 									</view>
 									<view class="xiala-hang-item-add" v-else>
 										<view class="chosenIcon">
-											<img src="../../static/zhangbentianjia.png" alt="">
+											<image src="../../static/zhangbentianjia.png" alt=""></image>
 										</view>
 										<view class="itemvalue">
 											{{item.value}}
@@ -232,7 +232,7 @@
 	.in_ex_ba{
 		position: relative;
 		left: 1vw;
-		//top: 90px;
+		/* top: 90px; */
 		width: 90vw;
 		height: 20vh;
 		opacity: 1;
@@ -324,7 +324,7 @@
 		height: 40rpx;
 		width: 40rpx;
 	}
-	.chosenIcon img{
+	.chosenIcon image{
 		height: 100%;
 		width: 100%;
 	}
