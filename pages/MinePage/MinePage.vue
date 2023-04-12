@@ -2,7 +2,7 @@
 	<view class="container">
 		<view style="height:var(--status-bar-height);width: 100%;"></view>
 		<view class="personal_info">
-			<image class="head" :src="personalInfo.headImg" ></image>
+			<image class="head" :src="personalInfo.headImg" @click="toLogin"></image>
 			<view class="nickname">{{personalInfo.nickname}}</view>
 			<view class="info_area">
 				<view class="info_item" v-for="(info,i) in infoList" :key="i">
@@ -69,6 +69,11 @@
 			}
 		},
 		methods: {
+			toLogin(){
+				uni.navigateTo({
+					url:'/pages/LoginAndRegistPage/LoginAndRegistPage'
+				})
+			},
 			toPage(index){
 				if(index==4){
 					uni.navigateTo({

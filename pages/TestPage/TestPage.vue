@@ -5,9 +5,12 @@
 			<image src="/static/xiala.png" mode=""></image>
 			<view class="xiala" v-if="isXiala">
 				<view class="xiala-xuan" :class="[isXiala==1?'open':'',isXiala==2?'close':'']">
-					<view class="xiala-hang" v-for="(item,index) in option" :key="index" @click="xuanzeMoban(item.lable,item.value)">
-						<text>{{item.value}}</text>
-					</view>					
+					<scroll-view scroll-y="true"  class="scrollArea">
+						<view class="xiala-hang" v-for="(item,index) in option" :key="index" @click="xuanzeMoban(item.lable,item.value)">
+							<text>{{item.value}}</text>
+						</view>	
+					</scroll-view>
+									
 				</view>
 			</view>
 		</view>
@@ -27,6 +30,8 @@
 					{lable:0,value:"模板1"},
 					{lable:1,value:"模板2"},
 					{lable:2,value:"模板3"},
+					{lable:3,value:"模板4"},
+					{lable:3,value:"模板4"},
 					{lable:3,value:"模板4"},
 				],
 				ptionIndex:"选择",
@@ -60,6 +65,7 @@
 </script>
 
 <style>
+	/* flex居中 */
 	.content {
 			display: flex;
 			flex-direction: column;
@@ -96,11 +102,15 @@
 			width: 200rpx;
 		}
 		.xiala-xuan{
-			height: 230rpx;
+			height: 210rpx;
 			width: 200rpx;
 			background-color: rgba(36, 44, 61, 1);
 			box-sizing: border-box;
 			overflow: hidden;
+		}
+		.scrollArea{
+			height: 100%;
+			width: 100%;
 		}
 		.xiala-hang{
 			height: 50rpx;
@@ -115,11 +125,11 @@
 		}
 		    /* 显示或关闭动画*/
 		    .open {
-		        animation: slideContentUp 0.3s linear both;
+		        animation: slideContentUp 0.2s linear both;
 		    }
 		 
 		    .close {
-		        animation: slideContentDown 0.3s linear both;
+		        animation: slideContentDown 0.2s linear both;
 		    }
 		 
 		    /* 动态设置高度 */

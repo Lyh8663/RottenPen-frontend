@@ -6,6 +6,35 @@
 			<view class="topbar_view">
 				<image class="accountbook" src="../../static/accountbook.png"></image>
 				<!-- <view class="account_type">生活账本</view> -->
+				<view class="account_type" @click="selectXiala">
+					<view class="account_typetext">
+						{{optionType}}
+					</view>
+					<view class="xiala">
+						<view class="xiala-xuanxiang" :class="[isXiala==1?'open':'',isXiala==2?'close':'']">
+							<scroll-view scroll-y="true"  class="scrollArea">
+								<view class="xiala-hang" v-for="(item,index) in option" :key="index" @click="xuanzeAccountBook(index,item.value)">
+									<view class="xiala-hang-item-normal" v-if="index!=0">
+										<view class="itemvalue">
+											{{item.value}}
+										</view>
+										<view class="chosenIcon">
+											<img src="../../static/zhangbengouzi.png" alt="" v-if="optionType==item.value">
+										</view>
+									</view>
+									<view class="xiala-hang-item-add" v-else>
+										<view class="chosenIcon">
+											<img src="../../static/zhangbentianjia.png" alt="">
+										</view>
+										<view class="itemvalue">
+											{{item.value}}
+										</view>
+									</view>
+								</view>	
+							</scroll-view>
+						</view>
+					</view>
+				</view>
 				
 			</view>
 			<view class="topbar_view">
@@ -87,6 +116,17 @@
 	export default {
 		data() {
 			return {
+				//账本选中内容
+				optionType:'日常账本',
+				option:[
+					{lable:0,value:"添加账本"},
+					{lable:1,value:"日常账本"},
+					{lable:2,value:"家庭账本"},
+					{lable:3,value:"公司帐本"},
+					{lable:3,value:"..."},
+					{lable:3,value:"..."},
+				],
+				isXiala:2,
 				pattern: {
 					color: '#7A7E83',
 					backgroundColor: '#fff',
@@ -124,8 +164,6 @@
 					{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
 					{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
 				],
-				//放账本内容
-				
 			}
 		},
 		methods: {
@@ -151,7 +189,35 @@
 				}
 				
 			},
-			
+			//isXiala=0时，表示还没有选中内容
+			//isXiala=1时，表示下拉菜单展开
+			//isXiala=2时，表示已经选中内容
+			selectXiala(){
+				// console.log("被点击了")
+				// console.log(this.isXiala)
+				if(this.isXiala==0){
+					this.isXiala=1
+					console.log(this.isXiala)
+				}else if(this.isXiala==1){
+					this.isXiala=2
+					console.log(this.isXiala)
+				}else if(this.isXiala==2){
+					this.isXiala=1
+					console.log(this.isXiala)
+				}
+			},
+			xuanzeAccountBook(index,value){
+				// console.log("选中了" + index);
+				if(index==0){
+					console.log("选中添加账本");
+					uni.showToast({
+						title:"开始添加账本"
+					})
+					return;
+				}
+				console.log("选中" + value);
+				this.optionType=value;
+			}
 		}
 	}
 	
@@ -195,6 +261,104 @@
 		font-size: 14px;
 		margin-left: 2vw;
 		margin-top: 1vw;
+	}
+	.account_typetext{
+		font-weight: 600;
+	}
+	.xiala{
+		position: absolute;
+		bottom: -300rpx;
+		left: 15rpx;
+		height: 290rpx;
+		width: 300rpx;
+		/* background-color: aqua; */
+		z-index: 100;
+		/* background-color: aquamarine; */
+	}
+	.scrollArea{
+		height: 100%;
+		width: 100%;
+	}
+	.xiala-xuanxiang{
+		height: 290rpx;
+		width: 300rpx;
+		/* background-color: rgba(36, 44, 61, 1); */
+		box-sizing: border-box;
+		overflow: hidden;
+	}
+	.xiala-hang{
+		height: 100rpx;
+		width: 100%;
+		border-bottom: 1px solid #efefef;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background-color: white;
+	}
+	.xiala-hang-item-normal{
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: space-evenly;
+	}
+	.xiala-hang-item-normal .itemvalue{
+		margin-left: 20rpx;
+	}
+	.xiala-hang-item-add{
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		/* justify-content: center; */
+		color: rgba(252, 198, 55, 1);
+	}
+	.xiala-hang-item-add .itemvalue{
+		margin-left: 15rpx;
+	}
+	
+	.xiala-hang-item-add .chosenIcon{
+		margin-left: 20rpx;
+	}
+	.chosenIcon{
+		height: 40rpx;
+		width: 40rpx;
+	}
+	.chosenIcon img{
+		height: 100%;
+		width: 100%;
+	}
+	.xiala-hang:last-child{
+		border: 0px;
+	}
+	/* 显示或关闭动画*/
+	.open {
+	    animation: slideContentUp 0.2s linear both;
+	}
+	 
+	.close {
+	    animation: slideContentDown 0.2s linear both;
+	}
+	 
+	/* 动态设置高度 */
+	@keyframes slideContentUp {
+	    from {
+	       height: 0;
+	    }
+	 
+	    to {
+	        height: -230rpx;
+	    }
+	}
+	 
+	@keyframes slideContentDown {
+	   from {
+			height: -230rpx;
+	    }
+	 
+	    to {
+	        height: 0;
+	    }
 	}
 	.topbar_view{
 		display: flex;
