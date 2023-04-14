@@ -39,7 +39,7 @@
 			</view>
 			
 			<view class="topbar_view">
-				<image class="search" src="../../static/search.png"></image>
+				<image class="search" src="../../static/search.png" @click="toCanlenderPage()"></image>
 				<image class="more" src="../../static/more.png"></image>
 			</view>		
 		</view>
@@ -101,7 +101,7 @@
 			</uni-popup>
 		</view>
 		<view class="bill">
-			<view class="day_bill" v-for="(bill,b) in billList" :key="b">
+			<view class="day_bill" v-for="(bill,b) in billTotalList" :key="b">
 				<view class="bill_title">
 					<view class="date">{{bill.date}}</view>
 					<view class="weeekday">{{bill.weekday}}</view>
@@ -116,7 +116,7 @@
 						</view>
 					</view>
 				</view>
-				<view class="bill_info" v-for="(info,i) in billInfoList" :key="i" @click="toBillDetail()">
+				<view class="bill_info" v-for="(info,i) in bill.billInfoList" :key="i" @click="toBillDetail()">
 					<image class="bill_type_image" :src="info.image"></image>
 					<view class="bill_type_text">{{info.type}}</view>
 					<view class="bill_info_detail">{{info.money}}</view>
@@ -182,21 +182,58 @@
 					active: true
 					}
 				],
-				billList:[
-					{date:"03月01日",weekday:"周一",in:"23.89",ex:"3.00"},
-					{date:"03月01日",weekday:"周一",in:"23.89",ex:"3.00"},
-					{date:"03月01日",weekday:"周一",in:"23.89",ex:"3.00"},
-				],
-				billInfoList:[
-					{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
-					{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
-					{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
-					{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
-				],
+				// billList:[
+				// 	{date:"03月01日",weekday:"周一",in:"23.89",ex:"3.00"},
+				// 	{date:"03月01日",weekday:"周一",in:"23.89",ex:"3.00"},
+				// 	{date:"03月01日",weekday:"周一",in:"23.89",ex:"3.00"},
+				// ],
+				// billInfoList:[
+				// 	{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
+				// 	{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
+				// 	{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
+				// 	{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
+				// ],
 				//往前加载3天的数据
 				loadDailyInfo:3,
-				//账单二维数组
-				
+				//账单二维数组,存放所有数据
+				billTotalList:[
+					{
+						date:"03月01日",
+						weekday:"周一",
+						in:"23.89",
+						ex:"3.00",
+						billInfoList:[
+							{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
+							{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
+							{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
+							{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
+						]
+					},
+					{
+						date:"03月01日",
+						weekday:"周一",
+						in:"23.89",
+						ex:"3.00",
+						billInfoList:[
+							{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
+							{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
+							{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
+							{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
+						]
+					},
+					{
+						date:"03月01日",
+						weekday:"周一",
+						in:"23.89",
+						ex:"3.00",
+						billInfoList:[
+							{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
+							{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
+							{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
+							{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
+						]
+					}
+				]
 			}
 		},
 		watch: {
@@ -248,6 +285,23 @@
 			}
 		},
 		methods: {
+			//点击查询
+			toCanlenderPage(){
+				uni.navigateTo({
+					url:"/pages/CanlenderPage/CanlenderPage"
+				})
+			},
+			//获取今天的日期
+			getDay(){
+				//1.获取今天的日期
+				const today = new Date();
+				
+				//2.获取今天的号数
+				var date = today.getDate();
+				
+				//3.返回
+				return date;
+			},
 			//获取年份+月份
 			getYearAndMonth(){
 				//1.获取今天的日期
@@ -255,7 +309,7 @@
 				
 				//2.获取今天的年月
 				const year = Number(date.getFullYear());
-				const month = Number(date.getMonth());
+				const month = Number(date.getMonth()) + 1;
 				
 				//3.返回年月
 				return [year,month];
@@ -621,13 +675,6 @@
 						success(res) {
 							if(res.data.code==200){
 								console.log("收入，支出，结余已获取");
-								// //需要在返回的数组中，剔除无用数据
-								// var index = 0;
-								// for(var i = 0;i<res.data.data.length;i++){
-								// 	if(res.data.data[i].accountBookId!=null){
-								// 		index = i;
-								// 	}
-								// }
 								that.monthlyIncome = Number(res.data.data.income);
 								that.monthlyOutcome =  - Number(res.data.data.outcome);//支出后台给的数据是18
 								that.monthlyRemain = Number(res.data.data.left);
@@ -635,6 +682,28 @@
 							else{
 								console.log("收入，支出，结余获取错误:" + res.data.code);
 							}
+						}
+					})
+					
+					//查询3天份的记账记录
+					uni.request({//第一天，即今天
+						url:getApp().globalData.envprefix + "/admin-api/lbt/extends/data/bill/calendar",
+						method:'GET',
+						header:{
+							'tenant-id': 1,
+							'Authorization':'Bearer ' + getApp().globalData.accessToken
+						},
+						data:{
+							accountBookId: getApp().globalData.accountBookId,
+							'day':that.getDay() + "," + that.getDay(),
+							'month':that.getYearAndMonth()[1],
+							'year':that.getYearAndMonth()[0]
+						},
+						success(res) {
+							console.log(that.getDay());
+							console.log(that.getYearAndMonth()[1]);
+							console.log(that.getYearAndMonth()[0]);
+							console.log(res.data.code);
 						}
 					})
 				}
