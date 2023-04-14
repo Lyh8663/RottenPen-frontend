@@ -205,7 +205,68 @@
 				//将添加的张本名存在newAccount中
 				this.newAccountName = val;
 				//发起添加账本的请求
-				//发起刷新账本列表的请求
+				var that = this;
+				uni.request({
+					url:getApp().globalData.envprefix + "/admin-api/lbt/account-book/create",
+					method:'POST',
+					header:{
+						'tenant-id':1,
+						'Authorization': "Bearer " + getApp().globalData.accessToken
+					},
+					data:{
+						'title':that.newAccountName
+					},
+					success(res) {
+						// 确认是否添加成功
+						console.log(res.data);
+						//显示用户添加账本操作成功
+						uni.showToast({
+							icon:"none",
+							title:"成功添加账本"
+						})
+						//发起刷新账本列表的请求
+						uni.request({//获取所有账本信息
+							url: getApp().globalData.envprefix + '/admin-api/lbt/extends/accountbook/get',
+							header:{
+								"tenant-id":1,
+								"Authorization": 'Bearer ' + getApp().globalData.accessToken
+							},
+							success(res) {
+								console.log(res.data.data);
+								//用户肯定已有账本
+								var arrTemp = [];
+								for(var i = 0;i < res.data.data.length+1;i++){//对数据进行处理
+									if(i==0){//首位
+										arrTemp.push({
+											label:i,
+											value:'添加账本',
+											id:-1
+										});
+										continue;
+									}
+									arrTemp.push({
+										label:i,
+										value:res.data.data[i-1].title,
+										id:res.data.data[i-1].id
+									});
+								}
+								if(res.data.data.length<5){//不足6个账本,则添加...作为填充
+									var time = 5 - res.data.data.length;
+									for(var i = 0;i<time;i++){
+										arrTemp.push({
+											label:res.data.data.length+i+1,
+											value:"...",
+											id:-1
+										})
+									}
+								}
+								that.option = arrTemp;//更新账本列表
+								console.log("账本列表已更新")
+							}
+						})
+					}
+				})
+				
 				
 				// 关闭窗口后，恢复默认内容
 				this.$refs.inputDialog.close()
