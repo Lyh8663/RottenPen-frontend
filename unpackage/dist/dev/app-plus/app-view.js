@@ -617,7 +617,7 @@ var render = function () {
               _c(
                 "uni-view",
                 { staticClass: _vm._$g(37, "sc"), attrs: { _i: 37 } },
-                [_vm._v("1月预算")]
+                [_vm._v("本月预算")]
               ),
               _c(
                 "uni-view",
@@ -664,14 +664,24 @@ var render = function () {
                 "uni-view",
                 { staticClass: _vm._$g(45, "sc"), attrs: { _i: 45 } },
                 [
+                  _c("v-uni-button", { attrs: { _i: 46 } }, [
+                    _vm._v("设置本月预算"),
+                  ]),
+                ],
+                1
+              ),
+              _c(
+                "uni-view",
+                { staticClass: _vm._$g(47, "sc"), attrs: { _i: 47 } },
+                [
                   _c(
                     "uni-view",
-                    { staticClass: _vm._$g(46, "sc"), attrs: { _i: 46 } },
+                    { staticClass: _vm._$g(48, "sc"), attrs: { _i: 48 } },
                     [_vm._v("已用：")]
                   ),
                   _c(
                     "uni-view",
-                    { staticClass: _vm._$g(47, "sc"), attrs: { _i: 47 } },
+                    { staticClass: _vm._$g(49, "sc"), attrs: { _i: 49 } },
                     [_vm._v("225.00")]
                   ),
                 ],
@@ -679,16 +689,16 @@ var render = function () {
               ),
               _c(
                 "uni-view",
-                { staticClass: _vm._$g(48, "sc"), attrs: { _i: 48 } },
+                { staticClass: _vm._$g(50, "sc"), attrs: { _i: 50 } },
                 [
                   _c(
                     "uni-view",
-                    { staticClass: _vm._$g(49, "sc"), attrs: { _i: 49 } },
+                    { staticClass: _vm._$g(51, "sc"), attrs: { _i: 51 } },
                     [_vm._v("剩余日均：")]
                   ),
                   _c(
                     "uni-view",
-                    { staticClass: _vm._$g(50, "sc"), attrs: { _i: 50 } },
+                    { staticClass: _vm._$g(52, "sc"), attrs: { _i: 52 } },
                     [_vm._v("51.23")]
                   ),
                 ],
@@ -700,8 +710,8 @@ var render = function () {
           _c(
             "uni-view",
             {
-              staticClass: _vm._$g(51, "sc"),
-              attrs: { _i: 51 },
+              staticClass: _vm._$g(53, "sc"),
+              attrs: { _i: 53 },
               on: {
                 click: function ($event) {
                   return _vm.$handleViewEvent($event)
@@ -711,7 +721,7 @@ var render = function () {
             [
               _c(
                 "uni-view",
-                { staticClass: _vm._$g(52, "sc"), attrs: { _i: 52 } },
+                { staticClass: _vm._$g(54, "sc"), attrs: { _i: 54 } },
                 [_vm._v("添加一条新账")]
               ),
             ],
@@ -722,68 +732,68 @@ var render = function () {
       ),
       _c(
         "uni-view",
-        { staticClass: _vm._$g(53, "sc"), attrs: { _i: 53 } },
-        _vm._l(_vm._$g(54, "f"), function (bill, b, $21, $31) {
+        { staticClass: _vm._$g(55, "sc"), attrs: { _i: 55 } },
+        _vm._l(_vm._$g(56, "f"), function (bill, b, $21, $31) {
           return _c(
             "uni-view",
             {
               key: bill,
-              staticClass: _vm._$g("54-" + $31, "sc"),
-              attrs: { _i: "54-" + $31 },
+              staticClass: _vm._$g("56-" + $31, "sc"),
+              attrs: { _i: "56-" + $31 },
             },
             [
               _c(
                 "uni-view",
                 {
-                  staticClass: _vm._$g("55-" + $31, "sc"),
-                  attrs: { _i: "55-" + $31 },
+                  staticClass: _vm._$g("57-" + $31, "sc"),
+                  attrs: { _i: "57-" + $31 },
                 },
                 [
-                  _c(
-                    "uni-view",
-                    {
-                      staticClass: _vm._$g("56-" + $31, "sc"),
-                      attrs: { _i: "56-" + $31 },
-                    },
-                    [_vm._v(_vm._$g("56-" + $31, "t0-0"))]
-                  ),
-                  _c(
-                    "uni-view",
-                    {
-                      staticClass: _vm._$g("57-" + $31, "sc"),
-                      attrs: { _i: "57-" + $31 },
-                    },
-                    [_vm._v(_vm._$g("57-" + $31, "t0-0"))]
-                  ),
                   _c(
                     "uni-view",
                     {
                       staticClass: _vm._$g("58-" + $31, "sc"),
                       attrs: { _i: "58-" + $31 },
                     },
+                    [_vm._v(_vm._$g("58-" + $31, "t0-0"))]
+                  ),
+                  _c(
+                    "uni-view",
+                    {
+                      staticClass: _vm._$g("59-" + $31, "sc"),
+                      attrs: { _i: "59-" + $31 },
+                    },
+                    [_vm._v(_vm._$g("59-" + $31, "t0-0"))]
+                  ),
+                  _c(
+                    "uni-view",
+                    {
+                      staticClass: _vm._$g("60-" + $31, "sc"),
+                      attrs: { _i: "60-" + $31 },
+                    },
                     [
                       _c(
                         "uni-view",
                         {
-                          staticClass: _vm._$g("59-" + $31, "sc"),
-                          attrs: { _i: "59-" + $31 },
+                          staticClass: _vm._$g("61-" + $31, "sc"),
+                          attrs: { _i: "61-" + $31 },
                         },
                         [
                           _c(
                             "uni-view",
                             {
-                              staticClass: _vm._$g("60-" + $31, "sc"),
-                              attrs: { _i: "60-" + $31 },
+                              staticClass: _vm._$g("62-" + $31, "sc"),
+                              attrs: { _i: "62-" + $31 },
                             },
                             [_vm._v("收")]
                           ),
                           _c(
                             "uni-view",
                             {
-                              staticClass: _vm._$g("61-" + $31, "sc"),
-                              attrs: { _i: "61-" + $31 },
+                              staticClass: _vm._$g("63-" + $31, "sc"),
+                              attrs: { _i: "63-" + $31 },
                             },
-                            [_vm._v(_vm._$g("61-" + $31, "t0-0"))]
+                            [_vm._v(_vm._$g("63-" + $31, "t0-0"))]
                           ),
                         ],
                         1
@@ -791,25 +801,25 @@ var render = function () {
                       _c(
                         "uni-view",
                         {
-                          staticClass: _vm._$g("62-" + $31, "sc"),
-                          attrs: { _i: "62-" + $31 },
+                          staticClass: _vm._$g("64-" + $31, "sc"),
+                          attrs: { _i: "64-" + $31 },
                         },
                         [
                           _c(
                             "uni-view",
                             {
-                              staticClass: _vm._$g("63-" + $31, "sc"),
-                              attrs: { _i: "63-" + $31 },
+                              staticClass: _vm._$g("65-" + $31, "sc"),
+                              attrs: { _i: "65-" + $31 },
                             },
                             [_vm._v("支")]
                           ),
                           _c(
                             "uni-view",
                             {
-                              staticClass: _vm._$g("64-" + $31, "sc"),
-                              attrs: { _i: "64-" + $31 },
+                              staticClass: _vm._$g("66-" + $31, "sc"),
+                              attrs: { _i: "66-" + $31 },
                             },
-                            [_vm._v(_vm._$g("64-" + $31, "t0-0"))]
+                            [_vm._v(_vm._$g("66-" + $31, "t0-0"))]
                           ),
                         ],
                         1
@@ -821,14 +831,14 @@ var render = function () {
                 1
               ),
               _vm._l(
-                _vm._$g(65 + "-" + $31, "f"),
+                _vm._$g(67 + "-" + $31, "f"),
                 function (info, i, $22, $32) {
                   return _c(
                     "uni-view",
                     {
                       key: info,
-                      staticClass: _vm._$g("65-" + $31 + "-" + $32, "sc"),
-                      attrs: { _i: "65-" + $31 + "-" + $32 },
+                      staticClass: _vm._$g("67-" + $31 + "-" + $32, "sc"),
+                      attrs: { _i: "67-" + $31 + "-" + $32 },
                       on: {
                         click: function ($event) {
                           return _vm.$handleViewEvent($event)
@@ -837,27 +847,27 @@ var render = function () {
                     },
                     [
                       _c("v-uni-image", {
-                        staticClass: _vm._$g("66-" + $31 + "-" + $32, "sc"),
+                        staticClass: _vm._$g("68-" + $31 + "-" + $32, "sc"),
                         attrs: {
-                          src: _vm._$g("66-" + $31 + "-" + $32, "a-src"),
-                          _i: "66-" + $31 + "-" + $32,
+                          src: _vm._$g("68-" + $31 + "-" + $32, "a-src"),
+                          _i: "68-" + $31 + "-" + $32,
                         },
                       }),
                       _c(
                         "uni-view",
                         {
-                          staticClass: _vm._$g("67-" + $31 + "-" + $32, "sc"),
-                          attrs: { _i: "67-" + $31 + "-" + $32 },
+                          staticClass: _vm._$g("69-" + $31 + "-" + $32, "sc"),
+                          attrs: { _i: "69-" + $31 + "-" + $32 },
                         },
-                        [_vm._v(_vm._$g("67-" + $31 + "-" + $32, "t0-0"))]
+                        [_vm._v(_vm._$g("69-" + $31 + "-" + $32, "t0-0"))]
                       ),
                       _c(
                         "uni-view",
                         {
-                          staticClass: _vm._$g("68-" + $31 + "-" + $32, "sc"),
-                          attrs: { _i: "68-" + $31 + "-" + $32 },
+                          staticClass: _vm._$g("70-" + $31 + "-" + $32, "sc"),
+                          attrs: { _i: "70-" + $31 + "-" + $32 },
                         },
-                        [_vm._v(_vm._$g("68-" + $31 + "-" + $32, "t0-0"))]
+                        [_vm._v(_vm._$g("70-" + $31 + "-" + $32, "t0-0"))]
                       ),
                     ],
                     1
@@ -872,7 +882,7 @@ var render = function () {
       ),
       _c("uni-fab", {
         ref: "fab",
-        attrs: { _i: 69 },
+        attrs: { _i: 71 },
         on: {
           trigger: function ($event) {
             return _vm.$handleViewEvent($event)
@@ -2078,7 +2088,7 @@ if(false) {}
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ./node_modules/css-loader/dist/runtime/api.js */ 16);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "\n.container{\n\tbackground-color: #F6F6F6;\n\twidth: 100vw;\n\theight: 100vh;\n}\n.in_ex_ba{\n\tposition: relative;\n\tleft: 1vw;\n\t/* top: 90px; */\n\twidth: 90vw;\n\theight: 20vh;\n\topacity: 1;\n\tborder-radius: 5px;\n\tbackground: #FDF1DAFF;\n\tborder: 2vw solid #FFFFFFFF;\n\tborder-bottom: 20vw solid #FFFFFFFF;\n\tpadding: 2vw;\n\tpadding-top: 5vw;\n}\n.topbar{\n\tdisplay: flex;\n\tjustify-content: space-between;\n\tbackground-color: #FFFFFFFF;\n\twidth: 98vw;\n\tposition: relative;\n\tleft: 1vw;\n\tpadding-top: 20rpx;\n}\n.accountbook{\n\twidth: 6.8vw;\n\theight: 6.8vw;\n\tpadding-left: 2vw;\n}\n.account_type{\n\tfont-size: 14px;\n\tmargin-left: 2vw;\n\tmargin-top: 1vw;\n}\n.account_typetext{\n\tfont-weight: 600;\n}\n.xiala{\n\tposition: absolute;\n\tbottom: -300rpx;\n\tleft: 15rpx;\n\theight: 290rpx;\n\twidth: 300rpx;\n\t/* background-color: aqua; */\n\tz-index: 100;\n\t/* background-color: aquamarine; */\n}\n.scrollArea{\n\theight: 100%;\n\twidth: 100%;\n}\n.xiala-xuanxiang{\n\theight: 290rpx;\n\twidth: 300rpx;\n\t/* background-color: rgba(36, 44, 61, 1); */\n\tbox-sizing: border-box;\n\toverflow: hidden;\n}\n.xiala-hang{\n\theight: 100rpx;\n\twidth: 100%;\n\tborder-bottom: 1px solid #efefef;\n\tdisplay: flex;\n\talign-items: center;\n\tjustify-content: center;\n\tbackground-color: white;\n}\n.xiala-hang-item-normal{\n\twidth: 100%;\n\theight: 100%;\n\tdisplay: flex;\n\talign-items: center;\n\tjustify-content: space-evenly;\n}\n.xiala-hang-item-normal .itemvalue{\n\tmargin-left: 20rpx;\n}\n.xiala-hang-item-add{\n\twidth: 100%;\n\theight: 100%;\n\tdisplay: flex;\n\talign-items: center;\n\t/* justify-content: center; */\n\tcolor: rgba(252, 198, 55, 1);\n}\n.xiala-hang-item-add .itemvalue{\n\tmargin-left: 15rpx;\n}\n.xiala-hang-item-add .chosenIcon{\n\tmargin-left: 20rpx;\n}\n.chosenIcon{\n\theight: 40rpx;\n\twidth: 40rpx;\n}\n.chosenIcon uni-image{\n\theight: 100%;\n\twidth: 100%;\n}\n.xiala-hang:last-child{\n\tborder: 0px;\n}\n/* 显示或关闭动画*/\n.open {\n    -webkit-animation: slideContentUp 0.2s linear both;\n            animation: slideContentUp 0.2s linear both;\n}\n.close {\n    -webkit-animation: slideContentDown 0.2s linear both;\n            animation: slideContentDown 0.2s linear both;\n}\n/* 动态设置高度 */\n@-webkit-keyframes slideContentUp {\nfrom {\n       height: 0;\n}\nto {\n        height: -230rpx;\n}\n}\n@keyframes slideContentUp {\nfrom {\n       height: 0;\n}\nto {\n        height: -230rpx;\n}\n}\n@-webkit-keyframes slideContentDown {\nfrom {\n\t\theight: -230rpx;\n}\nto {\n        height: 0;\n}\n}\n@keyframes slideContentDown {\nfrom {\n\t\theight: -230rpx;\n}\nto {\n        height: 0;\n}\n}\n.topbar_view{\n\tdisplay: flex;\n}\n.search{\n\twidth: 6.8vw;\n\theight: 6.8vw;\n\tmargin-right: 6.8vw;\n}\n.more{\n\twidth: 6.8vw;\n\theight: 6.8vw;\n\tpadding-right: 2vw;\n}\n.in_ex_ba_1{\n\tdisplay: flex;\n\tjustify-content: space-around;\n\tposition: relative;\n}\n.in_ex_ba_2{\n\tdisplay: flex;\n\tflex-direction: column;\n}\n.text0{\n\tfont-weight: 700;\n}\n.expenditure{\n\tcolor: #E88684FF;\n\ttext-align: center;\n\tfont-weight: 700;\n\tfont-size: 20px;\n}\n.income{\n\ttext-align: center;\n\tmargin-top: 3px;\n}\n.balance{\n\ttext-align: center;\n\tmargin-top: 3px;\n}\n.in_ex_ba_3{\n\t/*background-color: #7c3bfdff; */\n\tdisplay: flex;\n\tjustify-content: space-between;\n\twidth: 84vw;\n\tposition: relative;\n\tleft: 3vw;\n\tmargin-top: 4vw;\n}\n.percent{\n\tdisplay: flex;\n\tfont-size: 14px;\n}\n.text1{\n\tfont-size: 14px;\n}\n.progress-box{\n\twidth: 84vw;\n\tposition: relative;\n\tleft: 3vw;\n\tmargin-top: 2vw;\n}\n.in_ex_ba_4{\n\tdisplay: flex;\n\ttext-align: end;\n\twidth: 84vw;\n\tposition: relative;\n\tleft: 30vw;\n\tmargin-top: 5vw;\n\tfont-size: 13px;\n}\n.in_ex_ba_5{\n\tdisplay: flex;\n}\n.text2{\n\tmargin-left: 4vw;\n}\n.yet_day{\n\tfont-weight: 700;\n}\n.balance_day{\n\tfont-weight: 700;\n}\n.in_ex_ba_6{\n\tbackground-color: #072750FF;\n\topacity: 1;\n\tborder-radius: 5px;\n\ttext-align: center;\t\n\twidth: 94vw;\n\tmargin-left: -2vw;\n\tmargin-top: 10vw;\n}\n.add_bill{\n\tcolor: white;\n\tpadding-top: 4vw;\n\tpadding-bottom: 4vw;\n\tfont-weight: 500;\n}\n.bill{\n\tbackground-color: #FFFFFFFF;\n\tborder-radius: 4px;\n\twidth: 86vw;\n\tpadding:5vw;\n\tposition: relative;\n\tleft: 2vw;\n\ttop: 20rpx;\n}\n.bill_title{\n\tdisplay: flex;\n\tjustify-content: space-between;\n}\n.in_ex{\n\tdisplay: flex;\n\ttext-align: end;\n}\n.in_ex_1{\n\tdisplay: flex;\n}\n.date{\n\tfont-weight: 500;\n\tmargin-top: -1vw;\n}\n.weeekday{\n\tfont-size: 13px;\n\tmargin-left: -15vw;\n}\n.text3{\n\tfont-size: 13px;\n\tmargin-left: 3vw;\n\tmargin-right: 1vw;\n}\n.in{\n\tcolor: #43CF7CFF;\n\tfont-size: 13px;\n}\n.ex{\n\tcolor: #FF5733FF;\n\tfont-size: 13px;\n}\n.bill_info{\n\tdisplay: flex;\n\tjustify-content: space-between;\n\tmargin-top: 6vw;\n\tmargin-bottom: 6vw;\n}\n.bill_type_image{\n\twidth: 6.8vw;\n\theight: 6.8vw;\n}\n.bill_type_text{\n\tmargin-left: -20vw;\n}\n.bill_info_detail{\n\tcolor: #FF5733FF;\n}\n", ""]);
+exports.push([module.i, "\n.container{\n\tbackground-color: #F6F6F6;\n\twidth: 100vw;\n\theight: 100vh;\n}\n.in_ex_ba{\n\tposition: relative;\n\tleft: 1vw;\n\t/* top: 90px; */\n\twidth: 90vw;\n\theight: 20vh;\n\topacity: 1;\n\tborder-radius: 5px;\n\tbackground: #FDF1DAFF;\n\tborder: 2vw solid #FFFFFFFF;\n\tborder-bottom: 20vw solid #FFFFFFFF;\n\tpadding: 2vw;\n\tpadding-top: 5vw;\n}\n.topbar{\n\tdisplay: flex;\n\tjustify-content: space-between;\n\tbackground-color: #FFFFFFFF;\n\twidth: 98vw;\n\tposition: relative;\n\tleft: 1vw;\n\tpadding-top: 20rpx;\n}\n.accountbook{\n\twidth: 6.8vw;\n\theight: 6.8vw;\n\tpadding-left: 2vw;\n}\n.account_type{\n\tfont-size: 14px;\n\tmargin-left: 2vw;\n\tmargin-top: 1vw;\n}\n.account_typetext{\n\tfont-weight: 600;\n}\n.xiala{\n\tposition: absolute;\n\tbottom: -300rpx;\n\tleft: 15rpx;\n\theight: 290rpx;\n\twidth: 300rpx;\n\t/* background-color: aqua; */\n\tz-index: 100;\n\t/* background-color: aquamarine; */\n}\n.scrollArea{\n\theight: 100%;\n\twidth: 100%;\n}\n.xiala-xuanxiang{\n\theight: 290rpx;\n\twidth: 300rpx;\n\t/* background-color: rgba(36, 44, 61, 1); */\n\tbox-sizing: border-box;\n\toverflow: hidden;\n}\n.xiala-hang{\n\theight: 100rpx;\n\twidth: 100%;\n\tborder-bottom: 1px solid #efefef;\n\tdisplay: flex;\n\talign-items: center;\n\tjustify-content: center;\n\tbackground-color: white;\n}\n.xiala-hang-item-normal{\n\twidth: 100%;\n\theight: 100%;\n\tdisplay: flex;\n\talign-items: center;\n\tjustify-content: space-evenly;\n}\n.xiala-hang-item-normal .itemvalue{\n\tmargin-left: 20rpx;\n}\n.xiala-hang-item-add{\n\twidth: 100%;\n\theight: 100%;\n\tdisplay: flex;\n\talign-items: center;\n\t/* justify-content: center; */\n\tcolor: rgba(252, 198, 55, 1);\n}\n.xiala-hang-item-add .itemvalue{\n\tmargin-left: 15rpx;\n}\n.xiala-hang-item-add .chosenIcon{\n\tmargin-left: 20rpx;\n}\n.chosenIcon{\n\theight: 40rpx;\n\twidth: 40rpx;\n}\n.chosenIcon uni-image{\n\theight: 100%;\n\twidth: 100%;\n}\n.xiala-hang:last-child{\n\tborder: 0px;\n}\n/* 显示或关闭动画*/\n.open {\n    -webkit-animation: slideContentUp 0.2s linear both;\n            animation: slideContentUp 0.2s linear both;\n}\n.close {\n    -webkit-animation: slideContentDown 0.2s linear both;\n            animation: slideContentDown 0.2s linear both;\n}\n/* 动态设置高度 */\n@-webkit-keyframes slideContentUp {\nfrom {\n       height: 0;\n}\nto {\n        height: -230rpx;\n}\n}\n@keyframes slideContentUp {\nfrom {\n       height: 0;\n}\nto {\n        height: -230rpx;\n}\n}\n@-webkit-keyframes slideContentDown {\nfrom {\n\t\theight: -230rpx;\n}\nto {\n        height: 0;\n}\n}\n@keyframes slideContentDown {\nfrom {\n\t\theight: -230rpx;\n}\nto {\n        height: 0;\n}\n}\n.topbar_view{\n\tdisplay: flex;\n}\n.search{\n\twidth: 6.8vw;\n\theight: 6.8vw;\n\tmargin-right: 6.8vw;\n}\n.more{\n\twidth: 6.8vw;\n\theight: 6.8vw;\n\tpadding-right: 2vw;\n}\n.in_ex_ba_1{\n\tdisplay: flex;\n\tjustify-content: space-around;\n\tposition: relative;\n}\n.in_ex_ba_2{\n\tdisplay: flex;\n\tflex-direction: column;\n}\n.text0{\n\tfont-weight: 700;\n}\n.expenditure{\n\tcolor: #E88684FF;\n\ttext-align: center;\n\tfont-weight: 700;\n\tfont-size: 20px;\n}\n.income{\n\ttext-align: center;\n\tmargin-top: 3px;\n}\n.balance{\n\ttext-align: center;\n\tmargin-top: 3px;\n}\n.in_ex_ba_3{\n\t/*background-color: #7c3bfdff; */\n\tdisplay: flex;\n\tjustify-content: space-between;\n\twidth: 84vw;\n\tposition: relative;\n\tleft: 3vw;\n\tmargin-top: 4vw;\n}\n.percent{\n\tdisplay: flex;\n\tfont-size: 14px;\n}\n.text1{\n\tfont-size: 14px;\n}\n.progress-box{\n\twidth: 84vw;\n\tposition: relative;\n\tleft: 3vw;\n\tmargin-top: 2vw;\n}\n.in_ex_ba_4{\n\tdisplay: flex;\n\ttext-align: end;\n\twidth: 84vw;\n\tposition: relative;\n\tleft: 30vw;\n\tmargin-top: 5vw;\n\tfont-size: 13px;\n}\n.set-btn{\n\tbackground-color: #fff;\n\theight: 70rpx;\n\twidth: 200rpx;\n\tmargin-left: -200rpx;\n\tmargin-right: 20rpx;\n}\n.set-btn uni-button{\n\twidth: 100%;\n\theight: 100%;\n\t/* margin-left: -100rpx; */\n\tfont-size: 20rpx;\n\tdisplay: flex;\n\talign-items: center;\n\tjustify-content: center;\n\tbackground-color: #072750FF;\n\tcolor: white;\n\t/* margin-right: 40rpx; */\n}\n.in_ex_ba_5{\n\tdisplay: flex;\t\n\talign-items: center;\n\tjustify-content: center;\n\tfont-size: 20rpx;\n}\n.text2{\n\tmargin-left: 4vw;\n}\n.yet_day{\n\tfont-weight: 700;\n}\n.balance_day{\n\tfont-weight: 700;\n}\n.in_ex_ba_6{\n\tbackground-color: #072750FF;\n\topacity: 1;\n\tborder-radius: 5px;\n\ttext-align: center;\t\n\twidth: 94vw;\n\tmargin-left: -2vw;\n\tmargin-top: 10vw;\n}\n.add_bill{\n\tcolor: white;\n\tpadding-top: 4vw;\n\tpadding-bottom: 4vw;\n\tfont-weight: 500;\n}\n.bill{\n\tbackground-color: #FFFFFFFF;\n\tborder-radius: 4px;\n\twidth: 86vw;\n\tpadding:5vw;\n\tposition: relative;\n\tleft: 2vw;\n\ttop: 20rpx;\n}\n.bill_title{\n\tdisplay: flex;\n\tjustify-content: space-between;\n}\n.in_ex{\n\tdisplay: flex;\n\ttext-align: end;\n}\n.in_ex_1{\n\tdisplay: flex;\n}\n.date{\n\tfont-weight: 500;\n\tmargin-top: -1vw;\n}\n.weeekday{\n\tfont-size: 13px;\n\tmargin-left: -15vw;\n}\n.text3{\n\tfont-size: 13px;\n\tmargin-left: 3vw;\n\tmargin-right: 1vw;\n}\n.in{\n\tcolor: #43CF7CFF;\n\tfont-size: 13px;\n}\n.ex{\n\tcolor: #FF5733FF;\n\tfont-size: 13px;\n}\n.bill_info{\n\tdisplay: flex;\n\tjustify-content: space-between;\n\tmargin-top: 6vw;\n\tmargin-bottom: 6vw;\n}\n.bill_type_image{\n\twidth: 6.8vw;\n\theight: 6.8vw;\n}\n.bill_type_text{\n\tmargin-left: -20vw;\n}\n.bill_info_detail{\n\tcolor: #FF5733FF;\n}\n", ""]);
 // Exports
 module.exports = exports;
 

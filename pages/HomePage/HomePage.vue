@@ -51,23 +51,22 @@
 			</uni-popup>
 		</view>
 		<view class="in_ex_ba">
-			
 			<view class="in_ex_ba_1">
 				<view class="in_ex_ba_2">
 					<view class="text0">本月收入</view>
-					<view class="income">123</view>
+					<view class="income">{{this.monthlyIncome}}</view>
 				</view>
 				<view class="in_ex_ba_2">
 					<view class="text0">本月支出</view>
-					<view class="expenditure">123</view>
+					<view class="expenditure">{{this.monthlyOutcome}}</view>
 				</view>
 				<view class="in_ex_ba_2">
 					<view class="text0">本月结余</view>
-					<view class="balance">123</view>
+					<view class="balance">{{this.monthlyRemain}}</view>
 				</view>
 			</view>
 			<view class="in_ex_ba_3">
-				<view class="text1">1月预算</view>
+				<view class="text1">本月预算</view>
 				<view class="percent">
 					<view class="yet_month">300</view>
 					<view>/</view>
@@ -78,6 +77,9 @@
 				<progress percent="67"  stroke-width="4" activeColor="#E88684FF" backgroundColor="#F7B89DFF"/>
 			</view>
 			<view class="in_ex_ba_4">
+				<view class="set-btn">
+					<button>设置本月预算</button>
+				</view>
 				<view class="in_ex_ba_5">
 					<view class="text2">已用：</view>
 					<view class="yet_day">225.00</view>
@@ -124,6 +126,10 @@
 	export default {
 		data() {
 			return {
+				//本月收入，支出，结余
+				monthlyIncome:0,
+				monthlyOutcome:0,
+				monthlyRemain:0,
 				//添加账本时,输入的账本名
 				newAccountName: '',
 				//账本选中内容
@@ -347,7 +353,7 @@
 			getMonthBeginAndEnd(){
 				//1.获取今天的日期
 				const date = new Date();
-				console.log("当前时间" + date);
+				// console.log("当前时间" + date);
 				
 				//2.获取今天的年月
 				const year = date.getFullYear();
@@ -362,8 +368,8 @@
 				// thisMonthEndDate.uni.$u.timeFormat(thisMonthEndDate,'yyyy-mm-dd');
 				thisMonthStartDate = this.format(thisMonthStartDate);
 				thisMonthEndDate = this.format(thisMonthEndDate);
-				console.log("本月开始:" + thisMonthStartDate);
-				console.log("本月结束" + thisMonthEndDate);
+				// console.log("本月开始:" + thisMonthStartDate);
+				// console.log("本月结束" + thisMonthEndDate);
 				
 				//5.返回数组
 				return [thisMonthStartDate,thisMonthEndDate];
@@ -397,7 +403,7 @@
 				})
 				return;
 			}
-			console.log("用户已登录，userId为" + getApp().globalData.userId=="")
+			// console.log("用户已登录，userId为" + getApp().globalData.userId=="")
 			
 			
 			//发起请求，获取信息
@@ -408,7 +414,7 @@
 					"Authorization": 'Bearer ' + getApp().globalData.accessToken
 				},
 				success(res) {
-					console.log(res.data.data);
+					// console.log(res.data.data);
 					if(res.data.data.length==0){//用户没有账本
 						//为用户默认创建一个日常账本
 						//获取用户账本信息
@@ -461,23 +467,28 @@
 					console.log("账本列表已更新")
 					
 					//发起查询请求,查询该账本有关信息进行显示
-					var month_begin_time = 0;//获取当月开始时间
-					var month_end_time = 0;//获取当月结束时间
 					uni.request({
 						url:getApp().globalData.envprefix + '/admin-api/lbt/extends/data/inout/monthly',
+						method:'GET',
 						header:{
 							'tenant-id': 1,
-							'Authorization':'Bearer' + getApp().globalData.accessToken
+							'Authorization':'Bearer ' + getApp().globalData.accessToken
 						},
 						data:{
 							'accountBookId': getApp().globalData.accountBookId,
-							// 'beginTime':,//需要获取开始时间
-							// 'endTime'://需要获取结束时间
 							'beginTime':that.getMonthBeginAndEnd()[0],
 							'endTime':that.getMonthBeginAndEnd()[1]
 						},
 						success(res) {//等待问题解决
-							console.log(res.data.data);
+							if(res.data.code==200){
+								console.log("收入，支出，结余已获取");
+								that.monthlyIncome = res.data.data[0].income;
+								that.monthlyOutcome = res.data.data[0].outcome;
+								that.monthlyRemain = res.data.data[0].remain;
+							}
+							else{
+								console.log("收入，支出，结余获取错误:" + res.data.code);
+							}
 						}
 					})
 				}
@@ -698,8 +709,33 @@
 		margin-top: 5vw;
 		font-size: 13px;
 	}
+	
+	.set-btn{
+		background-color: #fff;
+		height: 70rpx;
+		width: 200rpx;
+		margin-left: -200rpx;
+		margin-right: 20rpx;
+	}
+	
+	.set-btn button{
+		width: 100%;
+		height: 100%;
+		/* margin-left: -100rpx; */
+		font-size: 20rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background-color: #072750FF;
+		color: white;
+		/* margin-right: 40rpx; */
+	}
+	
 	.in_ex_ba_5{
 		display: flex;	
+		align-items: center;
+		justify-content: center;
+		font-size: 20rpx;
 	}
 	.text2{
 		margin-left: 4vw;
