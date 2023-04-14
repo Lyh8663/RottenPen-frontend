@@ -281,6 +281,44 @@
 				console.log("选中" + value);
 				this.optionType=value;
 				//发起查看账本内容的请求
+			},
+			//日期获取方法
+			getMonthBeginAndEnd(){
+				//1.获取今天的日期
+				const date = new Date();
+				console.log("当前时间" + date);
+				
+				//2.获取今天的年月
+				const year = date.getFullYear();
+				const month = date.getMonth();
+				
+				//3.获取本月开始时间和本月结束的日期
+				let thisMonthStartDate = new Date(year,month,1);
+				let thisMonthEndDate = new Date(year,month+1,1);
+				
+				//4.格式转化
+				// thisMonthStartDate.uni.$u.timeFormat(thisMonthStartDate,'yyyy-mm-dd');
+				// thisMonthEndDate.uni.$u.timeFormat(thisMonthEndDate,'yyyy-mm-dd');
+				thisMonthStartDate = this.format(thisMonthStartDate);
+				thisMonthEndDate = this.format(thisMonthEndDate);
+				console.log("本月开始:" + thisMonthStartDate);
+				console.log("本月结束" + thisMonthEndDate);
+				
+				//5.返回数组
+				return [thisMonthStartDate,thisMonthEndDate];
+			},
+			//格式化日期的方法
+			format(dat){
+			    //获取年月日，时间
+			    var year = dat.getFullYear();
+			    var mon = (dat.getMonth()+1) < 10 ? "0"+(dat.getMonth()+1) : dat.getMonth()+1;
+			    var data = dat.getDate()  < 10 ? "0"+(dat.getDate()) : dat.getDate();
+			    var hour = dat.getHours()  < 10 ? "0"+(dat.getHours()) : dat.getHours();
+			    var min =  dat.getMinutes()  < 10 ? "0"+(dat.getMinutes()) : dat.getMinutes();
+			    var seon = dat.getSeconds() < 10 ? "0"+(dat.getSeconds()) : dat.getSeconds();
+			                 
+			    var newDate = year +"-"+ mon +"-"+ data +" "+ hour +":"+ min +":"+ seon;
+			    return newDate;
 			}
 		},
 		onLoad(){
@@ -318,7 +356,8 @@
 						return;
 					}
 					//确定有账本以后
-					for(var i = 0;i < res.data.data.length;i++){//对数据进行处理
+					var arrTemp = [];
+					for(var i = 0;i < res.data.data.length+1;i++){//对数据进行处理
 						// optionType:'日常账本',
 						// option:[
 						// 	{lable:0,value:"添加账本"},
@@ -328,11 +367,58 @@
 						// 	{lable:3,value:"..."},
 						// 	{lable:3,value:"..."},
 						// ],
-						
-						
+						if(i==0){//首位
+							arrTemp.push({
+								label:i,
+								value:'添加账本',
+								id:-1
+							});
+							continue;
+						}
+						arrTemp.push({
+							label:i,
+							value:res.data.data[i-1].title,
+							id:res.data.data[i-1].id
+						});
+						if(res.data.data[i-1].title=="日常账本"){//将选中账本写入全局信息
+							getApp().globalData.accountBookId = res.data.data[i-1].id;
+						}
 					}
-					//将选中账本写入全局信息
+					if(res.data.data.length<5){//不足6个账本,则添加...作为填充
+						var time = 5 - res.data.data.length;
+						for(var i = 0;i<time;i++){
+							arrTemp.push({
+								label:res.data.data.length+i+1,
+								value:"...",
+								id:-1
+							})
+						}
+					}
+					that.optionType = "日常账本"
+					that.option = arrTemp;//更新账本列表
+					
+					console.log("账本列表已更新")
+					
 					//发起查询请求,查询该账本有关信息进行显示
+					var month_begin_time = 0;//获取当月开始时间
+					var month_end_time = 0;//获取当月结束时间
+					uni.request({
+						url:getApp().globalData.envprefix + '/admin-api/lbt/extends/data/inout/monthly',
+						header:{
+							'tenant-id': 1,
+							'Authorization':'Bearer' + getApp().globalData.accessToken
+						},
+						data:{
+							'accountBookId': getApp().globalData.accountBookId,
+							// 'beginTime':,//需要获取开始时间
+							// 'endTime'://需要获取结束时间
+							'beginTime':that.getMonthBeginAndEnd()[0],
+							'endTime':that.getMonthBeginAndEnd()[1]
+						},
+						success(res) {//等待问题解决
+							console.log(res.data.data);
+						}
+					})
 				}
 			})
 			
