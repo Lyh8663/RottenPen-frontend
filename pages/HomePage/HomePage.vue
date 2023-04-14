@@ -45,7 +45,7 @@
 		</view>
 		<view>
 			<!-- 输入框示例 -->
-			<uni-popup ref="inputDialog" type="dialog">
+			<uni-popup ref="inputDialog1" type="dialog">
 				<uni-popup-dialog ref="inputClose"  mode="input" title="添加账本" value="请输入要添加的账本名称"
 					placeholder="请输入内容" @confirm="dialogInputConfirm"></uni-popup-dialog>
 			</uni-popup>
@@ -70,7 +70,7 @@
 				<view class="percent">
 					<view class="yet_month">300</view>
 					<view>/</view>
-					<view class="total">1000</view>
+					<view class="total">{{this.monthlyBudget}}</view>
 				</view>
 			</view>
 			<view class="progress-box">
@@ -78,7 +78,7 @@
 			</view>
 			<view class="in_ex_ba_4">
 				<view class="set-btn">
-					<button>设置本月预算</button>
+					<button @click="setMonthlyBudget()">设置本月预算</button>
 				</view>
 				<view class="in_ex_ba_5">
 					<view class="text2">已用：</view>
@@ -92,6 +92,13 @@
 			<view class="in_ex_ba_6" @click="toAddBill()">
 				<view class="add_bill">添加一条新账</view>
 			</view>
+		</view>
+		<view>
+			<!-- 输入框示例 -->
+			<uni-popup ref="inputDialog2" type="dialog">
+				<uni-popup-dialog ref="inputClose"  mode="input" title="设置预算" value="请输入要设置的预算"
+					placeholder="请输入内容" @confirm="budgetConfirm"></uni-popup-dialog>
+			</uni-popup>
 		</view>
 		<view class="bill">
 			<view class="day_bill" v-for="(bill,b) in billList" :key="b">
@@ -126,6 +133,8 @@
 	export default {
 		data() {
 			return {
+				//本月预算
+				monthlyBudget:1000,
 				//本月收入，支出，结余
 				monthlyIncome:0,
 				monthlyOutcome:0,
@@ -183,9 +192,41 @@
 			}
 		},
 		methods: {
+			//设置本月预算
+			setMonthlyBudget(){
+				this.$refs.inputDialog2.open()
+			},
+			//设置预算弹出框，选中确定按钮以后的函数
+			budgetConfirm(val){
+				//判断用户输入的内容是否为正数字
+				if(!this.isNum(val)){//非数字
+					uni.showToast({
+						icon:'none',
+						title:'请输入正确的数字'
+					})
+					return;
+				}
+				if(val<0){//负数
+					uni.showToast({
+						icon:'none',
+						title:'请输入正确的数字'
+					})
+					return;
+				}
+				this.monthlyBudget = val;
+			},
+			//校验是否为数字的方法（正负整数，正负浮点数以及0）,是数字则返回true
+			isNum(val){
+				var regPos = /^[0-9]+.?[0-9]*/;
+				if(regPos.test(val) ){
+				    return true;
+				}else{
+			        return false;
+			    }
+			},
 			//打开添加账本弹出框
 			inputDialogToggle() {
-				this.$refs.inputDialog.open()
+				this.$refs.inputDialog1.open()
 			},
 			//添加账本弹出框,选择确定按钮以后的函数
 			dialogInputConfirm(val) {
