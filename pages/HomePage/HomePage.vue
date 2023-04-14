@@ -74,7 +74,7 @@
 				</view>
 			</view>
 			<view class="progress-box">
-				<progress percent="67"  stroke-width="4" activeColor="#E88684FF" backgroundColor="#F7B89DFF"/>
+				<progress :percent="this.progressRate"  stroke-width="4" activeColor="#E88684FF" backgroundColor="#F7B89DFF"/>
 			</view>
 			<view class="in_ex_ba_4">
 				<view class="set-btn">
@@ -133,6 +133,8 @@
 	export default {
 		data() {
 			return {
+				//进度条百分比
+				progressRate:0,
 				//剩余日均
 				dailyRemain:0,
 				//本月预算
@@ -191,38 +193,54 @@
 					{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
 					{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
 				],
+				//往前加载3天的数据
+				loadDailyInfo:3,
 			}
 		},
 		watch: {
-			//当本月预算改变时，对应改变剩余日均，将改变后的值写入全局变量
+			//当本月预算改变时，对应改变剩余日均，将改变后的值写入全局变量,改变进度条
 			monthlyBudget(newVal,oldVal){
 				getApp().globalData.monthlyBudget = newVal;
-				if(newVal - this.monthlyOutcome<=0){//预算低于支出，剩余日均为0
-					this.dailyRemain = 0;
+				if(newVal - this.monthlyOutcome<=0){//预算低于支出
+					this.dailyRemain = 0;//剩余日均为0
+					this.progressRate = 100;//进度条满
 					return;
 				}
 				if(this.getDayRemain()!=0){
+					//调整剩余日均
 					this.dailyRemain = (newVal - this.monthlyOutcome)/this.getDayRemain();
-					// this.getDayRemain();
 					this.dailyRemain = Math.floor(this.dailyRemain * 100) / 100;//结果保留两位小数
+					//调整进度条
+					this.progressRate = this.monthlyOutcome / newVal;
+					this.progressRate = Math.floor(this.progressRate * 100) / 100 * 100;
 				}else{
 					this.dailyRemain = (newVal - this.monthlyOutcome);//今天即本月最后一天，日均即还剩下多少钱
+					//调整进度条
+					this.progressRate = this.monthlyOutcome / newVal;
+					this.progressRate = Math.floor(this.progressRate * 100) / 100 * 100;
 				}
-				console.log("剩余日均已更新");
+				console.log("剩余日均、进度条已更新");
 			},
 			//当本月支出改变时，对应改变剩余日均
 			monthlyOutcome(newVal,oldVal){
-				//如果支出超过预算，则日均为0
+				//如果支出超过预算，
 				if(newVal>=this.monthlyBudget){
-					this.dailyRemain = 0;
+					this.dailyRemain = 0;//则日均为0
+					this.progressRate = 100;//进度条满
 					return;
 				}
 				//如果支出没有超过预算
 				if(this.getDayRemain()==0){
-					this.dailyRemain = this.monthlyBudget - newVal;
+					this.dailyRemain = this.monthlyBudget - newVal;//最后一天
+					//调整进度条
+					this.progressRate = newVal / this.monthlyBudget;
+					this.progressRate = Math.floor(this.progressRate * 100) / 100 * 100;
 				}else{
 					this.dailyRemain = (this.monthlyBudget - newVal)/this.getDayRemain()
 					this.dailyRemain = Math.floor(this.dailyRemain * 100) / 100;//保留两位小数
+					//调整进度条
+					this.progressRate = newVal / this.monthlyBudget;
+					this.progressRate = Math.floor(this.progressRate * 100) / 100 * 100;
 				}
 				console.log("剩余日均已更新");
 			}
@@ -505,7 +523,6 @@
 				return;
 			}
 			// console.log("用户已登录，userId为" + getApp().globalData.userId=="")
-			
 			
 			//发起请求，获取信息
 			uni.request({//获取所有账本信息
