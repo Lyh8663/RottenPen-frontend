@@ -118,7 +118,7 @@
 				</view>
 				<view class="bill_info" v-for="(info,i) in bill.billInfoList" :key="i" @click="toBillDetail()">
 					<image class="bill_type_image" :src="info.image"></image>
-					<view class="bill_type_text">{{info.type}}</view>
+					<view class="bill_type_text">{{info.tagName}}</view>
 					<view class="bill_info_detail">{{info.money}}</view>
 				</view>
 			</view>		
@@ -203,10 +203,53 @@
 						in:"23.89",
 						ex:"3.00",
 						billInfoList:[
-							{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
-							{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
-							{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
-							{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
+							{
+								"image":"../../static/diet.png",
+							    "accountBookId": "1646779958060707842",
+							    "fundId": "1646782468737527809",
+							    "fundName": "微信零钱",
+							    "money": 81.400000,
+							    "appendixImgUrl": "http://47.100.211.157/img/result_449.jpg",
+							    "tagId": "1646785618353647618",
+							    "tagName": "商场购物",
+							    "notes": null,
+							    "enumType": 1,
+							    "enumWay": null,
+							    "enumInout": 1,
+							    "enumBudget": 1,
+							    "enumRefund": null
+							},
+							{
+								"image":"../../static/diet.png",
+							    "accountBookId": "1646779958060707842",
+							    "fundId": "1646782468737527809",
+							    "fundName": "微信零钱",
+							    "money": 81.400000,
+							    "appendixImgUrl": "http://47.100.211.157/img/result_449.jpg",
+							    "tagId": "1646785618353647618",
+							    "tagName": "商场购物",
+							    "notes": null,
+							    "enumType": 1,
+							    "enumWay": null,
+							    "enumInout": 1,
+							    "enumBudget": 1,
+							    "enumRefund": null
+							},{
+								"image":"../../static/diet.png",
+							    "accountBookId": "1646779958060707842",
+							    "fundId": "1646782468737527809",
+							    "fundName": "微信零钱",
+							    "money": 81.400000,
+							    "appendixImgUrl": "http://47.100.211.157/img/result_449.jpg",
+							    "tagId": "1646785618353647618",
+							    "tagName": "商场购物",
+							    "notes": null,
+							    "enumType": 1,
+							    "enumWay": null,
+							    "enumInout": 1,
+							    "enumBudget": 1,
+							    "enumRefund": null
+							}
 						]
 					},
 					{
@@ -215,10 +258,67 @@
 						in:"23.89",
 						ex:"3.00",
 						billInfoList:[
-							{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
-							{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
-							{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
-							{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
+							{
+								"image":"../../static/diet.png",
+							    "accountBookId": "1646779958060707842",
+							    "fundId": "1646782468737527809",
+							    "fundName": "微信零钱",
+							    "money": 81.400000,
+							    "appendixImgUrl": "http://47.100.211.157/img/result_449.jpg",
+							    "tagId": "1646785618353647618",
+							    "tagName": "商场购物",
+							    "notes": null,
+							    "enumType": 1,
+							    "enumWay": null,
+							    "enumInout": 1,
+							    "enumBudget": 1,
+							    "enumRefund": null
+							},{
+								"image":"../../static/diet.png",
+							    "accountBookId": "1646779958060707842",
+							    "fundId": "1646782468737527809",
+							    "fundName": "微信零钱",
+							    "money": 81.400000,
+							    "appendixImgUrl": "http://47.100.211.157/img/result_449.jpg",
+							    "tagId": "1646785618353647618",
+							    "tagName": "商场购物",
+							    "notes": null,
+							    "enumType": 1,
+							    "enumWay": null,
+							    "enumInout": 1,
+							    "enumBudget": 1,
+							    "enumRefund": null
+							},{
+								"image":"../../static/diet.png",
+							    "accountBookId": "1646779958060707842",
+							    "fundId": "1646782468737527809",
+							    "fundName": "微信零钱",
+							    "money": 81.400000,
+							    "appendixImgUrl": "http://47.100.211.157/img/result_449.jpg",
+							    "tagId": "1646785618353647618",
+							    "tagName": "商场购物",
+							    "notes": null,
+							    "enumType": 1,
+							    "enumWay": null,
+							    "enumInout": 1,
+							    "enumBudget": 1,
+							    "enumRefund": null
+							},{
+								"image":"../../static/diet.png",
+							    "accountBookId": "1646779958060707842",
+							    "fundId": "1646782468737527809",
+							    "fundName": "微信零钱",
+							    "money": 81.400000,
+							    "appendixImgUrl": "http://47.100.211.157/img/result_449.jpg",
+							    "tagId": "1646785618353647618",
+							    "tagName": "商场购物",
+							    "notes": null,
+							    "enumType": 1,
+							    "enumWay": null,
+							    "enumInout": 1,
+							    "enumBudget": 1,
+							    "enumRefund": null
+							}
 						]
 					},
 					{
@@ -227,10 +327,52 @@
 						in:"23.89",
 						ex:"3.00",
 						billInfoList:[
-							{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
-							{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
-							{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
-							{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
+							{
+								"image":"../../static/diet.png",
+							    "accountBookId": "1646779958060707842",
+							    "fundId": "1646782468737527809",
+							    "fundName": "微信零钱",
+							    "money": 81.400000,
+							    "appendixImgUrl": "http://47.100.211.157/img/result_449.jpg",
+							    "tagId": "1646785618353647618",
+							    "tagName": "商场购物",
+							    "notes": null,
+							    "enumType": 1,
+							    "enumWay": null,
+							    "enumInout": 1,
+							    "enumBudget": 1,
+							    "enumRefund": null
+							},{
+								"image":"../../static/diet.png",
+							    "accountBookId": "1646779958060707842",
+							    "fundId": "1646782468737527809",
+							    "fundName": "微信零钱",
+							    "money": 81.400000,
+							    "appendixImgUrl": "http://47.100.211.157/img/result_449.jpg",
+							    "tagId": "1646785618353647618",
+							    "tagName": "商场购物",
+							    "notes": null,
+							    "enumType": 1,
+							    "enumWay": null,
+							    "enumInout": 1,
+							    "enumBudget": 1,
+							    "enumRefund": null
+							},{
+								"image":"../../static/diet.png",
+							    "accountBookId": "1646779958060707842",
+							    "fundId": "1646782468737527809",
+							    "fundName": "微信零钱",
+							    "money": 81.400000,
+							    "appendixImgUrl": "http://47.100.211.157/img/result_449.jpg",
+							    "tagId": "1646785618353647618",
+							    "tagName": "商场购物",
+							    "notes": null,
+							    "enumType": 1,
+							    "enumWay": null,
+							    "enumInout": 1,
+							    "enumBudget": 1,
+							    "enumRefund": null
+							},
 						]
 					}
 				]
@@ -285,7 +427,26 @@
 			}
 		},
 		methods: {
-			//点击查询
+			//获取以今天为标准，任何一天的日期,传入0表示今天，传入-1表示昨天，返回年月日数组
+			getAnyDate(day){
+				var today = new Date();
+				var targetday_milliseconds=today.getTime() + 1000*60*60*24*day;
+				today.setTime(targetday_milliseconds); //注意，这行是关键代码
+				var tYear = today.getFullYear();
+				var tMonth = today.getMonth();
+				var tDate = today.getDate();
+				tMonth = this.doHandleMonth(tMonth + 1);
+				tDate = this.doHandleMonth(tDate);
+				return [tYear,tMonth,tDate];
+			},
+			doHandleMonth(month){
+				var m = month;
+ 　　			if(month.toString().length == 1){
+ 　　　　			m = "0" + month;
+ 　　			}
+ 　　			return m;
+			},
+			//点击查询按钮
 			toCanlenderPage(){
 				uni.navigateTo({
 					url:"/pages/CanlenderPage/CanlenderPage"
@@ -577,7 +738,7 @@
 		},
 		onLoad(){
 			var that = this;
-			
+						
 			//后门，先设置好用户，对接内容
 			getApp().globalData.userId = "1646777091362164738";
 			getApp().globalData.accessToken = "49a67be53d4f4de5bd6088b2b43088a9"
