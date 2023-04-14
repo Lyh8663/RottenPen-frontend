@@ -195,6 +195,8 @@
 				],
 				//往前加载3天的数据
 				loadDailyInfo:3,
+				//账单二维数组
+				
 			}
 		},
 		watch: {
@@ -246,6 +248,18 @@
 			}
 		},
 		methods: {
+			//获取年份+月份
+			getYearAndMonth(){
+				//1.获取今天的日期
+				const date = new Date();
+				
+				//2.获取今天的年月
+				const year = Number(date.getFullYear());
+				const month = Number(date.getMonth());
+				
+				//3.返回年月
+				return [year,month];
+			},
 			//获取本月还剩下多少天
 			getDayRemain(){
 				//1.获取今天的日期
@@ -412,6 +426,9 @@
 				if(e.item.text=="拍照"){
 					console.log("拍照被点击了");
 					//跳转到拍照页面
+					uni.navigateTo({
+						url:"/pages/OCRPage/OCRPage"
+					})
 				}else if(e.item.text=="语音"){
 					console.log("语音被点击了");
 					//跳转到语音输入页面
@@ -585,8 +602,10 @@
 					console.log("账本列表已更新")
 					
 					//发起查询请求,查询该账本有关信息进行显示
+					//查询收入，支出，结余
 					uni.request({
-						url:getApp().globalData.envprefix + '/admin-api/lbt/extends/data/inout/monthly',
+						// url:getApp().globalData.envprefix + '/admin-api/lbt/extends/data/inout/monthly',
+						url:getApp().globalData.envprefix + '/admin-api/lbt/extends/data/overview/monthly',
 						method:'GET',
 						header:{
 							'tenant-id': 1,
@@ -594,22 +613,24 @@
 						},
 						data:{
 							'accountBookId': getApp().globalData.accountBookId,
-							'beginTime':that.getMonthBeginAndEnd()[0],
-							'endTime':that.getMonthBeginAndEnd()[1]
+							// 'beginTime':that.getMonthBeginAndEnd()[0],
+							// 'endTime':that.getMonthBeginAndEnd()[1]
+							'month':that.getYearAndMonth()[1],
+							'year':that.getYearAndMonth()[0]
 						},
 						success(res) {
 							if(res.data.code==200){
 								console.log("收入，支出，结余已获取");
-								//需要在返回的数组中，剔除无用数据
-								var index = 0;
-								for(var i = 0;i<res.data.data.length;i++){
-									if(res.data.data[i].accountBookId!=null){
-										index = i;
-									}
-								}
-								that.monthlyIncome = Number(res.data.data[index].income);
-								that.monthlyOutcome =  - Number(res.data.data[index].outcome);//支出后台给的数据是18
-								that.monthlyRemain = Number(res.data.data[index].remain);
+								// //需要在返回的数组中，剔除无用数据
+								// var index = 0;
+								// for(var i = 0;i<res.data.data.length;i++){
+								// 	if(res.data.data[i].accountBookId!=null){
+								// 		index = i;
+								// 	}
+								// }
+								that.monthlyIncome = Number(res.data.data.income);
+								that.monthlyOutcome =  - Number(res.data.data.outcome);//支出后台给的数据是18
+								that.monthlyRemain = Number(res.data.data.left);
 							}
 							else{
 								console.log("收入，支出，结余获取错误:" + res.data.code);

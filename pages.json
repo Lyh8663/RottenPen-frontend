@@ -112,6 +112,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/OCRPage/OCRPage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
