@@ -68,7 +68,7 @@
 			<view class="in_ex_ba_3">
 				<view class="text1">本月预算</view>
 				<view class="percent">
-					<view class="yet_month">300</view>
+					<view class="yet_month">{{this.monthlyOutcome}}</view>
 					<view>/</view>
 					<view class="total">{{this.monthlyBudget}}</view>
 				</view>
@@ -82,11 +82,11 @@
 				</view>
 				<view class="in_ex_ba_5">
 					<view class="text2">已用：</view>
-					<view class="yet_day">225.00</view>
+					<view class="yet_day">{{this.monthlyOutcome}}</view>
 				</view>
 				<view class="in_ex_ba_5">
 					<view class="text2">剩余日均：</view>
-					<view class="balance_day">51.23</view>
+					<view class="balance_day">{{dailyRemain}}</view>
 				</view>
 			</view>
 			<view class="in_ex_ba_6" @click="toAddBill()">
@@ -133,8 +133,10 @@
 	export default {
 		data() {
 			return {
+				//剩余日均
+				dailyRemain:0,
 				//本月预算
-				monthlyBudget:1000,
+				monthlyBudget:0,
 				//本月收入，支出，结余
 				monthlyIncome:0,
 				monthlyOutcome:0,
@@ -191,7 +193,62 @@
 				],
 			}
 		},
+		watch: {
+			//当本月预算改变时，对应改变剩余日均，将改变后的值写入全局变量
+			monthlyBudget(newVal,oldVal){
+				getApp().globalData.monthlyBudget = newVal;
+				if(newVal - this.monthlyOutcome<=0){//预算低于支出，剩余日均为0
+					this.dailyRemain = 0;
+					return;
+				}
+				if(this.getDayRemain()!=0){
+					this.dailyRemain = (newVal - this.monthlyOutcome)/this.getDayRemain();
+					// this.getDayRemain();
+					this.dailyRemain = Math.floor(this.dailyRemain * 100) / 100;//结果保留两位小数
+				}else{
+					this.dailyRemain = (newVal - this.monthlyOutcome);//今天即本月最后一天，日均即还剩下多少钱
+				}
+				console.log("剩余日均已更新");
+			},
+			//当本月支出改变时，对应改变剩余日均
+			monthlyOutcome(newVal,oldVal){
+				//如果支出超过预算，则日均为0
+				if(newVal>=this.monthlyBudget){
+					this.dailyRemain = 0;
+					return;
+				}
+				//如果支出没有超过预算
+				if(this.getDayRemain()==0){
+					this.dailyRemain = this.monthlyBudget - newVal;
+				}else{
+					this.dailyRemain = (this.monthlyBudget - newVal)/this.getDayRemain()
+					this.dailyRemain = Math.floor(this.dailyRemain * 100) / 100;//保留两位小数
+				}
+				console.log("剩余日均已更新");
+			}
+		},
 		methods: {
+			//获取本月还剩下多少天
+			getDayRemain(){
+				//1.获取今天的日期
+				const date = new Date();
+				
+				//2.获取今天的年月
+				const year = date.getFullYear();
+				const month = date.getMonth();
+				
+				//3.获取本月开始时间和本月结束的日期
+				let thisMonthStartDate = new Date(year,month,1);
+				let thisMonthEndDate = new Date(year,month+1,0);
+				
+				//4.获取今天的日期和月底的日期
+				var endday = thisMonthEndDate.getDate();
+				var today = date.getDate();
+				
+				//5.返回剩余天数
+				// console.log("剩余天数：" + (Number(endday) - Number(today)));
+				return Number(endday) - Number(today);
+			},
 			//设置本月预算
 			setMonthlyBudget(){
 				this.$refs.inputDialog2.open()
@@ -436,6 +493,9 @@
 			getApp().globalData.userId = "1646777091362164738";
 			getApp().globalData.accessToken = "49a67be53d4f4de5bd6088b2b43088a9"
 			
+			//获取该获取的页面信息
+			this.monthlyBudget = getApp().globalData.monthlyBudget;
+			
 			//判断，用户未登录，则跳转到登录页面要求用户登录
 			if(getApp().globalData.userId==""){
 				console.log("用户未登录，跳转到登录页面");
@@ -520,12 +580,19 @@
 							'beginTime':that.getMonthBeginAndEnd()[0],
 							'endTime':that.getMonthBeginAndEnd()[1]
 						},
-						success(res) {//等待问题解决
+						success(res) {
 							if(res.data.code==200){
 								console.log("收入，支出，结余已获取");
-								that.monthlyIncome = res.data.data[0].income;
-								that.monthlyOutcome = res.data.data[0].outcome;
-								that.monthlyRemain = res.data.data[0].remain;
+								//需要在返回的数组中，剔除无用数据
+								var index = 0;
+								for(var i = 0;i<res.data.data.length;i++){
+									if(res.data.data[i].accountBookId!=null){
+										index = i;
+									}
+								}
+								that.monthlyIncome = Number(res.data.data[index].income);
+								that.monthlyOutcome =  - Number(res.data.data[index].outcome);//支出后台给的数据是18
+								that.monthlyRemain = Number(res.data.data[index].remain);
 							}
 							else{
 								console.log("收入，支出，结余获取错误:" + res.data.code);

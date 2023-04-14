@@ -17,6 +17,7 @@
 			userId:"",//用户登录时，写入的id
 			accessToken:"",//用户登录时，写入的token
 			accountBookId:"",//当前选定的账本id
+			monthlyBudget:1000,//当前设置的本月预算
 		}
 	}
 </script>
