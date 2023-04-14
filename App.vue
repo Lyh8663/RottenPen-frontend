@@ -16,7 +16,7 @@
 			envprefix: 'http://47.100.211.157/lbt',//网络请求前缀
 			userId:"",//用户登录时，写入的id
 			accessToken:"",//用户登录时，写入的token
-			
+			accountBookId:"",//当前选定的账本id
 		}
 	}
 </script>

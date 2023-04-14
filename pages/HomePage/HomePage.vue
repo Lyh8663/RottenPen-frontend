@@ -13,7 +13,7 @@
 					<view class="xiala">
 						<view class="xiala-xuanxiang" :class="[isXiala==1?'open':'',isXiala==2?'close':'']">
 							<scroll-view scroll-y="true"  class="scrollArea">
-								<view class="xiala-hang" v-for="(item,index) in option" :key="index" @click="xuanzeAccountBook(index,item.value)">
+								<view class="xiala-hang" v-for="(item,index) in option" :key="index" @click="xuanzeAccountBook(index,item.value,item.id)">
 									<view class="xiala-hang-item-normal" v-if="index!=0">
 										<view class="itemvalue">
 											{{item.value}}
@@ -22,7 +22,7 @@
 											<image src="../../static/zhangbengouzi.png" alt="" v-if="optionType==item.value"></image>
 										</view>
 									</view>
-									<view class="xiala-hang-item-add" v-else>
+									<view class="xiala-hang-item-add" v-else @click="inputDialogToggle">
 										<view class="chosenIcon">
 											<image src="../../static/zhangbentianjia.png" alt=""></image>
 										</view>
@@ -37,10 +37,18 @@
 				</view>
 				
 			</view>
+			
 			<view class="topbar_view">
 				<image class="search" src="../../static/search.png"></image>
 				<image class="more" src="../../static/more.png"></image>
 			</view>		
+		</view>
+		<view>
+			<!-- 输入框示例 -->
+			<uni-popup ref="inputDialog" type="dialog">
+				<uni-popup-dialog ref="inputClose"  mode="input" title="添加账本" value="请输入要添加的账本名称"
+					placeholder="请输入内容" @confirm="dialogInputConfirm"></uni-popup-dialog>
+			</uni-popup>
 		</view>
 		<view class="in_ex_ba">
 			
@@ -116,15 +124,17 @@
 	export default {
 		data() {
 			return {
+				//添加账本时,输入的账本名
+				newAccountName: '',
 				//账本选中内容
 				optionType:'日常账本',
 				option:[
-					{lable:0,value:"添加账本"},
-					{lable:1,value:"日常账本"},
-					{lable:2,value:"家庭账本"},
-					{lable:3,value:"公司帐本"},
-					{lable:3,value:"..."},
-					{lable:3,value:"..."},
+					{lable:0,value:"添加账本",id:-1},
+					{lable:1,value:"日常账本",id:-1},
+					{lable:2,value:"家庭账本",id:-1},
+					{lable:3,value:"公司帐本",id:-1},
+					{lable:3,value:"...",id:-1},
+					{lable:3,value:"...",id:-1},
 				],
 				isXiala:2,
 				pattern: {
@@ -138,19 +148,19 @@
 					conPath: "../../static/camera3.png",
 					selectedIconPath:"../../static/camera3.png",
 					text: '拍照',
-					active: false
+					active: true
 				    },
 					{
 					iconPath: "../../static/sound3.png",
 					selectedIconPath:"../../static/sound3.png",
 					text: '语音',
-					active: false
+					active: true
 					},
 					{
 					iconPath: "../../static/write.png",
 					selectedIconPath:"../../static/write.png",
-					text: '写入',
-					active: false
+					text: '对话',
+					active: true
 					}
 				],
 				billList:[
@@ -167,25 +177,72 @@
 			}
 		},
 		methods: {
+			//打开添加账本弹出框
+			inputDialogToggle() {
+				this.$refs.inputDialog.open()
+			},
+			//添加账本弹出框,选择确定按钮以后的函数
+			dialogInputConfirm(val) {
+				// uni.showLoading({
+				// 	title: '正在创建'
+				// })
+				// setTimeout(() => {
+				// 	uni.hideLoading()
+				// 	console.log(val)
+				// 	this.newAccountName = val
+				// 	// 关闭窗口后，恢复默认内容
+				// 	this.$refs.inputDialog.close()
+				// }, 3000)
+				
+				//没输入内容就点了确定
+				if(val=="请输入要添加的账本名称"){
+					uni.showToast({
+						icon:"none",
+						title:"添加失败:未输入账本名"
+					})
+					return;
+				}
+				//将添加的张本名存在newAccount中
+				this.newAccountName = val;
+				//发起添加账本的请求
+				//发起刷新账本列表的请求
+				
+				// 关闭窗口后，恢复默认内容
+				this.$refs.inputDialog.close()
+			},
+			//跳转到添加一条新帐页面
 			toAddBill(){
 				uni.navigateTo({
 					url:"../AddBillPage/AddBillPage",
 				})
 			},
+			//跳转到账单详情页面
 			toBillDetail(){
 				uni.navigateTo({
 					url:"../BillDetail/BillDetail",
 				})
 			},
+			//悬浮框点击展开
 			trigger(e) {
-				console.log(e)
-				this.content[e.index].active = !e.item.active
-				if(e.item.text=="动态"){
-								
-				}else if(e.item.text=="提问"){
-									
+				// console.log(e)
+				// this.content[e.index].active = !e.item.active
+				if(e.item.text=="拍照"){
+					console.log("拍照被点击了");
+					//跳转到拍照页面
+				}else if(e.item.text=="语音"){
+					console.log("语音被点击了");
+					//跳转到语音输入页面
+					uni.showToast({
+						icon:'none',
+						title:"暂未开放，敬请期待"
+					})
 				}else{
-								
+					console.log("对话被点击了");
+					//跳转到对话输入页面
+					uni.showToast({
+						icon:'none',
+						title:"暂未开放，敬请期待"
+					})
 				}
 				
 			},
@@ -206,14 +263,19 @@
 				}
 			},
 			//选中账本
-			xuanzeAccountBook(index,value){
+			xuanzeAccountBook(index,value,id){
 				// console.log("选中了" + index);
 				if(index==0){
 					console.log("选中添加账本");
-					uni.showToast({
-						title:"开始添加账本"
-					})
 					//发起添加账本的请求
+					return;
+				}
+				if(id==-1){
+					console.log("选中" + value);
+					uni.showToast({
+						icon:"none",
+						title:"账本待添加"
+					})
 					return;
 				}
 				console.log("选中" + value);
@@ -222,6 +284,8 @@
 			}
 		},
 		onLoad(){
+			var that = this;
+			
 			//后门，先设置好用户，对接内容
 			getApp().globalData.userId = "1646777091362164738";
 			getApp().globalData.accessToken = "49a67be53d4f4de5bd6088b2b43088a9"
@@ -238,15 +302,37 @@
 			
 			
 			//发起请求，获取信息
-			//获取所有账本信息
-			uni.request({
-				url: getApp().globalData.envprefix + '/admin-api/lbt/account-book/list',
+			uni.request({//获取所有账本信息
+				url: getApp().globalData.envprefix + '/admin-api/lbt/extends/accountbook/get',
 				header:{
 					"tenant-id":1,
 					"Authorization": 'Bearer ' + getApp().globalData.accessToken
 				},
 				success(res) {
-					
+					console.log(res.data.data);
+					if(res.data.data.length==0){//用户没有账本
+						//为用户默认创建一个日常账本
+						//获取用户账本信息
+						//对数据进行处理
+						
+						return;
+					}
+					//确定有账本以后
+					for(var i = 0;i < res.data.data.length;i++){//对数据进行处理
+						// optionType:'日常账本',
+						// option:[
+						// 	{lable:0,value:"添加账本"},
+						// 	{lable:1,value:"日常账本"},
+						// 	{lable:2,value:"家庭账本"},
+						// 	{lable:3,value:"公司帐本"},
+						// 	{lable:3,value:"..."},
+						// 	{lable:3,value:"..."},
+						// ],
+						
+						
+					}
+					//将选中账本写入全局信息
+					//发起查询请求,查询该账本有关信息进行显示
 				}
 			})
 			
