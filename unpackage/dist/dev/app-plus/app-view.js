@@ -7112,22 +7112,54 @@ var render = function () {
                     [
                       _c(
                         "uni-view",
-                        { staticClass: _vm._$g(78, "sc"), attrs: { _i: 78 } },
+                        {
+                          staticClass: _vm._$g(78, "sc"),
+                          attrs: { _i: 78 },
+                          on: {
+                            click: function ($event) {
+                              return _vm.$handleViewEvent($event)
+                            },
+                          },
+                        },
                         [_vm._v("+")]
                       ),
                       _c(
                         "uni-view",
-                        { staticClass: _vm._$g(79, "sc"), attrs: { _i: 79 } },
+                        {
+                          staticClass: _vm._$g(79, "sc"),
+                          attrs: { _i: 79 },
+                          on: {
+                            click: function ($event) {
+                              return _vm.$handleViewEvent($event)
+                            },
+                          },
+                        },
                         [_vm._v("-")]
                       ),
                       _c(
                         "uni-view",
-                        { staticClass: _vm._$g(80, "sc"), attrs: { _i: 80 } },
+                        {
+                          staticClass: _vm._$g(80, "sc"),
+                          attrs: { _i: 80 },
+                          on: {
+                            click: function ($event) {
+                              return _vm.$handleViewEvent($event)
+                            },
+                          },
+                        },
                         [_vm._v("×")]
                       ),
                       _c(
                         "uni-view",
-                        { staticClass: _vm._$g(81, "sc"), attrs: { _i: 81 } },
+                        {
+                          staticClass: _vm._$g(81, "sc"),
+                          attrs: { _i: 81 },
+                          on: {
+                            click: function ($event) {
+                              return _vm.$handleViewEvent($event)
+                            },
+                          },
+                        },
                         [_vm._v("÷")]
                       ),
                     ],
@@ -9271,7 +9303,7 @@ if(false) {}
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ./node_modules/css-loader/dist/runtime/api.js */ 16);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/*每个页面公共css */\n          /*picker头部背景色 */\n.uni-picker-container .uni-picker-action.uni-picker-action-confirm{\n\tcolor: #FCC637;\n}\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/*每个页面公共css */\n          /*picker头部背景色 */\n.uni-picker-container .uni-picker-action.uni-picker-action-confirm{\n\tcolor: #FCC637;\n}\n\n", ""]);
 // Exports
 module.exports = exports;
 

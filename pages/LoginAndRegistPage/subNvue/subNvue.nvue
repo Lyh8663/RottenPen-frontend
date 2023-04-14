@@ -15,15 +15,12 @@
 				<!-- <view class="phone-icon">
 					<u-image :src="src"></u-image>
 				</view> -->
-				<input class="phone-text" type="text" placeholder="请输入手机号">
-				<view class="">
-					
-				</view>
+				<input class="phone-text" type="text" placeholder="请输入手机号" v-model="login_phone">
 			</view>
 			<view class="input-pwd">
-				<input class="pwd-text" type="safe-password" placeholder="请输入密码">
+				<input class="pwd-text" type="safe-password" placeholder="请输入密码" v-model="login_password">
 			</view>
-			<view class="btn">
+			<view class="btn" @click="login()">
 				<text class="login-text">
 					登录
 				</text>
@@ -117,6 +114,8 @@
 				regist_phone:'',
 				regist_code:'',
 				regist_password:'',
+				login_phone:'',
+				login_password:'',
 			}
 		},
 		methods: {
@@ -151,14 +150,51 @@
 					fail: () => {},
 					complete: () => {}
 				});
-
+			},
+			login(){
+				
+				var that = this;
+				//发起登录请求
+				uni.request({
+					url: getApp().globalData.envprefix + '/admin-api/system/auth/login',
+					method: 'POST',
+					header:{
+						'tenant-id':1
+					},
+					data: {
+						"captchaVerification": "",
+						"password": that.login_password,
+					    "username": that.login_phone
+					},
+					success: res => {
+						if(res.data.data.userId!=undefined){
+							//将userId传入全局变量
+							getApp().globalData.userId = res.data.data.userId;
+							//将token存入全局变量
+							getApp().globalData.accessToken = res.data.data.accessToken;
+							//提示登陆成功
+							uni.showToast({
+								icon:'none',
+								title:"登录成功"
+							})
+							//跳转到首页
+							uni.switchTab({
+								url:"/pages/HomePage/HomePage"
+							})
+						}
+					},
+				})
 			}
 		},
 		onLoad(){
-			this.screenHeight = uni.getSystemInfoSync().windowHeight;
-			this.screenwidth = uni.getSystemInfoSync().windowWidth;
+			//若用户已经登录，则不需要跳转到此页面
+			if(getApp().globalData.userId!="" && getApp().globalData.accessToken!=""){
+				console.log("用户已经登陆，userId：" + getApp().globalData.userId);
+				uni.switchTab({
+					url:"/pages/HomePage/HomePage"
+				})
+			}
 			
-
 		}
 	}
 </script>

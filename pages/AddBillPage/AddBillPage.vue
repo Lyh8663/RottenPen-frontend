@@ -39,7 +39,7 @@
 		</view>
 		
 		
-		<!--弹出窗设置-->
+		<!--日期弹出窗设置-->
 		<uni-popup :mask-click="false" ref="popup" background-color="#fff" @change="change">
 			<view>
 				<view class="popup-content" :class="{ 'popup-height': type === 'left' || type === 'right' }">
@@ -121,10 +121,10 @@
 						<image class="delete_button" src="../../static/delete.png" mode="widthFix"></image>
 					</view>
 					<view class="column_item flex_style flex_wrap zaiji jia_jian_cheng_chu">
-						<view class="accumulate">+</view>
-						<view class="accumulate">-</view>
-						<view class="accumulate">×</view>
-						<view class="accumulate">÷</view>
+						<view class="accumulate" @click="opClicked()">+</view>
+						<view class="accumulate" @click="opClicked()">-</view>
+						<view class="accumulate" @click="opClicked()">×</view>
+						<view class="accumulate" @click="opClicked()">÷</view>
 					</view>
 					<view class="column_item zaijiqvxiao" @click="uploadData()">确认</view>
 				</view>
@@ -176,7 +176,7 @@
 				buttonIndex:"0",
 				index:"0",
 				buttonList:[
-					{image:"../../static/else.png",text:"其他"},
+					
 					{image:"../../static/shoppingg.png",text:"购物消费"},
 					{image:"../../static/meal.png",text:"食品餐饮"},
 					{image:"../../static/entertainment.png",text:"娱乐休闲"},
@@ -186,7 +186,7 @@
 					{image:"../../static/gift.png",text:"送礼"},
 					{image:"../../static/healthy.png",text:"医疗健康"},
 					{image:"../../static/setting.png",text:"管理"},
-					
+					{image:"../../static/else.png",text:"其他"},
 				],
 				buttonElseList:[
 						{image:"",text:"",index:"10"},
@@ -271,6 +271,13 @@
 				}else{
 					//是否判断如果是支出类型，输出负值表示收入；反之亦然
 				}
+			},
+			//加减乘除被点击时
+			opClicked(){
+				uni.showToast({
+					title:"敬请期待",
+					icon:"none"
+				})
 			}
 		}
 	}

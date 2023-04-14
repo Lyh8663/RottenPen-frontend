@@ -189,9 +189,8 @@
 				}
 				
 			},
-			//isXiala=0时，表示还没有选中内容
-			//isXiala=1时，表示下拉菜单展开
-			//isXiala=2时，表示已经选中内容
+			//下拉列表操控
+			//0:表示还没有选中内容 1:表示下拉菜单展开 2:表示已经选中内容
 			selectXiala(){
 				// console.log("被点击了")
 				// console.log(this.isXiala)
@@ -206,6 +205,7 @@
 					console.log(this.isXiala)
 				}
 			},
+			//选中账本
 			xuanzeAccountBook(index,value){
 				// console.log("选中了" + index);
 				if(index==0){
@@ -213,11 +213,43 @@
 					uni.showToast({
 						title:"开始添加账本"
 					})
+					//发起添加账本的请求
 					return;
 				}
 				console.log("选中" + value);
 				this.optionType=value;
+				//发起查看账本内容的请求
 			}
+		},
+		onLoad(){
+			//后门，先设置好用户，对接内容
+			getApp().globalData.userId = "1646777091362164738";
+			getApp().globalData.accessToken = "49a67be53d4f4de5bd6088b2b43088a9"
+			
+			//判断，用户未登录，则跳转到登录页面要求用户登录
+			if(getApp().globalData.userId==""){
+				console.log("用户未登录，跳转到登录页面");
+				uni.navigateTo({
+					url:"/pages/LoginAndRegistPage/LoginAndRegistPage"
+				})
+				return;
+			}
+			console.log("用户已登录，userId为" + getApp().globalData.userId=="")
+			
+			
+			//发起请求，获取信息
+			//获取所有账本信息
+			uni.request({
+				url: getApp().globalData.envprefix + '/admin-api/lbt/account-book/list',
+				header:{
+					"tenant-id":1,
+					"Authorization": 'Bearer ' + getApp().globalData.accessToken
+				},
+				success(res) {
+					
+				}
+			})
+			
 		}
 	}
 	
