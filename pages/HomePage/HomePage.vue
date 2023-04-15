@@ -131,7 +131,7 @@
 				</view> -->
 				<view class="bill_none_info" @click="toAddBill()" v-if="bill.billInfoList==''">
 					<!-- <image class="bill_type_image" src=""></image> -->
-					<view class="bill_none_title">今天还没有记账信息,</view>
+					<view class="bill_none_title">这天还没有记账信息,</view>
 					<view class="bill_none_addbill">去添加吧！</view>
 					<image class="bill_none_image" src="../../static/qianbi.png"></image>
 				</view>
@@ -531,17 +531,18 @@
 				// console.log(this.isXiala)
 				if(this.isXiala==0){
 					this.isXiala=1
-					console.log(this.isXiala)
+					// console.log(this.isXiala)
 				}else if(this.isXiala==1){
 					this.isXiala=2
-					console.log(this.isXiala)
+					// console.log(this.isXiala)
 				}else if(this.isXiala==2){
 					this.isXiala=1
-					console.log(this.isXiala)
+					// console.log(this.isXiala)
 				}
 			},
 			//选中账本
 			xuanzeAccountBook(index,value,id){
+				var that = this;
 				// console.log("选中了" + index);
 				if(index==0){
 					console.log("选中添加账本");
@@ -557,8 +558,294 @@
 					return;
 				}
 				console.log("选中" + value);
-				this.optionType=value;
-				//发起查看账本内容的请求,并把账本id写入全局变量
+				this.optionType=value;//修改首页显示的账本
+				
+				//把账本id写入全局变量
+				getApp().globalData.accountBookId = id;
+				console.log("切换账本成功,当前为" + getApp().globalData.accountBookId);
+				
+				//发起查看账本内容的请求
+				
+				//查看收入,支出,结余
+				uni.request({
+					// url:getApp().globalData.envprefix + '/admin-api/lbt/extends/data/inout/monthly',
+					url:getApp().globalData.envprefix + '/admin-api/lbt/extends/data/overview/monthly',
+					method:'GET',
+					header:{
+						'tenant-id': 1,
+						'Authorization':'Bearer ' + getApp().globalData.accessToken
+					},
+					data:{
+						'accountBookId': getApp().globalData.accountBookId,
+						// 'beginTime':that.getMonthBeginAndEnd()[0],
+						// 'endTime':that.getMonthBeginAndEnd()[1]
+						'month':that.getYearAndMonth()[1],
+						'year':that.getYearAndMonth()[0]
+					},
+					success(res) {
+						if(res.data.code==200){
+							console.log("收入，支出，结余已获取");
+							that.monthlyIncome = Number(res.data.data.income);
+							that.monthlyOutcome =  - Number(res.data.data.outcome);//支出后台给的数据是18
+							that.monthlyRemain = Number(res.data.data.left);
+						}
+						else{
+							console.log("收入，支出，结余获取错误:" + res.data.code);
+						}
+					}
+				})
+				
+				//查看记账
+				uni.request({//第一天
+					url:getApp().globalData.envprefix + "/admin-api/lbt/extends/data/bill/calendar",
+					method:'GET',
+					header:{
+						"tenant-id":1,
+						"Authorization":"Bearer " + getApp().globalData.accessToken
+					},
+					data:{
+						'accountBookId': getApp().globalData.accountBookId,
+						'day':that.getAnyDate(0)[2] + "," + that.getAnyDate(0)[2],
+						'month':that.getAnyDate(0)[1],
+						'year':that.getYearAndMonth(0)[0]
+					},
+					success(res){
+						that.billTotalList = [];
+						console.log("已清空列表");
+						//日期需拼凑
+						var b_date = that.getAnyDate(0)[1] + "月" + that.getAnyDate(0)[2] + "日";
+						var b_weekday = that.getAnyDate(0)[3];//1~6的形式
+						switch(b_weekday){
+							case 1:
+								b_weekday = "周一";
+								break;
+							case 2:
+								b_weekday = "周二";
+								break;
+							case 3:
+								b_weekday = "周三";
+								break;
+							case 4:
+								b_weekday = "周四";
+								break;
+							case 5:
+								b_weekday = "周五";
+								break;
+							case 6:
+								b_weekday = "周六";
+								break;
+							case 0:
+								b_weekday = "周日";
+								break;	
+						}
+						var b_in = res.data.data.income;
+						var b_ex = res.data.data.outcome;
+						var b_billInfoList = res.data.data.billExtendsBaseVOList;
+						//还需要对账单列表进行处理
+						if(b_billInfoList!=''){//非空时,加入账单image
+							var tempBillList = [];
+							for(var i = 0;i<b_billInfoList.length;i++){//查找所有list中的元素
+								var tempBillInfo = {
+									"image":"../../static/diet.png",//目前先将所有内容都设置为此图片
+									"billId":b_billInfoList[i].billId,
+									"year":b_billInfoList[i].year,
+									"month":b_billInfoList[i].month,
+									"day":b_billInfoList[i].day,
+									"accountBookId": b_billInfoList[i].accountBookId,
+									"fundId": b_billInfoList[i].fundId,
+									"fundName": b_billInfoList[i].fundName,
+									"money": b_billInfoList[i].money,
+									"appendixImgUrl": b_billInfoList[i].appendixImgUrl,
+									"tagId": b_billInfoList[i].tagId,
+									"tagName": b_billInfoList[i].tagName,
+									"notes": b_billInfoList[i].notes,
+									"enumType": b_billInfoList[i].enumType,
+									"enumWay": b_billInfoList[i].enumWay,
+									"enumInout": b_billInfoList[i].enumInout,
+									"enumBudget": b_billInfoList[i].enumBudget,
+									"enumRefund": b_billInfoList[i].enumRefund
+								}
+								tempBillList.push(tempBillInfo);
+							}
+							b_billInfoList = tempBillList;//此时的b_billInfoList即,加入了图片字段的元素列表
+						}
+						var b_thisday = {
+							date:b_date,
+							weekday:b_weekday,
+							in:b_in,
+							ex:b_ex,
+							billInfoList:b_billInfoList
+						}
+						console.log(b_date + "数据已获取");
+						that.billTotalList.push(b_thisday);
+						
+						uni.request({//前一天，即昨天
+							url:getApp().globalData.envprefix + "/admin-api/lbt/extends/data/bill/calendar",
+							method:'GET',
+							header:{
+								'tenant-id': 1,
+								'Authorization':'Bearer ' + getApp().globalData.accessToken
+							},
+							data:{
+								accountBookId: getApp().globalData.accountBookId,
+								'day':that.getAnyDate(-1)[2] + "," + that.getAnyDate(-1)[2],
+								'month':that.getAnyDate(-1)[1],
+								'year':that.getYearAndMonth(-1)[0]
+							},
+							success(res) {
+								//日期需拼凑
+								var b_date = that.getAnyDate(-1)[1] + "月" + that.getAnyDate(-1)[2] + "日";
+								var b_weekday = that.getAnyDate(-1)[3];//1~6的形式
+								switch(b_weekday){
+									case 1:
+										b_weekday = "周一";
+										break;
+									case 2:
+										b_weekday = "周二";
+										break;
+									case 3:
+										b_weekday = "周三";
+										break;
+									case 4:
+										b_weekday = "周四";
+										break;
+									case 5:
+										b_weekday = "周五";
+										break;
+									case 6:
+										b_weekday = "周六";
+										break;
+									case 0:
+										b_weekday = "周日";
+										break;	
+								}
+								var b_in = res.data.data.income;
+								var b_ex = res.data.data.outcome;
+								var b_billInfoList = res.data.data.billExtendsBaseVOList;
+								//还需要对账单列表进行处理
+								if(b_billInfoList!=''){//非空时,加入账单image
+									var tempBillList = [];
+									for(var i = 0;i<b_billInfoList.length;i++){//查找所有list中的元素
+										var tempBillInfo = {
+											"image":"../../static/diet.png",//目前先将所有内容都设置为此图片
+											"billId":b_billInfoList[i].billId,
+											"year":b_billInfoList[i].year,
+											"month":b_billInfoList[i].month,
+											"day":b_billInfoList[i].day,
+											"accountBookId": b_billInfoList[i].accountBookId,
+											"fundId": b_billInfoList[i].fundId,
+											"fundName": b_billInfoList[i].fundName,
+											"money": b_billInfoList[i].money,
+											"appendixImgUrl": b_billInfoList[i].appendixImgUrl,
+											"tagId": b_billInfoList[i].tagId,
+											"tagName": b_billInfoList[i].tagName,
+											"notes": b_billInfoList[i].notes,
+											"enumType": b_billInfoList[i].enumType,
+											"enumWay": b_billInfoList[i].enumWay,
+											"enumInout": b_billInfoList[i].enumInout,
+											"enumBudget": b_billInfoList[i].enumBudget,
+											"enumRefund": b_billInfoList[i].enumRefund
+										}
+										tempBillList.push(tempBillInfo);
+									}
+									b_billInfoList = tempBillList;//此时的b_billInfoList即,加入了图片字段的元素列表
+								}
+								var b_thisday = {
+									date:b_date,
+									weekday:b_weekday,
+									in:b_in,
+									ex:b_ex,
+									billInfoList:b_billInfoList
+								}
+								console.log(b_date + "数据已获取");
+								that.billTotalList.push(b_thisday);
+								
+								uni.request({//两天前，即前天
+									url:getApp().globalData.envprefix + "/admin-api/lbt/extends/data/bill/calendar",
+									method:'GET',
+									header:{
+										'tenant-id': 1,
+										'Authorization':'Bearer ' + getApp().globalData.accessToken
+									},
+									data:{
+										accountBookId: getApp().globalData.accountBookId,
+										'day':that.getAnyDate(-2)[2] + "," + that.getAnyDate(-2)[2],
+										'month':that.getAnyDate(-2)[1],
+										'year':that.getYearAndMonth(-2)[0]
+									},
+									success(res) {
+										//日期需拼凑
+										var b_date = that.getAnyDate(-2)[1] + "月" + that.getAnyDate(-2)[2] + "日";
+										var b_weekday = that.getAnyDate(-2)[3];//1~6的形式
+										switch(b_weekday){
+											case 1:
+												b_weekday = "周一";
+												break;
+											case 2:
+												b_weekday = "周二";
+												break;
+											case 3:
+												b_weekday = "周三";
+												break;
+											case 4:
+												b_weekday = "周四";
+												break;
+											case 5:
+												b_weekday = "周五";
+												break;
+											case 6:
+												b_weekday = "周六";
+												break;
+											case 0:
+												b_weekday = "周日";
+												break;	
+										}
+										var b_in = res.data.data.income;
+										var b_ex = res.data.data.outcome;
+										var b_billInfoList = res.data.data.billExtendsBaseVOList;
+										//还需要对账单列表进行处理
+										if(b_billInfoList!=''){//非空时,加入账单image
+											var tempBillList = [];
+											for(var i = 0;i<b_billInfoList.length;i++){//查找所有list中的元素
+												var tempBillInfo = {
+													"image":"../../static/diet.png",//目前先将所有内容都设置为此图片
+													"billId":b_billInfoList[i].billId,
+													"year":b_billInfoList[i].year,
+													"month":b_billInfoList[i].month,
+													"day":b_billInfoList[i].day,
+													"accountBookId": b_billInfoList[i].accountBookId,
+													"fundId": b_billInfoList[i].fundId,
+													"fundName": b_billInfoList[i].fundName,
+													"money": b_billInfoList[i].money,
+													"appendixImgUrl": b_billInfoList[i].appendixImgUrl,
+													"tagId": b_billInfoList[i].tagId,
+													"tagName": b_billInfoList[i].tagName,
+													"notes": b_billInfoList[i].notes,
+													"enumType": b_billInfoList[i].enumType,
+													"enumWay": b_billInfoList[i].enumWay,
+													"enumInout": b_billInfoList[i].enumInout,
+													"enumBudget": b_billInfoList[i].enumBudget,
+													"enumRefund": b_billInfoList[i].enumRefund
+												}
+												tempBillList.push(tempBillInfo);
+											}
+											b_billInfoList = tempBillList;//此时的b_billInfoList即,加入了图片字段的元素列表
+										}
+										var b_thisday = {
+											date:b_date,
+											weekday:b_weekday,
+											in:b_in,
+											ex:b_ex,
+											billInfoList:b_billInfoList
+										}
+										console.log(b_date + "数据已获取");
+										that.billTotalList.push(b_thisday);
+									}
+								})
+							}
+						})
+					}
+				})
 			},
 			//日期获取方法
 			getMonthBeginAndEnd(){

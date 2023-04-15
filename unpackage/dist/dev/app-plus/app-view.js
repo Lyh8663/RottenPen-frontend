@@ -961,7 +961,7 @@ var render = function () {
                             staticClass: _vm._$g("76-" + $31, "sc"),
                             attrs: { _i: "76-" + $31 },
                           },
-                          [_vm._v("今天还没有记账信息,")]
+                          [_vm._v("这天还没有记账信息,")]
                         ),
                         _c(
                           "uni-view",
