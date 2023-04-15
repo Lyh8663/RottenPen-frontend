@@ -743,7 +743,7 @@
 								case 6:
 									b_weekday = "周六";
 									break;
-								case 7:
+								case 0:
 									b_weekday = "周日";
 									break;	
 							}
@@ -824,7 +824,7 @@
 										case 6:
 											b_weekday = "周六";
 											break;
-										case 7:
+										case 0:
 											b_weekday = "周日";
 											break;	
 									}
@@ -905,7 +905,7 @@
 												case 6:
 													b_weekday = "周六";
 													break;
-												case 7:
+												case 0:
 													b_weekday = "周日";
 													break;	
 											}
