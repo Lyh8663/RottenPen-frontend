@@ -11,13 +11,14 @@
 		</view>
 		<!-- 大类型选择 -->
 		<view>
-			<view class="button_area">
+			<view class="button_area" v-if="this.choosedIndex==0">
 				<view class="button_item" v-for="(item,it) in buttonList" :key="it" @click="changeButton(it,item)">
 					<image :src="item.image" :class='buttonIndex==it? "active_button_image":"button_image"'></image>
 					<view :class='buttonIndex==it? "active_button_text":"button_text"'>{{item.text}}</view>
 				</view>
 			</view>
 		</view>
+		
 		<!-- 小类型选择 -->
 		<!-- <view class="button_area0">
 			<view class="button_item" v-for="(item,index) in this.subButtonList">
@@ -28,6 +29,15 @@
 			</view>
 		</view> -->
 		
+		<!-- 大类型选择 -->
+		<view>
+			<view class="button_area" v-if="this.choosedIndex==1">
+				<view class="button_item" v-for="(item,it) in buttonList" :key="it" @click="changeButton(it,item)">
+					<image :src="item.image" :class='buttonIndex==it? "active_button_image":"button_image"'></image>
+					<view :class='buttonIndex==it? "active_button_text":"button_text"'>{{item.text}}</view>
+				</view>
+			</view>
+		</view>
 		
 		<!--日期弹出窗设置-->
 		<uni-popup :mask-click="false" ref="popup_calender" background-color="#fff" @change="change">
@@ -429,8 +439,17 @@
 			},
 			//返回按钮点击函数
 			returnBack(){
-				uni.navigateBack({
-					delta:1,
+				// var pages = getCurrentPages();//获取页面列表
+				// var Page = pages[pages.length-1];//获取当前页面
+				// var prePage = pages[pages.length-2];//获取上一个页面
+				// uni.navigateBack({//返回上一个页面
+				// 	delta:1,
+				// 	success:(event)=>{//刷新页面的方法
+				// 		prePage.$vm.reload();
+				// 	}
+				// })
+				uni.switchTab({
+					url:"/pages/HomePage/HomePage"
 				})
 			},
 			//打开日历弹窗
@@ -501,7 +520,7 @@
 					})
 					return;
 				}
-				if(!isNum(this.stringInput)){//判断是否为数字
+				if(!this.isNum(this.stringInput)){//判断是否为数字
 					uni.showToast({
 						title:"请输入有效金额！",
 						icon:"none",
@@ -568,6 +587,10 @@
 								return;
 							}
 							console.log("新增记账信息成功");
+							uni.showToast({
+								icon:'none',
+								title:"记录成功"
+							})
 						}
 					})
 				}else if(this.choosedIndex==1){//请求收入
