@@ -32,7 +32,7 @@
 		<!-- 大类型选择 -->
 		<view>
 			<view class="button_area" v-if="this.choosedIndex==1">
-				<view class="button_item" v-for="(item,it) in buttonList" :key="it" @click="changeButton(it,item)">
+				<view class="button_item" v-for="(item,it) in buttonList2" :key="it" @click="changeButton(it,item)">
 					<image :src="item.image" :class='buttonIndex==it? "active_button_image":"button_image"'></image>
 					<view :class='buttonIndex==it? "active_button_text":"button_text"'>{{item.text}}</view>
 				</view>
@@ -101,7 +101,7 @@
 				<view class="remarks_view">
 					<input placeholder-style="color:#808080;font-size:14px" placeholder="添加备注(不超过50字)" maxlength="50" v-model="inputNotes"/>
 				</view>
-				<view class="number_display">￥{{stringInput}}</view>
+				<view :class="['number_display',this.choosedIndex==0?'redMoney':'greenMoney']">￥{{stringInput}}</view>
 			</view>
 			<!-- 选择日期 -->
 			<view class="choose_view flex_style">
@@ -241,7 +241,7 @@
 				choosedIndex:"0",
 				buttonIndex:"0",
 				index:"0",
-				//大类型列表
+				//支出的大类型列表
 				buttonList:[
 					{image:"../../static/tag/gouwuxiaofei.png",text:"购物消费"},
 					{image:"../../static/tag/shipin.png",text:"食品餐饮"},
@@ -251,6 +251,19 @@
 					{image:"../../static/tag/wenhuajiaoyu.png",text:"文化教育"},
 					{image:"../../static/tag/songli.png",text:"送礼"},
 					{image:"../../static/tag/tingzhenqi.png",text:"医疗健康"},
+					{image:"../../static/tag/qita.png",text:"其他"},
+					{image:"../../static/tag/setting.png",text:"管理"},
+				],
+				//收入的大类型列表
+				buttonList2:[
+					{image:"../../static/tag/gongzi.png",text:"工资"},
+					{image:"../../static/tag/jieru.png",text:"借钱"},
+					{image:"../../static/tag/zhongjiang.png",text:"中奖"},
+					{image:"../../static/tag/butie.png",text:"补贴"},
+					{image:"../../static/tag/lijin.png",text:"礼金"},
+					{image:"../../static/tag/jianzhi.png",text:"兼职"},
+					{image:"../../static/tag/jiangjin.png",text:"奖金"},
+					{image:"../../static/tag/baoxiao.png",text:"报销"},
 					{image:"../../static/tag/qita.png",text:"其他"},
 					{image:"../../static/tag/setting.png",text:"管理"},
 				],
@@ -428,14 +441,13 @@
 			},
 			//改变序号,呈现按钮选中状态
 			changeButton(it,item){
-				
 				if(item.text=="管理"){
 					//前往管理标签的页面
 					
 					return;
 				}
-				this.buttonIndex = it;
-				this.tagchosen = item.text;
+				this.buttonIndex = it; //修改button的index,使之变色
+				this.tagchosen = item.text; //改变字段,使其显示
 			},
 			//返回按钮点击函数
 			returnBack(){
@@ -544,7 +556,6 @@
 					
 					//2.获取fundId
 					
-				
 					uni.request({
 						url:getApp().globalData.envprefix + "/admin-api/lbt/extends/bill/create",
 						method:'POST',
@@ -594,6 +605,71 @@
 						}
 					})
 				}else if(this.choosedIndex==1){//请求收入
+					
+					//发起收入登记的请求
+					
+					//先获取参数
+					console.log(that.incometags[0].text);
+					
+					//1.获取tagId
+					var tagTitle = this.tagchosen;
+					var tagId = 0;
+					for(var i = 0;i<this.incometags.length;i++){
+						if(this.incometags[i].text==tagTitle){
+							tagId = this.incometags[i].id;
+						}
+					}
+					
+					//2.获取fundId
+					
+					uni.request({
+						url:getApp().globalData.envprefix + "/admin-api/lbt/extends/bill/create",
+						method:'POST',
+						header:{
+							"tenant-id":1,
+							"Authorization": 'Bearer ' + getApp().globalData.accessToken
+						},
+						data:{
+							"enumType":0,
+							"tagId":tagId,
+							"year": that.billYear,
+							"notes": that.inputNotes,
+							"enumBudget": 1,
+							"enumWay": null,
+							"day": that.billDate,
+							"fundId":that.fundId,
+							"accountBookId": getApp().globalData.accountBookId,
+							"money": Number(that.stringInput),
+							"enumRefund":null,
+							"enumInout": 1,
+							"month":Number(that.billMonth),
+							"appendixImgUrl": that.appendix
+						},
+						success(res) {
+							console.log("tagId " + tagId);
+							console.log("year " + that.billYear);
+							console.log("notes " + that.inputNotes);
+							console.log("day " + that.billDate);
+							console.log("fundId " + that.fundId);
+							console.log("accountBookId " + getApp().globalData.accountBookId);
+							console.log("money " + Number(that.stringInput));
+							console.log("month " + that.billMonth);
+							console.log("appendixImgUrl " + that.appendix)
+							if(res.data.code!=200){
+								console.log("新增记账信息失败");
+								uni.showToast({
+									icon:'none',
+									title:"新增记账信息失败"
+								})
+								return;
+							}
+							console.log("新增记账信息成功");
+							uni.showToast({
+								icon:'none',
+								title:"记录成功"
+							})
+						}
+					})
 					
 				}else{//转账
 					
@@ -1019,5 +1095,11 @@
 		font-weight: 600;
 		color: white;
 		background-color: #072750FF;
+	}
+	.redMoney{
+		color: red;
+	}
+	.greenMoney{
+		color: green;
 	}
 </style>
