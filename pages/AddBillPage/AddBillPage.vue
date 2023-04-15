@@ -480,11 +480,28 @@
 				// open 方法传入参数 等同在 uni-popup 组件上绑定 type属性
 				this.$refs.popup_fund.open(type);
 			},
+			//校验是否为数字的方法（正负整数，正负浮点数以及0）,是数字则返回true
+			isNum(val){
+				var regPos = /^[0-9]+.?[0-9]*/;
+				if(regPos.test(val) ){
+				    return true;
+				}else{
+			        return false;
+			    }
+			},
 			//记账确认按钮，判断numberInput是否为0
 			uploadData(){
 				var that = this;
 				
 				if(this.stringInput=="0.00"){//金额默认值判断
+					uni.showToast({
+						title:"请输入有效金额！",
+						icon:"none",
+						duration:2000
+					})
+					return;
+				}
+				if(!isNum(this.stringInput)){//判断是否为数字
 					uni.showToast({
 						title:"请输入有效金额！",
 						icon:"none",
