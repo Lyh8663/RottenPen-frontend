@@ -123,7 +123,7 @@
 				<view class="bill_info" v-for="(info,i) in bill.billInfoList" :key="i" @click="toBillDetail(info)" v-if="bill.billInfoList!=''">
 					<image class="bill_type_image" :src="info.image"></image>
 					<view class="bill_type_text">{{info.tagName}}</view>
-					<view class="bill_info_detail">{{info.money}}</view>
+					<view class="bill_info_detail">￥ {{info.money}}</view>
 				</view>
 				<!-- 判断是否为空 -->
 				<!-- <view class="">
@@ -558,7 +558,7 @@
 				}
 				console.log("选中" + value);
 				this.optionType=value;
-				//发起查看账本内容的请求
+				//发起查看账本内容的请求,并把账本id写入全局变量
 			},
 			//日期获取方法
 			getMonthBeginAndEnd(){
