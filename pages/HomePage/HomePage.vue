@@ -485,16 +485,13 @@
 			},
 			//跳转到账单详情页面
 			toBillDetail(billInfo){
-				console.log("正在前往账单详情");
-				//将账单内容存至本地,点击时发起请求
-				getApp().globalData.billInfo = billInfo;
-				console.log("已将账单信息存入" + billInfo);
-				uni.showToast({
-					icon:'none',
-					title:"正在前往账单详情"
-				})
 				uni.navigateTo({
 					url:"../BillDetail/BillDetail",
+					success() {
+						console.log("正在前往账单详情");
+						getApp().globalData.billInfo = billInfo;
+						console.log("已将账单信息存入" + billInfo);
+					}
 				})
 			},
 			//悬浮框点击展开

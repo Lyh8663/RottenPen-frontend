@@ -8247,10 +8247,10 @@ var render = function () {
             attrs: { src: _vm._$g(6, "a-src"), _i: 6 },
           }),
           _c("uni-view", { staticClass: _vm._$g(7, "sc"), attrs: { _i: 7 } }, [
-            _vm._v("收入-工资"),
+            _vm._v(_vm._$g(7, "t0-0")),
           ]),
           _c("uni-view", { staticClass: _vm._$g(8, "sc"), attrs: { _i: 8 } }, [
-            _vm._v("￥6000.00"),
+            _vm._v(_vm._$g(8, "t0-0")),
           ]),
         ],
         1
@@ -8267,7 +8267,7 @@ var render = function () {
           _c(
             "uni-view",
             { staticClass: _vm._$g(11, "sc"), attrs: { _i: 11 } },
-            [_vm._v("2023年03月15日21:36")]
+            [_vm._v(_vm._$g(11, "t0-0"))]
           ),
         ],
         1
@@ -8284,7 +8284,7 @@ var render = function () {
           _c(
             "uni-view",
             { staticClass: _vm._$g(14, "sc"), attrs: { _i: 14 } },
-            [_vm._v("无")]
+            [_vm._v(_vm._$g(14, "t0-0"))]
           ),
         ],
         1
@@ -8301,7 +8301,7 @@ var render = function () {
           _c(
             "uni-view",
             { staticClass: _vm._$g(17, "sc"), attrs: { _i: 17 } },
-            [_vm._v("无")]
+            [_vm._v(_vm._$g(17, "t0-0"))]
           ),
         ],
         1
@@ -8318,7 +8318,7 @@ var render = function () {
           _c(
             "uni-view",
             { staticClass: _vm._$g(20, "sc"), attrs: { _i: 20 } },
-            [_vm._v("无")]
+            [_vm._v(_vm._$g(20, "t0-0"))]
           ),
         ],
         1
@@ -8335,7 +8335,7 @@ var render = function () {
           _c(
             "uni-view",
             { staticClass: _vm._$g(23, "sc"), attrs: { _i: 23 } },
-            [_vm._v("手动录入")]
+            [_vm._v(_vm._$g(23, "t0-0"))]
           ),
         ],
         1
@@ -8352,7 +8352,7 @@ var render = function () {
           _c(
             "uni-view",
             { staticClass: _vm._$g(26, "sc"), attrs: { _i: 26 } },
-            [_vm._v("无")]
+            [_vm._v(_vm._$g(26, "t0-0"))]
           ),
         ],
         1
@@ -8369,7 +8369,7 @@ var render = function () {
           _c(
             "uni-view",
             { staticClass: _vm._$g(29, "sc"), attrs: { _i: 29 } },
-            [_vm._v("无")]
+            [_vm._v(_vm._$g(29, "t0-0"))]
           ),
         ],
         1
