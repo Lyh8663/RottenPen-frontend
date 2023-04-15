@@ -123,7 +123,7 @@
 				<view class="bill_info" v-for="(info,i) in bill.billInfoList" :key="i" @click="toBillDetail(info)" v-if="bill.billInfoList!=''">
 					<image class="bill_type_image" :src="info.image"></image>
 					<view class="bill_type_text">{{info.tagName}}</view>
-					<view class="bill_info_detail">￥ {{info.money}}</view>
+					<view :class="['bill_info_detail',info.enumType==0?'greenMoney':'redMoney']">￥ {{info.money}}</view>
 				</view>
 				<!-- 判断是否为空 -->
 				<!-- <view class="">
@@ -1605,5 +1605,11 @@
 		/* background-color: aquamarine; */
 		border-top: #072750FF solid 1px;
 		color: #072750FF;
+	}
+	.redMoney{
+		color: #FF5733FF;
+	}
+	.greenMoney{
+		color: #43CF7CFF;
 	}
 </style>

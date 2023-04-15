@@ -1097,9 +1097,9 @@
 		background-color: #072750FF;
 	}
 	.redMoney{
-		color: red;
+		color: #FF5733FF;
 	}
 	.greenMoney{
-		color: green;
+		color: #43CF7CFF;
 	}
 </style>
