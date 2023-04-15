@@ -1,6 +1,7 @@
 <template>
 	<view class="container">
 		<view style="height:var(--status-bar-height);width: 100%;"></view>
+		<view style="height:var(--status-bar-height);width: 100%; position: fixed; background-color: #F6F6F6; z-index: 999;top:0"></view>
 		<view class="topbar">
 			<!-- 账本内容 -->
 			<view class="topbar_view">
@@ -43,6 +44,7 @@
 				<image class="more" src="../../static/more.png"></image>
 			</view>		
 		</view>
+		
 		<view>
 			<!-- 输入框示例 -->
 			<uni-popup ref="inputDialog1" type="dialog">
@@ -100,8 +102,10 @@
 					placeholder="请输入内容" @confirm="budgetConfirm"></uni-popup-dialog>
 			</uni-popup>
 		</view>
+		<!-- 渲染帐单列表 -->
 		<view class="bill">
-			<view class="day_bill" v-for="(bill,b) in billTotalList" :key="b">
+			<!-- {{this.billTotalList.length}} -->
+			<view class="day_bill" v-for="(bill,b) in this.billTotalList" :key="b">
 				<view class="bill_title">
 					<view class="date">{{bill.date}}</view>
 					<view class="weeekday">{{bill.weekday}}</view>
@@ -116,13 +120,27 @@
 						</view>
 					</view>
 				</view>
-				<view class="bill_info" v-for="(info,i) in bill.billInfoList" :key="i" @click="toBillDetail()">
+				<view class="bill_info" v-for="(info,i) in bill.billInfoList" :key="i" @click="toBillDetail(info)" v-if="bill.billInfoList!=''">
 					<image class="bill_type_image" :src="info.image"></image>
 					<view class="bill_type_text">{{info.tagName}}</view>
 					<view class="bill_info_detail">{{info.money}}</view>
 				</view>
-			</view>		
+				<!-- 判断是否为空 -->
+				<!-- <view class="">
+					{{bill.billInfoList==''?'1':'2'}}
+				</view> -->
+				<view class="bill_none_info" @click="toAddBill()" v-if="bill.billInfoList==''">
+					<!-- <image class="bill_type_image" src=""></image> -->
+					<view class="bill_none_title">今天还没有记账信息,</view>
+					<view class="bill_none_addbill">去添加吧！</view>
+					<image class="bill_none_image" src="../../static/qianbi.png"></image>
+				</view>
+			</view>	
+			<view class="bottom-text">
+				更多信息请点击右上角查询按钮查看
+			</view>
 		</view>
+		
 		<uni-fab  ref="fab" :pattern="pattern" :content="content" 
 						 @trigger="trigger" horizontal="right" />
 						 
@@ -182,200 +200,36 @@
 					active: true
 					}
 				],
-				// billList:[
-				// 	{date:"03月01日",weekday:"周一",in:"23.89",ex:"3.00"},
-				// 	{date:"03月01日",weekday:"周一",in:"23.89",ex:"3.00"},
-				// 	{date:"03月01日",weekday:"周一",in:"23.89",ex:"3.00"},
-				// ],
-				// billInfoList:[
-				// 	{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
-				// 	{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
-				// 	{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
-				// 	{image:"../../static/diet.png",type:"食品餐饮-请客吃饭",money:"-10.00"},
-				// ],
 				//往前加载3天的数据
 				loadDailyInfo:3,
 				//账单二维数组,存放所有数据
-				billTotalList:[
-					{
-						date:"03月01日",
-						weekday:"周一",
-						in:"23.89",
-						ex:"3.00",
-						billInfoList:[
-							{
-								"image":"../../static/diet.png",
-							    "accountBookId": "1646779958060707842",
-							    "fundId": "1646782468737527809",
-							    "fundName": "微信零钱",
-							    "money": 81.400000,
-							    "appendixImgUrl": "http://47.100.211.157/img/result_449.jpg",
-							    "tagId": "1646785618353647618",
-							    "tagName": "商场购物",
-							    "notes": null,
-							    "enumType": 1,
-							    "enumWay": null,
-							    "enumInout": 1,
-							    "enumBudget": 1,
-							    "enumRefund": null
-							},
-							{
-								"image":"../../static/diet.png",
-							    "accountBookId": "1646779958060707842",
-							    "fundId": "1646782468737527809",
-							    "fundName": "微信零钱",
-							    "money": 81.400000,
-							    "appendixImgUrl": "http://47.100.211.157/img/result_449.jpg",
-							    "tagId": "1646785618353647618",
-							    "tagName": "商场购物",
-							    "notes": null,
-							    "enumType": 1,
-							    "enumWay": null,
-							    "enumInout": 1,
-							    "enumBudget": 1,
-							    "enumRefund": null
-							},{
-								"image":"../../static/diet.png",
-							    "accountBookId": "1646779958060707842",
-							    "fundId": "1646782468737527809",
-							    "fundName": "微信零钱",
-							    "money": 81.400000,
-							    "appendixImgUrl": "http://47.100.211.157/img/result_449.jpg",
-							    "tagId": "1646785618353647618",
-							    "tagName": "商场购物",
-							    "notes": null,
-							    "enumType": 1,
-							    "enumWay": null,
-							    "enumInout": 1,
-							    "enumBudget": 1,
-							    "enumRefund": null
-							}
-						]
-					},
-					{
-						date:"03月01日",
-						weekday:"周一",
-						in:"23.89",
-						ex:"3.00",
-						billInfoList:[
-							{
-								"image":"../../static/diet.png",
-							    "accountBookId": "1646779958060707842",
-							    "fundId": "1646782468737527809",
-							    "fundName": "微信零钱",
-							    "money": 81.400000,
-							    "appendixImgUrl": "http://47.100.211.157/img/result_449.jpg",
-							    "tagId": "1646785618353647618",
-							    "tagName": "商场购物",
-							    "notes": null,
-							    "enumType": 1,
-							    "enumWay": null,
-							    "enumInout": 1,
-							    "enumBudget": 1,
-							    "enumRefund": null
-							},{
-								"image":"../../static/diet.png",
-							    "accountBookId": "1646779958060707842",
-							    "fundId": "1646782468737527809",
-							    "fundName": "微信零钱",
-							    "money": 81.400000,
-							    "appendixImgUrl": "http://47.100.211.157/img/result_449.jpg",
-							    "tagId": "1646785618353647618",
-							    "tagName": "商场购物",
-							    "notes": null,
-							    "enumType": 1,
-							    "enumWay": null,
-							    "enumInout": 1,
-							    "enumBudget": 1,
-							    "enumRefund": null
-							},{
-								"image":"../../static/diet.png",
-							    "accountBookId": "1646779958060707842",
-							    "fundId": "1646782468737527809",
-							    "fundName": "微信零钱",
-							    "money": 81.400000,
-							    "appendixImgUrl": "http://47.100.211.157/img/result_449.jpg",
-							    "tagId": "1646785618353647618",
-							    "tagName": "商场购物",
-							    "notes": null,
-							    "enumType": 1,
-							    "enumWay": null,
-							    "enumInout": 1,
-							    "enumBudget": 1,
-							    "enumRefund": null
-							},{
-								"image":"../../static/diet.png",
-							    "accountBookId": "1646779958060707842",
-							    "fundId": "1646782468737527809",
-							    "fundName": "微信零钱",
-							    "money": 81.400000,
-							    "appendixImgUrl": "http://47.100.211.157/img/result_449.jpg",
-							    "tagId": "1646785618353647618",
-							    "tagName": "商场购物",
-							    "notes": null,
-							    "enumType": 1,
-							    "enumWay": null,
-							    "enumInout": 1,
-							    "enumBudget": 1,
-							    "enumRefund": null
-							}
-						]
-					},
-					{
-						date:"03月01日",
-						weekday:"周一",
-						in:"23.89",
-						ex:"3.00",
-						billInfoList:[
-							{
-								"image":"../../static/diet.png",
-							    "accountBookId": "1646779958060707842",
-							    "fundId": "1646782468737527809",
-							    "fundName": "微信零钱",
-							    "money": 81.400000,
-							    "appendixImgUrl": "http://47.100.211.157/img/result_449.jpg",
-							    "tagId": "1646785618353647618",
-							    "tagName": "商场购物",
-							    "notes": null,
-							    "enumType": 1,
-							    "enumWay": null,
-							    "enumInout": 1,
-							    "enumBudget": 1,
-							    "enumRefund": null
-							},{
-								"image":"../../static/diet.png",
-							    "accountBookId": "1646779958060707842",
-							    "fundId": "1646782468737527809",
-							    "fundName": "微信零钱",
-							    "money": 81.400000,
-							    "appendixImgUrl": "http://47.100.211.157/img/result_449.jpg",
-							    "tagId": "1646785618353647618",
-							    "tagName": "商场购物",
-							    "notes": null,
-							    "enumType": 1,
-							    "enumWay": null,
-							    "enumInout": 1,
-							    "enumBudget": 1,
-							    "enumRefund": null
-							},{
-								"image":"../../static/diet.png",
-							    "accountBookId": "1646779958060707842",
-							    "fundId": "1646782468737527809",
-							    "fundName": "微信零钱",
-							    "money": 81.400000,
-							    "appendixImgUrl": "http://47.100.211.157/img/result_449.jpg",
-							    "tagId": "1646785618353647618",
-							    "tagName": "商场购物",
-							    "notes": null,
-							    "enumType": 1,
-							    "enumWay": null,
-							    "enumInout": 1,
-							    "enumBudget": 1,
-							    "enumRefund": null
-							},
-						]
-					}
-				]
+				billTotalList:[],
+				/*
+				{
+					date:"03月01日",
+					weekday:"周一",
+					in:"23.89",
+					ex:"3.00",
+					billInfoList:[
+						{
+							"image":"../../static/diet.png",
+						    "accountBookId": "1646779958060707842",
+						    "fundId": "1646782468737527809",
+						    "fundName": "微信零钱",
+						    "money": 81.400000,
+						    "appendixImgUrl": "http://47.100.211.157/img/result_449.jpg",
+						    "tagId": "1646785618353647618",
+						    "tagName": "商场购物",
+						    "notes": null,
+						    "enumType": 1,
+						    "enumWay": null,
+						    "enumInout": 1,
+						    "enumBudget": 1,
+						    "enumRefund": null
+						}
+					]
+				}
+				*/
 			}
 		},
 		watch: {
@@ -435,9 +289,10 @@
 				var tYear = today.getFullYear();
 				var tMonth = today.getMonth();
 				var tDate = today.getDate();
+				var tDay = today.getDay();
 				tMonth = this.doHandleMonth(tMonth + 1);
 				tDate = this.doHandleMonth(tDate);
-				return [tYear,tMonth,tDate];
+				return [tYear,tMonth,tDate,tDay];
 			},
 			doHandleMonth(month){
 				var m = month;
@@ -629,7 +484,15 @@
 				})
 			},
 			//跳转到账单详情页面
-			toBillDetail(){
+			toBillDetail(billInfo){
+				console.log("正在前往账单详情");
+				//将账单内容存至本地,点击时发起请求
+				getApp().globalData.billInfo = billInfo;
+				console.log("已将账单信息存入" + billInfo);
+				uni.showToast({
+					icon:'none',
+					title:"正在前往账单详情"
+				})
 				uni.navigateTo({
 					url:"../BillDetail/BillDetail",
 				})
@@ -856,15 +719,231 @@
 						},
 						data:{
 							accountBookId: getApp().globalData.accountBookId,
-							'day':that.getDay() + "," + that.getDay(),
-							'month':that.getYearAndMonth()[1],
-							'year':that.getYearAndMonth()[0]
+							'day':that.getAnyDate(0)[2] + "," + that.getAnyDate(0)[2],
+							'month':that.getAnyDate(0)[1],
+							'year':that.getYearAndMonth(0)[0]
 						},
 						success(res) {
-							console.log(that.getDay());
-							console.log(that.getYearAndMonth()[1]);
-							console.log(that.getYearAndMonth()[0]);
-							console.log(res.data.code);
+							//日期需拼凑
+							var b_date = that.getAnyDate(0)[1] + "月" + that.getAnyDate(0)[2] + "日";
+							var b_weekday = that.getAnyDate(0)[3];//1~6的形式
+							switch(b_weekday){
+								case 1:
+									b_weekday = "周一";
+									break;
+								case 2:
+									b_weekday = "周二";
+									break;
+								case 3:
+									b_weekday = "周三";
+									break;
+								case 4:
+									b_weekday = "周四";
+									break;
+								case 5:
+									b_weekday = "周五";
+									break;
+								case 6:
+									b_weekday = "周六";
+									break;
+								case 7:
+									b_weekday = "周日";
+									break;	
+							}
+							var b_in = res.data.data.income;
+							var b_ex = res.data.data.outcome;
+							var b_billInfoList = res.data.data.billExtendsBaseVOList;
+							//还需要对账单列表进行处理
+							if(b_billInfoList!=''){//非空时,加入账单image
+								var tempBillList = [];
+								for(var i = 0;i<b_billInfoList.length;i++){//查找所有list中的元素
+									var tempBillInfo = {
+										"image":"../../static/diet.png",//目前先将所有内容都设置为此图片
+										"accountBookId": b_billInfoList[i].accountBookId,
+										"fundId": b_billInfoList[i].fundId,
+										"fundName": b_billInfoList[i].fundName,
+										"money": b_billInfoList[i].money,
+										"appendixImgUrl": b_billInfoList[i].appendixImgUrl,
+										"tagId": b_billInfoList[i].tagId,
+										"tagName": b_billInfoList[i].tagName,
+										"notes": b_billInfoList[i].notes,
+										"enumType": b_billInfoList[i].enumType,
+										"enumWay": b_billInfoList[i].enumWay,
+										"enumInout": b_billInfoList[i].enumInout,
+										"enumBudget": b_billInfoList[i].enumBudget,
+										"enumRefund": b_billInfoList[i].enumRefund
+									}
+									tempBillList.push(tempBillInfo);
+								}
+								b_billInfoList = tempBillList;//此时的b_billInfoList即,加入了图片字段的元素列表
+							}
+							var b_thisday = {
+								date:b_date,
+								weekday:b_weekday,
+								in:b_in,
+								ex:b_ex,
+								billInfoList:b_billInfoList
+							}
+							console.log(b_date + "数据已获取");
+							that.billTotalList.push(b_thisday);
+							
+							uni.request({//前一天，即昨天
+								url:getApp().globalData.envprefix + "/admin-api/lbt/extends/data/bill/calendar",
+								method:'GET',
+								header:{
+									'tenant-id': 1,
+									'Authorization':'Bearer ' + getApp().globalData.accessToken
+								},
+								data:{
+									accountBookId: getApp().globalData.accountBookId,
+									'day':that.getAnyDate(-1)[2] + "," + that.getAnyDate(-1)[2],
+									'month':that.getAnyDate(-1)[1],
+									'year':that.getYearAndMonth(-1)[0]
+								},
+								success(res) {
+									//日期需拼凑
+									var b_date = that.getAnyDate(-1)[1] + "月" + that.getAnyDate(-1)[2] + "日";
+									var b_weekday = that.getAnyDate(-1)[3];//1~6的形式
+									switch(b_weekday){
+										case 1:
+											b_weekday = "周一";
+											break;
+										case 2:
+											b_weekday = "周二";
+											break;
+										case 3:
+											b_weekday = "周三";
+											break;
+										case 4:
+											b_weekday = "周四";
+											break;
+										case 5:
+											b_weekday = "周五";
+											break;
+										case 6:
+											b_weekday = "周六";
+											break;
+										case 7:
+											b_weekday = "周日";
+											break;	
+									}
+									var b_in = res.data.data.income;
+									var b_ex = res.data.data.outcome;
+									var b_billInfoList = res.data.data.billExtendsBaseVOList;
+									//还需要对账单列表进行处理
+									if(b_billInfoList!=''){//非空时,加入账单image
+										var tempBillList = [];
+										for(var i = 0;i<b_billInfoList.length;i++){//查找所有list中的元素
+											var tempBillInfo = {
+												"image":"../../static/diet.png",//目前先将所有内容都设置为此图片
+												"accountBookId": b_billInfoList[i].accountBookId,
+												"fundId": b_billInfoList[i].fundId,
+												"fundName": b_billInfoList[i].fundName,
+												"money": b_billInfoList[i].money,
+												"appendixImgUrl": b_billInfoList[i].appendixImgUrl,
+												"tagId": b_billInfoList[i].tagId,
+												"tagName": b_billInfoList[i].tagName,
+												"notes": b_billInfoList[i].notes,
+												"enumType": b_billInfoList[i].enumType,
+												"enumWay": b_billInfoList[i].enumWay,
+												"enumInout": b_billInfoList[i].enumInout,
+												"enumBudget": b_billInfoList[i].enumBudget,
+												"enumRefund": b_billInfoList[i].enumRefund
+											}
+											tempBillList.push(tempBillInfo);
+										}
+										b_billInfoList = tempBillList;//此时的b_billInfoList即,加入了图片字段的元素列表
+									}
+									var b_thisday = {
+										date:b_date,
+										weekday:b_weekday,
+										in:b_in,
+										ex:b_ex,
+										billInfoList:b_billInfoList
+									}
+									console.log(b_date + "数据已获取");
+									that.billTotalList.push(b_thisday);
+									
+									uni.request({//两天前，即前天
+										url:getApp().globalData.envprefix + "/admin-api/lbt/extends/data/bill/calendar",
+										method:'GET',
+										header:{
+											'tenant-id': 1,
+											'Authorization':'Bearer ' + getApp().globalData.accessToken
+										},
+										data:{
+											accountBookId: getApp().globalData.accountBookId,
+											'day':that.getAnyDate(-2)[2] + "," + that.getAnyDate(-2)[2],
+											'month':that.getAnyDate(-2)[1],
+											'year':that.getYearAndMonth(-2)[0]
+										},
+										success(res) {
+											//日期需拼凑
+											var b_date = that.getAnyDate(-2)[1] + "月" + that.getAnyDate(-2)[2] + "日";
+											var b_weekday = that.getAnyDate(-2)[3];//1~6的形式
+											switch(b_weekday){
+												case 1:
+													b_weekday = "周一";
+													break;
+												case 2:
+													b_weekday = "周二";
+													break;
+												case 3:
+													b_weekday = "周三";
+													break;
+												case 4:
+													b_weekday = "周四";
+													break;
+												case 5:
+													b_weekday = "周五";
+													break;
+												case 6:
+													b_weekday = "周六";
+													break;
+												case 7:
+													b_weekday = "周日";
+													break;	
+											}
+											var b_in = res.data.data.income;
+											var b_ex = res.data.data.outcome;
+											var b_billInfoList = res.data.data.billExtendsBaseVOList;
+											//还需要对账单列表进行处理
+											if(b_billInfoList!=''){//非空时,加入账单image
+												var tempBillList = [];
+												for(var i = 0;i<b_billInfoList.length;i++){//查找所有list中的元素
+													var tempBillInfo = {
+														"image":"../../static/diet.png",//目前先将所有内容都设置为此图片
+														"accountBookId": b_billInfoList[i].accountBookId,
+														"fundId": b_billInfoList[i].fundId,
+														"fundName": b_billInfoList[i].fundName,
+														"money": b_billInfoList[i].money,
+														"appendixImgUrl": b_billInfoList[i].appendixImgUrl,
+														"tagId": b_billInfoList[i].tagId,
+														"tagName": b_billInfoList[i].tagName,
+														"notes": b_billInfoList[i].notes,
+														"enumType": b_billInfoList[i].enumType,
+														"enumWay": b_billInfoList[i].enumWay,
+														"enumInout": b_billInfoList[i].enumInout,
+														"enumBudget": b_billInfoList[i].enumBudget,
+														"enumRefund": b_billInfoList[i].enumRefund
+													}
+													tempBillList.push(tempBillInfo);
+												}
+												b_billInfoList = tempBillList;//此时的b_billInfoList即,加入了图片字段的元素列表
+											}
+											var b_thisday = {
+												date:b_date,
+												weekday:b_weekday,
+												in:b_in,
+												ex:b_ex,
+												billInfoList:b_billInfoList
+											}
+											console.log(b_date + "数据已获取");
+											that.billTotalList.push(b_thisday);
+										}
+									})
+								}
+							})
 						}
 					})
 				}
@@ -1098,7 +1177,7 @@
 		width: 100%;
 		height: 100%;
 		/* margin-left: -100rpx; */
-		font-size: 20rpx;
+		font-size: 24rpx;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -1111,7 +1190,7 @@
 		display: flex;	
 		align-items: center;
 		justify-content: center;
-		font-size: 20rpx;
+		font-size: 24rpx;
 	}
 	.text2{
 		margin-left: 4vw;
@@ -1184,6 +1263,7 @@
 		justify-content: space-between;
 		margin-top: 6vw;
 		margin-bottom: 6vw;
+		/* background-color: aquamarine; */
 	}
 	.bill_type_image{
 		width: 6.8vw;
@@ -1194,5 +1274,30 @@
 	}
 	.bill_info_detail{
 		color: #FF5733FF;
+	}
+	
+	.bill_none_info{
+		width: 100%;
+		height: 6.8vw;
+		/* background-color: aqua; */
+		margin-top: 6vw;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: 6vw;
+	}
+	.bill_none_image{
+		width: 5.5vw;
+		height: 5.5vw;
+	}
+	.bottom-text{
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 30rpx;
+		height: 8vw;
+		/* background-color: aquamarine; */
+		border-top: #072750FF solid 1px;
+		color: #072750FF;
 	}
 </style>
