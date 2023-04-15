@@ -8318,74 +8318,112 @@ var render = function () {
           _c(
             "uni-view",
             { staticClass: _vm._$g(20, "sc"), attrs: { _i: 20 } },
-            [_vm._v(_vm._$g(20, "t0-0"))]
+            [
+              _c("a", { attrs: { href: _vm._$g(21, "a-href"), _i: 21 } }, [
+                _vm._v("内容"),
+              ]),
+            ],
+            1
           ),
         ],
         1
       ),
       _c(
         "uni-view",
-        { staticClass: _vm._$g(21, "sc"), attrs: { _i: 21 } },
+        { staticClass: _vm._$g(22, "sc"), attrs: { _i: 22 } },
         [
           _c(
             "uni-view",
-            { staticClass: _vm._$g(22, "sc"), attrs: { _i: 22 } },
+            { staticClass: _vm._$g(23, "sc"), attrs: { _i: 23 } },
             [_vm._v("记账方式")]
           ),
           _c(
             "uni-view",
-            { staticClass: _vm._$g(23, "sc"), attrs: { _i: 23 } },
-            [_vm._v(_vm._$g(23, "t0-0"))]
+            { staticClass: _vm._$g(24, "sc"), attrs: { _i: 24 } },
+            [_vm._v(_vm._$g(24, "t0-0"))]
           ),
         ],
         1
       ),
       _c(
         "uni-view",
-        { staticClass: _vm._$g(24, "sc"), attrs: { _i: 24 } },
+        { staticClass: _vm._$g(25, "sc"), attrs: { _i: 25 } },
         [
           _c(
             "uni-view",
-            { staticClass: _vm._$g(25, "sc"), attrs: { _i: 25 } },
+            { staticClass: _vm._$g(26, "sc"), attrs: { _i: 26 } },
             [_vm._v("不计入收支")]
           ),
           _c(
             "uni-view",
-            { staticClass: _vm._$g(26, "sc"), attrs: { _i: 26 } },
-            [_vm._v(_vm._$g(26, "t0-0"))]
+            { staticClass: _vm._$g(27, "sc"), attrs: { _i: 27 } },
+            [_vm._v(_vm._$g(27, "t0-0"))]
           ),
         ],
         1
       ),
       _c(
         "uni-view",
-        { staticClass: _vm._$g(27, "sc"), attrs: { _i: 27 } },
+        { staticClass: _vm._$g(28, "sc"), attrs: { _i: 28 } },
         [
           _c(
             "uni-view",
-            { staticClass: _vm._$g(28, "sc"), attrs: { _i: 28 } },
+            { staticClass: _vm._$g(29, "sc"), attrs: { _i: 29 } },
             [_vm._v("不计入预算")]
           ),
           _c(
             "uni-view",
-            { staticClass: _vm._$g(29, "sc"), attrs: { _i: 29 } },
-            [_vm._v(_vm._$g(29, "t0-0"))]
+            { staticClass: _vm._$g(30, "sc"), attrs: { _i: 30 } },
+            [_vm._v(_vm._$g(30, "t0-0"))]
           ),
         ],
         1
       ),
       _c(
         "uni-view",
-        { staticClass: _vm._$g(30, "sc"), attrs: { _i: 30 } },
+        { staticClass: _vm._$g(31, "sc"), attrs: { _i: 31 } },
         [
           _c(
             "uni-view",
-            { staticClass: _vm._$g(31, "sc"), attrs: { _i: 31 } },
+            { staticClass: _vm._$g(32, "sc"), attrs: { _i: 32 } },
+            [_vm._v("是否退款")]
+          ),
+          _c(
+            "uni-view",
+            { staticClass: _vm._$g(33, "sc"), attrs: { _i: 33 } },
+            [_vm._v(_vm._$g(33, "t0-0"))]
+          ),
+        ],
+        1
+      ),
+      _c(
+        "uni-view",
+        { staticClass: _vm._$g(34, "sc"), attrs: { _i: 34 } },
+        [
+          _c(
+            "uni-view",
+            {
+              staticClass: _vm._$g(35, "sc"),
+              attrs: { _i: 35 },
+              on: {
+                click: function ($event) {
+                  return _vm.$handleViewEvent($event)
+                },
+              },
+            },
             [_vm._v("退款")]
           ),
           _c(
             "uni-view",
-            { staticClass: _vm._$g(32, "sc"), attrs: { _i: 32 } },
+            {
+              staticClass: _vm._$g(36, "sc"),
+              attrs: { _i: 36 },
+              on: {
+                click: function ($event) {
+                  return _vm.$handleViewEvent($event)
+                },
+              },
+            },
             [_vm._v("删除")]
           ),
         ],

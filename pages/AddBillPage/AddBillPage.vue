@@ -9,6 +9,7 @@
 			<view :class="['',this.choosedIndex==2?'active_color':'not']" v-on:click="change(2)">转账</view>	
 			<view class="edit_button" >编辑</view>
 		</view>
+		<!-- 大类型选择 -->
 		<view>
 			<view class="button_area">
 				<view class="button_item" v-for="(item,it) in buttonList" :key="it" @click="changeButton(it)">
@@ -17,6 +18,7 @@
 				</view>
 			</view>
 		</view>
+		<!-- 小类型选择 -->
 		<view class="button_area0">
 			<view class="button_item" @click="changeButton(10)">
 				<view  >
@@ -215,19 +217,20 @@
 				}
 				
 			},
-			//顶部点击
+			//改变序号,呈现按钮选中状态
 			changeButton(it){
 				if(this.buttonIndex == it){
 					return;
 				}
 				this.buttonIndex = it;
 			},
+			//返回按钮点击函数
 			returnBack(){
 				uni.navigateBack({
 					delta:1,
 				})
 			},
-			//popup弹窗所使用的方法
+			//打开日历弹窗
 			open() {
 				this.$refs.calendar.open()
 			},
@@ -252,6 +255,7 @@
 				this.chooseTime = this.form.str;
 				this.$refs.popup.close();				
 			},
+			//关闭弹窗popup
 			close() {
 				this.$refs.popup.close()
 			},

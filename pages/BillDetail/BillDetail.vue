@@ -7,7 +7,7 @@
 		</view>
 		<view class="bill_info">
 			<image class="bill_type_image" src="../../static/income.png"></image>
-			<view class="bill_type_text">{{this.tagName}}</view>
+			<view class="bill_type_text">{{this.fundid}}</view>
 			<view class="bill_number">{{"￥" + this.money}}</view>
 		</view>
 		<view class="bill_info">
@@ -24,7 +24,9 @@
 		</view>
 		<view class="bill_info">
 			<view class="text_left">附件</view>
-			<view class="text_right">{{this.fujian}}</view>
+			<view class="text_right">
+				<a :href="this.fujian">内容</a>
+			</view>
 		</view>
 		<view class="bill_info">
 			<view class="text_left">记账方式</view>
@@ -38,9 +40,13 @@
 			<view class="text_left">不计入预算</view>
 			<view class="text_right">{{this.countInBudget}}</view>
 		</view>
+		<view class="bill_info">
+			<view class="text_left">是否退款</view>
+			<view class="text_right">{{this.refund}}</view>
+		</view>
 		<view class="two_button ">
-			<view class="refund  commen">退款</view>
-			<view class="delete  commen">删除</view>
+			<view class="refund  commen" @click="refund()">退款</view>
+			<view class="delete  commen" @click="deleteBill()">删除</view>
 		</view>
 	</view>
 </template>
@@ -49,6 +55,7 @@
 	export default {
 		data() {
 			return {
+				fundid:"微信零钱",
 				tagName:"标签名",
 				money:100.00,
 				date:"01月01日",
@@ -56,10 +63,22 @@
 				fujian:"无",
 				billway:"手动录入",
 				countInInOut:"否",
-				countInBudget:"否"
+				countInBudget:"否",
+				refund:"否"
 			}
 		},
 		methods: {
+			//删除按钮点击函数
+			deleteBill(){
+				//添加删除的逻辑
+			},
+			//退款按钮点击函数
+			refund(){
+				uni.showToast({
+					icon:'none',
+					title:"暂未开放,敬请期待"
+				})
+			},
 			returnBack(){
 				uni.navigateBack({
 					delta:1,
@@ -99,10 +118,12 @@
 			this.money = billInfo.money;
 			this.date = "01月01日";//信息中没有日期信息
 			this.notes = billInfo.notes==null?"无":billInfo.notes;
-			this.fujian = "无";
+			this.fujian = billInfo.appendixImgUrl;
 			this.billway = billInfo.enumway==null?"手动录入":billInfo.enumway;
 			this.countInInOut = billInfo.enumInout==1?"是":"否";
 			this.countInBudget = billInfo.enumBudget==1?"是":"否";
+			this.refund = billInfo.enumRefund==null?"否":"是";
+			this.date = billInfo.year + "年" + billInfo.month + "月" + billInfo.day + "日";
 		}
 	}
 </script>

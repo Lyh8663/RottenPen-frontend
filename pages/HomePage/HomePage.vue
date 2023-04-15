@@ -756,6 +756,10 @@
 								for(var i = 0;i<b_billInfoList.length;i++){//查找所有list中的元素
 									var tempBillInfo = {
 										"image":"../../static/diet.png",//目前先将所有内容都设置为此图片
+										"billId":b_billInfoList[i].billId,
+										"year":b_billInfoList[i].year,
+										"month":b_billInfoList[i].month,
+										"day":b_billInfoList[i].day,
 										"accountBookId": b_billInfoList[i].accountBookId,
 										"fundId": b_billInfoList[i].fundId,
 										"fundName": b_billInfoList[i].fundName,
@@ -833,6 +837,10 @@
 										for(var i = 0;i<b_billInfoList.length;i++){//查找所有list中的元素
 											var tempBillInfo = {
 												"image":"../../static/diet.png",//目前先将所有内容都设置为此图片
+												"billId":b_billInfoList[i].billId,
+												"year":b_billInfoList[i].year,
+												"month":b_billInfoList[i].month,
+												"day":b_billInfoList[i].day,
 												"accountBookId": b_billInfoList[i].accountBookId,
 												"fundId": b_billInfoList[i].fundId,
 												"fundName": b_billInfoList[i].fundName,
@@ -910,6 +918,10 @@
 												for(var i = 0;i<b_billInfoList.length;i++){//查找所有list中的元素
 													var tempBillInfo = {
 														"image":"../../static/diet.png",//目前先将所有内容都设置为此图片
+														"billId":b_billInfoList[i].billId,
+														"year":b_billInfoList[i].year,
+														"month":b_billInfoList[i].month,
+														"day":b_billInfoList[i].day,
 														"accountBookId": b_billInfoList[i].accountBookId,
 														"fundId": b_billInfoList[i].fundId,
 														"fundName": b_billInfoList[i].fundName,
