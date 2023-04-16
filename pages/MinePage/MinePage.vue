@@ -75,17 +75,29 @@
 				})
 			},
 			toPage(index){
-				if(index==4){
-					uni.navigateTo({
-						url:"../AssetPage/AssetPage"
-					})
-				}else if(index==0){
+				if(index==0){
 					uni.navigateTo({
 						url:"../SettingPage/SettingPage"
 					})
 				}else if(index==1){
 					uni.navigateTo({
 						url:"../ThemeChoose/ThemeChoose"
+					})
+				}else if(index==2){
+					uni.navigateTo({
+						url:"../LableManagement/LableManagement"
+					})
+				}else if(index==4){
+					uni.navigateTo({
+						url:"../AssetPage/AssetPage"
+					})
+				}else if(index==5){
+					uni.navigateTo({
+						url:"../WishList/WishList"
+					})
+				}else if(index==6){
+					uni.navigateTo({
+						url:"../PeriodicAccounting/PeriodicAccounting"
 					})
 				}
 			}
@@ -181,7 +193,6 @@
 	.area0{
 		display: flex;
 		justify-content: space-between;
-		border-top: 2rpx solid #F6F6F6;
 		padding: 3vw 0;
 	}
 	.left_area{

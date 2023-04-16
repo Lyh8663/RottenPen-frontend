@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<view style="height:var(--status-bar-height);width: 100%;"></view>
+		<view style="height:var(--status-bar-height);width: 100%;background: white;"></view>
 		
 		<view class="menu">
 			<image class="return_image" src="../../static/return.png" @click="returnBack()"></image>
@@ -796,6 +796,7 @@
 	.return_image{
 		width: 6.8vw;
 		height: 6.8vw;
+		margin-left: 2vw;
 	}
 	.menu{
 		height: 5vh;

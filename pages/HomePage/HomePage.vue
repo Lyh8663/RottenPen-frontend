@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<view style="height:var(--status-bar-height);width: 100%;"></view>
-		<view style="height:var(--status-bar-height);width: 100%; position: fixed; background-color: #F6F6F6; z-index: 999;top:0"></view>
+		<view style="height:var(--status-bar-height);width: 100%; position: fixed; background-color: white; z-index: 999;top:0"></view>
 		<view class="topbar">
 			<!-- 账本内容 -->
 			<view class="topbar_view">
@@ -52,49 +52,6 @@
 					placeholder="请输入内容" @confirm="dialogInputConfirm"></uni-popup-dialog>
 			</uni-popup>
 		</view>
-		<view class="in_ex_ba">
-			<view class="in_ex_ba_1">
-				<view class="in_ex_ba_2">
-					<view class="text0">本月收入</view>
-					<view class="income">{{this.monthlyIncome}}</view>
-				</view>
-				<view class="in_ex_ba_2">
-					<view class="text0">本月支出</view>
-					<view class="expenditure">{{this.monthlyOutcome}}</view>
-				</view>
-				<view class="in_ex_ba_2">
-					<view class="text0">本月结余</view>
-					<view class="balance">{{this.monthlyRemain}}</view>
-				</view>
-			</view>
-			<view class="in_ex_ba_3">
-				<view class="text1">本月预算</view>
-				<view class="percent">
-					<view class="yet_month">{{this.monthlyOutcome}}</view>
-					<view>/</view>
-					<view class="total">{{this.monthlyBudget}}</view>
-				</view>
-			</view>
-			<view class="progress-box">
-				<progress :percent="this.progressRate"  stroke-width="4" activeColor="#E88684FF" backgroundColor="#F7B89DFF"/>
-			</view>
-			<view class="in_ex_ba_4">
-				<view class="set-btn">
-					<button @click="setMonthlyBudget()">设置本月预算</button>
-				</view>
-				<view class="in_ex_ba_5">
-					<view class="text2">已用：</view>
-					<view class="yet_day">{{this.monthlyOutcome}}</view>
-				</view>
-				<view class="in_ex_ba_5">
-					<view class="text2">剩余日均：</view>
-					<view class="balance_day">{{dailyRemain}}</view>
-				</view>
-			</view>
-			<view class="in_ex_ba_6" @click="toAddBill()">
-				<view class="add_bill">添加一条新账</view>
-			</view>
-		</view>
 		<view>
 			<!-- 输入框示例 -->
 			<uni-popup ref="inputDialog2" type="dialog">
@@ -102,44 +59,92 @@
 					placeholder="请输入内容" @confirm="budgetConfirm"></uni-popup-dialog>
 			</uni-popup>
 		</view>
-		<!-- 渲染帐单列表 -->
-		<view class="bill">
-			<!-- {{this.billTotalList.length}} -->
-			<view class="day_bill" v-for="(bill,b) in this.billTotalList" :key="b">
-				<view class="bill_title">
-					<view class="date">{{bill.date}}</view>
-					<view class="weeekday">{{bill.weekday}}</view>
-					<view class="in_ex">
-						<view class="in_ex_1">
-							<view class="text3">收</view>
-							<view class="in">{{bill.in}}</view>
-						</view>
-						<view class="in_ex_1">
-							<view class="text3">支</view>
-							<view class="ex">{{bill.ex}}</view>
-						</view>
+		<scroll-view class="commen_area" scroll-y="true">
+			<view class="in_ex_ba">
+				<view class="in_ex_ba_1">
+					<view class="in_ex_ba_2">
+						<view class="text0">本月收入</view>
+						<view class="income">{{this.monthlyIncome}}</view>
+					</view>
+					<view class="in_ex_ba_2">
+						<view class="text0">本月支出</view>
+						<view class="expenditure">{{this.monthlyOutcome}}</view>
+					</view>
+					<view class="in_ex_ba_2">
+						<view class="text0">本月结余</view>
+						<view class="balance">{{this.monthlyRemain}}</view>
 					</view>
 				</view>
-				<view class="bill_info" v-for="(info,i) in bill.billInfoList" :key="i" @click="toBillDetail(info)" v-if="bill.billInfoList!=''">
-					<image class="bill_type_image" :src="info.image"></image>
-					<view class="bill_type_text">{{info.tagName}}</view>
-					<view :class="['bill_info_detail',info.enumType==0?'greenMoney':'redMoney']">￥ {{info.money}}</view>
+				<view class="in_ex_ba_3">
+					<view class="text1">本月预算</view>
+					<view class="percent">
+						<view class="yet_month">{{this.monthlyOutcome}}</view>
+						<view>/</view>
+						<view class="total">{{this.monthlyBudget}}</view>
+					</view>
 				</view>
-				<!-- 判断是否为空 -->
-				<!-- <view class="">
-					{{bill.billInfoList==''?'1':'2'}}
-				</view> -->
-				<view class="bill_none_info" @click="toAddBill()" v-if="bill.billInfoList==''">
-					<!-- <image class="bill_type_image" src=""></image> -->
-					<view class="bill_none_title">这天还没有记账信息,</view>
-					<view class="bill_none_addbill">去添加吧！</view>
-					<image class="bill_none_image" src="../../static/qianbi.png"></image>
+				<view class="progress-box">
+					<progress :percent="this.progressRate"  stroke-width="4" activeColor="#E88684FF" backgroundColor="#F7B89DFF"/>
 				</view>
-			</view>	
-			<view class="bottom-text">
-				更多信息请点击右上角查询按钮查看
+				<view class="in_ex_ba_4">
+					<view class="set-btn">
+						<button @click="setMonthlyBudget()">设置本月预算</button>
+					</view>
+					<view class="in_ex_ba_5">
+						<view class="text2">已用：</view>
+						<view class="yet_day">{{this.monthlyOutcome}}</view>
+					</view>
+					<view class="in_ex_ba_5">
+						<view class="text2">剩余日均：</view>
+						<view class="balance_day">{{dailyRemain}}</view>
+					</view>
+				</view>
+				<view class="in_ex_ba_6" @click="toAddBill()">
+					<view class="add_bill">添加一条新账</view>
+				</view>
 			</view>
-		</view>
+			
+			<!-- 渲染帐单列表 -->
+			<view class="bill">
+				<!-- {{this.billTotalList.length}} -->
+				<view class="day_bill" v-for="(bill,b) in this.billTotalList" :key="b">
+					<view class="bill_title">
+						<view class="date">{{bill.date}}</view>
+						<view class="weeekday">{{bill.weekday}}</view>
+						<view class="in_ex">
+							<view class="in_ex_1">
+								<view class="text3">收</view>
+								<view class="in">{{bill.in}}</view>
+							</view>
+							<view class="in_ex_1">
+								<view class="text3">支</view>
+								<view class="ex">{{bill.ex}}</view>
+							</view>
+						</view>
+					</view>
+					<view class="bill_info" v-for="(info,i) in bill.billInfoList" :key="i" @click="toBillDetail(info)" v-if="bill.billInfoList!=''">
+						<view class="bill_info_left">
+							<image class="bill_type_image" :src="info.image"/>
+							<view class="bill_type_tagName">{{info.tagName}}</view>
+						</view>
+						<view :class="['bill_info_detail',info.enumType==0?'greenMoney':'redMoney']">￥ {{info.money}}</view>
+					</view>
+					<!-- 判断是否为空 -->
+					<!-- <view class="">
+						{{bill.billInfoList==''?'1':'2'}}
+					</view> -->
+					<view class="bill_none_info" @click="toAddBill()" v-if="bill.billInfoList==''">
+						<!-- <image class="bill_type_image" src=""></image> -->
+						<view class="bill_none_title">这天还没有记账信息,</view>
+						<view class="bill_none_addbill">去添加吧！</view>
+						<image class="bill_none_image" src="../../static/qianbi.png"></image>
+					</view>
+				</view>	
+				<view class="bottom-text">
+					更多信息请点击右上角查询按钮查看
+				</view>
+			</view>
+		</scroll-view>
 		
 		<uni-fab  ref="fab" :pattern="pattern" :content="content" 
 						 @trigger="trigger" horizontal="right" />
@@ -646,7 +651,7 @@
 							var tempBillList = [];
 							for(var i = 0;i<b_billInfoList.length;i++){//查找所有list中的元素
 								var tempBillInfo = {
-									"image":"../../static/diet.png",//目前先将所有内容都设置为此图片
+									"image":"../../static/money.png",//目前先将所有内容都设置为此图片
 									"billId":b_billInfoList[i].billId,
 									"year":b_billInfoList[i].year,
 									"month":b_billInfoList[i].month,
@@ -1266,6 +1271,10 @@
 		width: 100vw;
 		height: 100vh;
 	}
+	.commen_area{
+		width: 100vw;
+		height: 90vh;
+	}
 	.in_ex_ba{
 		position: relative;
 		left: 1vw;
@@ -1514,7 +1523,7 @@
 		text-align: center;	
 		width: 94vw;
 		margin-left: -2vw;
-		margin-top: 10vw;
+		margin-top: 6vw;
 	}
 	.add_bill{
 		color: white;
@@ -1526,7 +1535,7 @@
 		background-color: #FFFFFFFF;
 		border-radius: 4px;
 		width: 86vw;
-		padding:5vw;
+		padding:0 5vw 5vw 5vw;
 		position: relative;
 		left: 2vw;
 		top: 20rpx;
@@ -1534,7 +1543,10 @@
 	.bill_title{
 		display: flex;
 		justify-content: space-between;
-		
+		background-color: #F6F6F6;
+		width: 86vw;
+		padding: 4vw 5vw 1vw 5vw;
+		margin-left: -5vw;
 	}
 	.in_ex{
 		display: flex;
@@ -1545,11 +1557,11 @@
 	}
 	.date{
 		font-weight: 500;
-		margin-top: -1vw;
+		font-size: 14px;
 	}
 	.weeekday{
 		font-size: 13px;
-		margin-left: -15vw;
+		margin-left: -10vw;
 	}
 	.text3{
 		font-size: 13px;
@@ -1565,18 +1577,23 @@
 		font-size: 13px;
 	}
 	.bill_info{
+		position: relative;
 		display: flex;
 		justify-content: space-between;
 		margin-top: 6vw;
 		margin-bottom: 6vw;
-		/* background-color: aquamarine; */
 	}
 	.bill_type_image{
 		width: 6.8vw;
 		height: 6.8vw;
 	}
-	.bill_type_text{
-		margin-left: -20vw;
+	.bill_type_tagName{
+		position: absolute;
+		left: 10vw;
+		top: 1vw;
+	}
+	.bill_type_left{
+		
 	}
 	.bill_info_detail{
 		color: #FF5733FF;

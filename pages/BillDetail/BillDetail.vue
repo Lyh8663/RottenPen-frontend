@@ -45,7 +45,7 @@
 			<view class="text_right">{{this.refund}}</view>
 		</view>
 		<view class="two_button ">
-			<view class="refund  commen" @click="refund()">退款</view>
+			<view class="refund  commen" @click="refundBtn()">退款</view>
 			<view class="delete  commen" @click="deleteBill()">删除</view>
 		</view>
 	</view>
@@ -73,7 +73,7 @@
 				//添加删除的逻辑
 			},
 			//退款按钮点击函数
-			refund(){
+			refundBtn(){
 				uni.showToast({
 					icon:'none',
 					title:"暂未开放,敬请期待"

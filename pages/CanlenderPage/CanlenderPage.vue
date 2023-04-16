@@ -97,6 +97,11 @@
 				uni.navigateBack({
 					delta:1
 				})
+			},
+			toBillDetail(){
+				uni.navigateTo({
+					url:"../BillDetail/BillDetail"
+				})
 			}
 		}
 	}

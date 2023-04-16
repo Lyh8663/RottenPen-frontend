@@ -13,7 +13,7 @@
 			</view>
 			<view class="left_right">
 				<view class="text3">虚拟资产管理</view>
-				<view class="text2 text2_else">总资产：35565.20</view>
+				<view class="text2 text2_else">总负债：35565.20</view>
 			</view>
 		</view>
 		<view class="content">

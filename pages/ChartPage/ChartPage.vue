@@ -1,6 +1,7 @@
 <template>
 	<view class="container">
 		<view style="height:var(--status-bar-height);width: 100%;"></view>
+		<!-- 顶部切换按钮 -->
 		<view class="topBar">
 			<view :class="['',this.choosedIndex==0?'active_color':'not']" v-on:click="change(0)">日常</view>
 			<view :class="['',this.choosedIndex==1?'active_color':'not']" v-on:click="change(1)">月统计</view>
@@ -515,11 +516,11 @@
 			}
 		},
 		methods: {
+			//顶部区域按钮被点击时的函数
 			change(index){
 				//console.log(index) 可以正常传入
 				if(index == 0){
 					this.choosedIndex = 0
-					//console.log(this.daytime)
 				}else if(index == 1){
 					this.choosedIndex = 1
 				}else if(index == 2){
