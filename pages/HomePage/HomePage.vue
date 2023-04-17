@@ -522,9 +522,12 @@
 				}else{
 					console.log("对话被点击了");
 					//跳转到对话输入页面
-					uni.showToast({
-						icon:'none',
-						title:"暂未开放，敬请期待"
+					// uni.showToast({
+					// 	icon:'none',
+					// 	title:"暂未开放，敬请期待"
+					// })
+					uni.navigateTo({
+						url:'/pages/GPTTalkPage/GPTTalkPage'
 					})
 				}
 				

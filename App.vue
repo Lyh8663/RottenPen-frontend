@@ -20,6 +20,8 @@
 			monthlyBudget:1500,//当前设置的本月预算
 			billInfo:"",//用户选中的账单,用于加载账单详情
 			assetInfo:"",//用户选中的资产,用于加载资产详情
+			userAge:"",//用户的年龄,用于年龄相关的功能
+			OCRresult:"",//用户扫描的结果，有appendixImgUrl、money、tag、notes、date等字段
 		}
 	}
 </script>

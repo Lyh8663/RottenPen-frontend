@@ -175,6 +175,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/GPTTalkPage/GPTTalkPage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

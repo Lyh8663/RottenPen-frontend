@@ -544,7 +544,7 @@
 				if(this.choosedIndex==0){//请求支出
 					//先获取参数
 					
-					//1.获取tagId
+					//1.获取tagId,从数据库中获得的支出数组中，找到和选中前端tag相同的一项，获取其id
 					var tagTitle = this.tagchosen;
 					var tagId = 0;
 					for(var i = 0;i<this.outcometags.length;i++){
@@ -687,6 +687,28 @@
 			var that = this;
 			var accountBookId = getApp().globalData.accountBookId;
 			
+			//最重要的，加载OCR信息
+			//用户扫描的结果，有appendixImgUrl、money、tag、notes、date等字段
+			var OCRresult = getApp().globalData.OCRresult;
+			//先接appendixImgUrl
+			this.appendixImgUrl = OCRresult.appendixImgUrl;
+			console.log("传入的appendixImgUrl：" + OCRresult.appendixImgUrl)
+			//再接入money
+			if(this.isNum(OCRresult.money)){//如果扫描出来的money是数字，则可以导入
+				this.stringInput = Number(OCRresult.money); 
+			}
+			console.log("传入的money：" + OCRresult.money)
+			//再接入notes
+			this.inputNotes = OCRresult.notes;
+			console.log("传入的notes：" + OCRresult.notes)
+			//再接入tag
+			for(var i = 0;i<this.buttonList.length;i++){
+				if(OCRresult.tag == this.buttonList[i].text){//说明这页面中有这个tag
+					this.tagchosen = OCRresult.tag;
+					this.buttonIndex = i;
+				}
+			}
+			
 			//获取今天的日期,填入内容中[tYear,tMonth,tDate,tDay]
 			this.billYear = this.getAnyDate(0)[0];
 			this.billMonth = this.getAnyDate(0)[1];
@@ -708,6 +730,7 @@
 						console.log("tag信息加载错误");
 						return;
 					}
+					console.log(that.outcometags);
 					that.outcometags = res.data.data.outcomeTag;
 					that.incometags = res.data.data.incomeTag;
 					console.log("tag信息加载成功");

@@ -66,10 +66,13 @@
 			<view class="input-code">
 				<input class="code-text" type="text" placeholder="请输入短信验证码" v-model="regist_code">
 			</view>
+			<view class="input-code">
+				<input class="code-text" type="text" placeholder="请输入您的年龄" v-model="regist_age">
+			</view>
 			<view class="input-pwd">
 				<input class="pwd-text" type="safe-password" placeholder="请输入密码" v-model="regist_password">
 			</view>
-			<view class="regist-btn-area">
+			<view class="regist-btn-area" @click="regist()">
 				<text class="regist-btn-text">注册</text>
 			</view>
 			<view class="return-area">
@@ -87,19 +90,19 @@
 				<!-- <view class="phone-icon">
 					<u-image :src="src"></u-image>
 				</view> -->
-				<input class="phone-text" type="text" placeholder="请输入手机号" v-model="regist_phone">
+				<input class="phone-text" type="text" placeholder="请输入手机号" v-model="codelogin_phone">
 				<view class="">
 					<!-- {{this.regist_phone}} -->
 				</view>
 			</view>
-			<view class="send-btn" @click="sendCode()">
+			<view class="send-btn" @click="sendCodeLogin()">
 				<text class="send-text">发送验证码</text>
 			</view>
 			<view class="input-code">
-				<input class="code-text" type="text" placeholder="请输入短信验证码" v-model="regist_code">
+				<input class="code-text" type="text" placeholder="请输入短信验证码" v-model="codelogin_code">
 			</view>
 			<view class="regist-btn-area">
-				<text class="regist-btn-text">登录</text>
+				<text class="regist-btn-text" @click="loginByCode()">登录</text>
 			</view>
 			<view class="return-area">
 				<text class="return-text" @click="tologin()">返回</text>
@@ -121,12 +124,18 @@
 				regist_phone:'',
 				//注册栏目填入的手机验证码
 				regist_code:'',
-				//注册栏目填入的面膜
+				//注册栏目填入的密码
 				regist_password:'',
+				//登录栏目填入的年龄
+				regist_age:"",
 				//登录栏目填入的手机号
 				login_phone:'',
 				//登录栏目填入的密码
 				login_password:'',
+				//验证码登录栏目填入的手机号
+				codelogin_phone:'',
+				//验证码登录栏目填入的验证码
+				codelogin_code:''
 			}
 		},
 		methods: {
@@ -143,24 +152,194 @@
 				console.log("index: " + this.index)
 			},
 			sendCode(){
+				if(this.regist_phone==""){
+					console.log("请输入正确的手机号")
+					return;
+				}
 				//发送短信验证码
 				uni.request({
 					url: getApp().globalData.envprefix + '/admin-api/system/auth/send-sms-code',
 					method: 'POST',
 					header:{
-						
+						'tenant-id':1,
+						'scene':4
 					},
 					data: {
-						phone : this.regist_phone
+						'mobile': this.regist_phone
 					},
 					success: res => {
+						if(res.data.code!=200){
+							console.log("验证码发送失败");
+							console.log(res.data.code);
+							uni.showToast({
+								icon:'none',
+								title:"验证码发送失败"
+							})
+							return;
+						}
 						uni.showToast({
+							icon:'none',
 							title:"验证码已发送"
 						})
 					},
 					fail: () => {},
 					complete: () => {}
 				});
+			},
+			sendCodeLogin(){
+				if(this.codelogin_phone==""){
+					console.log("请输入正确的手机号")
+					return;
+				}
+				//发送短信验证码
+				uni.request({
+					url: getApp().globalData.envprefix + '/admin-api/system/auth/send-sms-code',
+					method: 'POST',
+					header:{
+						'tenant-id':1
+					},
+					data: {
+						'mobile': this.codelogin_phone,
+						'scene':21
+					},
+					success: res => {
+						if(res.data.code!=200){
+							console.log("验证码发送失败");
+							console.log(res.data.code);
+							uni.showToast({
+								icon:'none',
+								title:"验证码发送失败"
+							})
+							return;
+						}
+						uni.showToast({
+							icon:'none',
+							title:"验证码已发送"
+						})
+					},
+					fail: () => {},
+					complete: () => {}
+				});
+			},
+			loginByCode(){
+				var that = this;
+				
+				//先进行判断
+				if(this.codelogin_code==""||this.codelogin_phone==""){
+					uni.showToast({
+						icon:'none',
+						title:"请输入正确的内容"
+					})
+					return;
+				}
+				
+				//发起验证码登录请求
+				uni.request({
+					url:getApp().globalData.envprefix + "/admin-api/system/auth/sms-login",
+					method:'POST',
+					header:{
+						'tenant-id':1
+					},
+					data:{
+						'code':that.codelogin_code,
+						'mobile':that.codelogin_phone
+					},
+					success(res) {
+						if(res.data.code!=200){
+							console.log(res.data.code);
+							console.log("验证码登录失败");
+							uni.showToast({
+								icon:'none',
+								title:"验证码登录失败"
+							})
+							return;
+						}
+						console.log("验证码登录成功");
+						//将userId传入全局变量
+						getApp().globalData.userId = res.data.data.userId;
+						//将token存入全局变量
+						getApp().globalData.accessToken = res.data.data.accessToken;
+						//提示登陆成功
+						uni.showToast({
+							icon:'none',
+							title:"登录成功"
+						})
+						//跳转到首页
+						uni.switchTab({
+							url:"/pages/HomePage/HomePage"
+						})
+					}
+				})
+				
+			},
+			regist(){
+				var that = this;
+				
+				//发起注册请求
+				if(this.regist_code==""||this.regist_password==""||this.regist_age==""){//非空判断
+					uni.showToast({
+						icon:'none',
+						title:"请输入正确的内容"
+					})
+					return;
+				}
+				//年龄正确性判断
+				if(!this.isNum(this.regist_age)){//非数字
+					uni.showToast({
+						icon:'none',
+						title:"年龄应为数字"
+					})
+					return;
+				}
+				if(Number(this.regist_age)<=0||Number(this.regist_age)>150){//年龄输入不正常
+					uni.showToast({
+						icon:'none',
+						title:"年龄范围为1~150"
+					})
+					return;
+				}
+				//判断完毕,可以发起注册请求
+				uni.request({
+					url:getApp().globalData.envprefix + "/admin-api/system/auth/register-sms",
+					method:'POST',
+					header:{
+						'tenant-id':1
+					},
+					data:{
+						'code':that.regist_code,
+						'password':that.regist_password,
+						'mobile':that.regist_phone,
+						'age':that.regist_age
+					},
+					success(res){
+						if(res.data.code!=200){
+							console.log(res.data.code);
+							console.log("注册请求失败");
+							return;
+						}
+						console.log("注册请求发起成功");
+						uni.showToast({
+							icon:'none',
+							title:"注册成功!"
+						})
+						//处理数据
+						getApp().globalData.userAge = that.regist_age;
+						that.regist_code = "";
+						that.regist_password = "";
+						that.regist_phone = "";
+						that.regist_age = "";
+					}
+				})
+				
+			},
+			//校验是否为数字的方法（正负整数，正负浮点数以及0）,是数字则返回true
+			isNum(val){
+				var regPos = /^[0-9]+.?[0-9]*/;
+				if(regPos.test(val) ){
+				    return true;
+				}else{
+			        return false;
+			    }
 			},
 			login(){
 				

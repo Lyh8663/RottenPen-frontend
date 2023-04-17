@@ -24,23 +24,23 @@
 		</view>
 		
 		<view class="scan-btn-area">
-			<button class="scan-btn">
+			<button class="scan-btn" @click="uploadAndScan()">
 				上传识别
 			</button>
 		</view>
 		<text class="Voice_title">识别结果:</text>
 		<view class="result-card-area">
-			<view class="result-card" v-for="(item,index) in totalImg">
+			<view class="result-card" v-for="(item,index) in this.resultList">
 				<!-- //选择图片后回显的图片 -->
 				<view class="image-area">
-					<image :src="item" mode=""></image>
+					<image :src="item.appendixImgUrl" mode=""></image>
 				</view>
-				<view class="image-text" @click="toOCRAddBillPage()">
+				<view class="image-text" @click="toOCRAddBillPage(item)">
 					<view class="info-money">
-						￥100
+						￥{{item.money}}
 					</view>
 					<view class="info-tag">
-						购物消费
+						{{item.tag}}
 					</view>
 					<view class="info-go">
 						前往记账页面进行编辑
@@ -62,10 +62,59 @@
 				totalImg:[],
 				item:'',
 				//图片base64格式
-				Img64List:[]
+				Img64List:[],
+				resultList:[],
 			}
 		},
 		methods: {
+			//返回函数
+			returnBack(){
+				uni.navigateBack({
+					delta:1,
+				})
+			},
+			//上传识别按钮点击的函数
+			uploadAndScan(){
+				var that = this;
+				
+				//加个判断
+				if(this.Img64List.length==0||this.Img64List==null){
+					uni.showToast({
+						icon:'none',
+						title:"图片未选择"
+					})
+					return;
+				}
+				
+				for(var i = 0;i<this.Img64List.length;i++){
+					//添加加载
+					uni.showLoading({
+						title:"正在识别"
+					})
+					
+					uni.request({
+						url:"http://47.100.211.157/ocr/identify/",
+						method:'POST',
+						data:this.Img64List[i],
+						success(res) {
+							if(res.data.code!=200){
+								console.log("扫描失败")
+								uni.hideLoading();
+								uni.showToast({
+									icon:'none',
+									title:"识别失败"
+								})
+								return;
+							}
+							uni.hideLoading();
+							console.log(res.data.result);
+							that.resultList.push(res.data.result);
+							console.log(res.data.result.money);
+							console.log(res.data.result.notes);
+						}
+					})
+				}
+			},
 			// 上传图片start
 			// 选择图片
 			chooseImgs:function(){
@@ -82,9 +131,9 @@
 						//将图片地址写入图片数组进行显示
 						for(var i=0;i<tempFilePaths.length;i++){
 							 _this.totalImg.push(tempFilePaths[i]);
-							console.log("tempFilePaths" + tempFilePaths[i])
+							// console.log("tempFilePaths" + tempFilePaths[i])
 							urlToCanvas(tempFilePaths[i]).then(res=>{
-								console.log(res);
+								// console.log(res);
 								_this.Img64List.push(res)
 							}).catch((err)=>{
 								console.log(err);
@@ -109,7 +158,10 @@
 				})
 			},
 			//跳转到记账页面
-			toOCRAddBillPage(){
+			toOCRAddBillPage(item){
+				//将要识别的结果写入全局
+				getApp().globalData.OCRresult = item;
+				//跳转到新页面
 				uni.navigateTo({
 					url:"/pages/OCRAddBillPage/OCRAddBillPage"
 				})
