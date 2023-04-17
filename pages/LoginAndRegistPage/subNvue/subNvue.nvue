@@ -1,6 +1,8 @@
 <template>
 	<!-- :style="height: this.screenHeight+ 'px',width: this.screenWidth + 'px'" -->
 	<view id="loginSubNVues" class="content">
+		
+		<!-- 登录栏目 -->
 		<view class="login-area" v-if="this.index==1">
 			<!-- <text style="font-size: 30px;color: #f00;">这是子窗体</text> -->
 			<view :class="['title','nodisplay']" >
@@ -44,6 +46,7 @@
 			</view>
 		</view>
 		
+		<!-- 注册栏目 -->
 		<view class="regist-area" v-if="this.index==2">
 			<view class="regist-title">
 				<text class="title-main">注册</text>
@@ -73,6 +76,8 @@
 				<text class="return-text" @click="tologin()">返回</text>
 			</view>
 		</view>
+		
+		<!-- 验证码登录栏目 -->
 		<view class="regist-area" v-if="this.index==3">
 			<view class="regist-title">
 				<text class="title-main">验证码登录</text>
@@ -110,11 +115,17 @@
 				screenHeight:'',
 				screenwidth:'',
 				src:'',
+				//切换账密登录/手机验证码注册/手机验证码登录
 				index:1,
+				//注册栏目填入的手机号
 				regist_phone:'',
+				//注册栏目填入的手机验证码
 				regist_code:'',
+				//注册栏目填入的面膜
 				regist_password:'',
+				//登录栏目填入的手机号
 				login_phone:'',
+				//登录栏目填入的密码
 				login_password:'',
 			}
 		},
@@ -188,12 +199,12 @@
 		},
 		onLoad(){
 			//若用户已经登录，则不需要跳转到此页面
-			if(getApp().globalData.userId!="" && getApp().globalData.accessToken!=""){
-				console.log("用户已经登陆，userId：" + getApp().globalData.userId);
-				uni.switchTab({
-					url:"/pages/HomePage/HomePage"
-				})
-			}
+			// if(getApp().globalData.userId!="" && getApp().globalData.accessToken!=""){
+			// 	console.log("用户已经登陆，userId：" + getApp().globalData.userId);
+			// 	uni.switchTab({
+			// 		url:"/pages/HomePage/HomePage"
+			// 	})
+			// }
 			
 		}
 	}

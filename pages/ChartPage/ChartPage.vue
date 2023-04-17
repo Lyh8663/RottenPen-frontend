@@ -13,7 +13,7 @@
 		<scroll-view @touchmov.stop :class="['daily_area commen_area',this.choosedIndex==0?'':'notplay']" scroll-y="true">
 			<view class="column_area">
 				<view class="title_bar">
-					<view class="title_left">
+					<view class="title_left" @click="changeInAndOut()">
 						<view class="text0">支出</view>
 						<image class="switch_button" src="../../static/switch.png"></image>
 					</view>
@@ -22,6 +22,7 @@
 						<view :class="['',this.timeChoosedIndex==1?'f_active_color':'not']" v-on:click="changeTime(1)">本周</view>
 					</view>
 				</view>
+				<!-- 支出统计表数据 -->
 				<view>
 				    <histogram-chart
 				            :dataAs="histogramData"
@@ -39,12 +40,14 @@
 				        />
 				</view>
 			</view>
+			<!-- 日常-支出-收支信息 -->
 			<view class="info">
 				<view class="info_item" v-for="(info,i) in infoList" :key="i">
 					<view class="text1">{{info.text1}}</view>
 					<view class="text2">{{info.text2}}</view>
 				</view>
 			</view>
+			<!-- 日常-资产 -->
 			<view class="column_area">
 				<view class="title_bar">
 					<view class="title_left">
@@ -73,14 +76,17 @@
 				</view>			
 			</view>
 		</scroll-view>
+		
 		<!--月统计-->
 		<scroll-view @touchmov.stop  :class="['month_area commen_area',this.choosedIndex==1?'':'notplay']" scroll-y="true">
+			<!-- 月统计顶部收入支出结余 -->
 			<view class="month_info_area" @click="toggle('center')">
 				<view class="month_info_item" v-for="(info,i) in monthInfoList" :key="i">
 					<view class="text1">{{info.text1}}</view>
 					<view class="text2">{{info.text2}}</view>
 				</view>
 			</view>
+			<!-- 月统计-收支统计表 -->
 			<view class="column_area">
 				<view class="title_bar">
 					<view class="text0">收支统计</view>
@@ -108,6 +114,7 @@
 				
 			</view>
 			
+			<!-- 月统计-支出占比表 -->
 			<view class="column_area">
 				<view class="title_bar">
 					<view class="title_left">
@@ -146,6 +153,8 @@
 					<view class="total">{{proMon.money}}</view>
 				</view>
 			</view>
+			
+			<!-- 月统计-资产走势表 -->
 			<view class="line">
 				<view class="title_bar_else">
 					<view class="text3_else">资产走势</view>
@@ -162,6 +171,8 @@
 					<line-chart canvasId="index_line_month" :dataAs="lineDataMonth" />
 				</view>				
 			</view>
+			
+			<!-- 月统计-收支报表 -->
 			<view class="column_area">
 				<view class="title_bar">
 					<view class="text3">收支报表</view>
@@ -180,7 +191,8 @@
 					<view class="text_ba">{{item.ba}}</view>
 				</view>
 			</view>
-			<!--弹出窗设置-->
+			
+			<!--月统计弹出窗-->
 			<uni-popup :mask-click="false" ref="popup" background-color="transparent" @change="change">
 				<view class="chart_popup">
 					<view class="chart_view">
@@ -193,14 +205,18 @@
 				</view>			
 			</uni-popup>
 		</scroll-view>
+		
 		<!--年统计-->
 		<scroll-view @touchmov.stop :class="['year_area commen_area',this.choosedIndex==2?'':'notplay']" scroll-y="true">
+			<!-- 年统计顶部内容 -->
 			<view class="month_info_area" @click="toggleYear('center')">
 				<view class="month_info_item" v-for="(info,i) in yearInfoList" :key="i">
 					<view class="text1">{{info.text1}}</view>
 					<view class="text2">{{info.text2}}</view>
 				</view>
 			</view>
+			
+			<!-- 年统计-收支统计 -->
 			<view class="column_area">
 				<view class="title_bar">
 					<view class="text0">收支统计</view>
@@ -227,6 +243,8 @@
 				        />
 				</view>
 			</view>
+			
+			<!-- 年统计-支出占比 -->
 			<view class="column_area">
 				<view class="title_bar">
 					<view class="title_left">
@@ -265,6 +283,8 @@
 					<view class="total">{{proY.money}}</view>
 				</view>
 			</view>
+			
+			<!-- 年统计-资产走势 -->
 			<view class="line">
 				<view class="title_bar">
 					<view class="text3_else">资产走势</view>
@@ -272,6 +292,8 @@
 				</view>
 				<line-chart canvasId="index_line_year" :dataAs="lineDataYear" />				
 			</view>
+			
+			<!-- 年统计-收支报表 -->
 			<view class="column_area">
 				<view class="title_bar">
 					<view class="text0">收支报表</view>
@@ -290,7 +312,8 @@
 					<view class="text_ba">{{item.ba}}</view>
 				</view>
 			</view>
-			<!--弹出窗设置-->
+			
+			<!--年统计-弹出窗设置-->
 			<uni-popup :mask-click="false" ref="popupYear" background-color="transparent" @change="change">
 				<view class="chart_popup">
 					<view class="chart_view">
@@ -303,6 +326,8 @@
 				</view>			
 			</uni-popup>
 		</scroll-view>
+		
+		
 		<!--自定义
 		<scroll-view :class="['daily_area',this.choosedIndex==3?'':'notplay']">
 			这是自定义
@@ -312,6 +337,7 @@
 </template>
 
 <script>
+	//引入图标组件
 	import HistogramChart from '@/components/stan-ucharts/HistogramChart.vue';
 	import RingChart from '@/components/stan-ucharts/RingChart.vue';
 	import PieChart from '@/components/stan-ucharts/PieChart.vue';
@@ -326,17 +352,28 @@
 		    },
 		data() {
 			return {
+				//控制日常分区处  切换(支出/收入)
+				dailyInAndOut:0,
+				//控制月统计-资产走势栏目的显示和隐藏
 				imgChoosedIndex:"0",
 				isShowLineChart:"true",
+				//向上的箭头 图片地址
 				upImage:"../../static/up.png",
+				//向下的箭头 图片地址
 				downImage:"../../static/down.png",
+				//年统计-收支统计处 切换(支出/收入/结余)
 				yearChoosedIndex:"0",
+				//月统计-收支统计
 				monthChoosedIndex:"0",
 				titleName:"总资产",
 				titleSubname:"2222.3",
+				//日常-资产处 切换(净资产/负债)
 				properChoosedIndex:"0",
+				//控制本页上方切换菜单(日常/月统计/年统计/自定义)
 				choosedIndex:"0",
+				//日常-支出处 切换(近七日/本周)
 				timeChoosedIndex:"0",
+				//月统计-弹出窗内容
 				monthChartData:[
 					{text1:"月收入",text2:"3243.45"},{text1:"月支出",text2:"3243.45"},{text1:"月结余",text2:"3243.45"},
 					{text1:"日均收入",text2:"3243.45"},{text1:"日均支出",text2:"3243.45"},{text1:"日均结余",text2:"3243.45"},
@@ -344,6 +381,7 @@
 					{text1:"借入",text2:"3243.45"},{text1:"借出",text2:"3243.45"},{text1:"退款",text2:"3243.45"},
 					{text1:"转账",text2:"3243.45"},{text1:"还款",text2:"3243.45"},{text1:"收款",text2:"3243.45"},
 				],
+				//年统计弹出窗内容
 				yearChartData:[
 					{text1:"年收入",text2:"3243.45"},{text1:"年支出",text2:"3243.45"},{text1:"年结余",text2:"3243.45"},
 					{text1:"月均收入",text2:"3243.45"},{text1:"月均支出",text2:"3243.45"},{text1:"月均结余",text2:"3243.45"},
@@ -372,11 +410,9 @@
 				               value: [
 				                   {
 				                       name: '支出',
-				                       data: [23, 115, 34, 4, 223, 1, 92]
+				                       data: [23, 115, 34, 4, 223, 100, 92]
 				                   }
 				               ],
-							   
-												
 				           },
 				//月统计的柱状统计图
 				histogramDataMonth: {
@@ -516,6 +552,48 @@
 			}
 		},
 		methods: {
+			//获取以今天为标准，任何一天的日期,传入0表示今天，传入-1表示昨天，返回年月日数组
+			getAnyDate(day){
+				var today = new Date();
+				var targetday_milliseconds=today.getTime() + 1000*60*60*24*day;
+				today.setTime(targetday_milliseconds); //注意，这行是关键代码
+				var tYear = today.getFullYear();
+				var tMonth = today.getMonth();
+				var tDate = today.getDate();
+				var tDay = today.getDay();
+				tMonth = this.doHandleMonth(tMonth + 1);
+				tDate = this.doHandleMonth(tDate);
+				return [tYear,tMonth,tDate,tDay];
+			},
+			doHandleMonth(month){
+				var m = month;
+			　　	if(month.toString().length == 1){
+			　　　　	m = "0" + month;
+			　　	}
+			　　	return m;
+			},
+			//日常分区处 切换(支出/收入)
+			changeInAndOut(){
+				// this.dailyInAndOut = index;
+				if(this.dailyInAndOut == 0){//0: 支出
+					this.dailyInAndOut = 1;
+					
+					//获取收入信息
+					
+					//首先查看,选择了什么标签 timeChoosedIndex
+					if(this.timeChoosedIndex==0){//要查询近七日的数据
+						
+						//发起查询近七天数据的请求
+						
+					}else if(this.timeChoosedIndex==1){//要查询本周的数据
+						
+					}
+					
+				}else{//1: 收入
+					this.dailyInAndOut = 0;
+					// 获取支出信息
+				}
+			},
 			//顶部区域按钮被点击时的函数
 			change(index){
 				//console.log(index) 可以正常传入
@@ -526,10 +604,15 @@
 				}else if(index == 2){
 					this.choosedIndex = 2
 				}else{
-					this.choosedIndex = 3
+					// this.choosedIndex = 3
+					uni.showToast({
+						title: '暂未开通,敬请期待',
+						icon:'none'
+					});
 				}
 				
 			},
+			//日常分区-选择(近七日/本周)
 			changeTime(index){
 				//console.log(index) 可以正常传入
 				if(index == 0){
@@ -540,6 +623,7 @@
 				}
 				
 			},
+			//月统计-收支统计处 切换(支出/收入/结余)
 			changeMonthInfo(index){
 				if(index == 0){
 					this.monthChoosedIndex = 0
@@ -550,6 +634,7 @@
 					this.monthChoosedIndex = 2
 				}
 			},
+			//年统计-收支统计处 切换(支出/收入/结余)
 			changeYearInfo(index){
 				if(index == 0){
 					this.yearChoosedIndex = 0
@@ -560,6 +645,7 @@
 					this.yearChoosedIndex = 2
 				}
 			},
+			//日常-资产处,选择(净资产/负债)
 			changeProperty(index){
 				//console.log(index) 可以正常传入
 				if(index == 0){
@@ -568,8 +654,8 @@
 				}else if(index == 1){
 					this.properChoosedIndex = 1
 				}
-				
 			},
+			//前往日历查询页面
 			toCanlender(){
 				uni.navigateTo({
 					url:"../CanlenderPage/CanlenderPage"
@@ -580,10 +666,10 @@
 				this.isShowLineChart = "true"
 			},
 			hideLineChart(){
+				// this.imgChoosedIndex == "1";
 				this.isShowLineChart = "false"
 			},
 			//popup弹窗所使用的方法
-			
 			close() {
 				this.$refs.popup.close()
 			},

@@ -8,28 +8,28 @@
 		<view class="top_area">
 			<view class="left_right">
 				<view class="text0">净资产 （元）</view>
-				<view class="text1">2345.67</view>
-				<view class="text2">总资产：35565.20</view>
+				<view class="text1">{{this.total - this.debt}}</view>
+				<view class="text2">总资产：{{this.total}}</view>
 			</view>
 			<view class="left_right">
-				<view class="text3">虚拟资产管理</view>
-				<view class="text2 text2_else">总负债：35565.20</view>
+				<view class="text3" @click="toVirtualAssetPage()">虚拟资产管理</view>
+				<view class="text2 text2_else">总负债：{{this.debt}}</view>
 			</view>
 		</view>
-		<view class="content">
+		<view class="content" v-for="(item,index) in this.assetList" @click="toAssetDetailPage(item)">
 			<view class="title_area flex_style  color_style0">
-				<view class="text4">信用卡</view>
-				<view class="text4">￥2423.24</view>
+				<view class="text4">{{item.title}}</view>
+				<view class="text4">{{item.money}}</view>
 			</view>
 			<view class="content_area flex_style">
 				<view class="left_area flex_style">
 					<image class="left_image" src="../../static/assetpage.png"></image>
-					<view class="left_text">中国xx银行信用卡</view>
+					<view class="left_text">{{item.title}}</view>
 				</view>
-				<view class="number">￥5340</view>
+				<view class="number">￥{{item.money}}</view>
 			</view>
 		</view>
-		<view class="content">
+		<!-- <view class="content">
 			<view class="title_area flex_style  color_style1">
 				<view class="text4">微信钱包</view>
 				<view class="text4">￥2423.24</view>
@@ -74,7 +74,11 @@
 				</view>
 				<view class="number">￥340.7</view>
 			</view>
-		</view>
+		</view> -->
+		
+		<!-- 悬浮窗 -->
+		<uni-fab  ref="fab" :pattern="pattern" :content="content"
+						 @trigger="trigger" horizontal="right" />
 	</view>
 </template>
 
@@ -82,15 +86,89 @@
 	export default {
 		data() {
 			return {
-				
+				//总资产
+				total:0,
+				//负债
+				debt:0,
+				//资产列表
+				assetList:[],
+				content: [{
+					conPath: "../../static/assetpage.png",
+					selectedIconPath:"../../static/assetpage.png",
+					text: '添加',
+					active: true
+				    }
+				],
+				//悬浮框颜色
+				pattern: {
+					color: '#7A7E83',
+					backgroundColor: '#fff',
+					selectedColor: '#7A7E83',
+					buttonColor: '#072750',
+					iconColor: '#fff'
+				},
 			}
 		},
 		methods: {
+			//返回上一级页面
 			returnBack(){
 				uni.navigateBack({
 					delta:1,
 				})
 			},
+			//跳转到虚拟资产页面
+			toVirtualAssetPage(){
+				uni.navigateTo({
+					url:"/pages/VirtualAssetPage/VirtualAssetPage"
+				})
+			},
+			//跳转到资产详情页面
+			toAssetDetailPage(item){
+				getApp().globalData.assetInfo = item;
+				uni.navigateTo({
+					url:"/pages/AssetDetailPage/AssetDetailPage"
+				})
+			},
+			//悬浮框点击展开
+			trigger(e) {
+				// console.log(e)
+				// this.content[e.index].active = !e.item.active
+				if(e.item.text=="添加"){
+					console.log("添加被点击了");
+					uni.showToast({
+						icon:'none',
+						title:'暂未开放,敬请期待'
+					})
+				}
+			}
+		},
+		onLoad() {
+			var that = this;
+			
+			//进入资产管理页面的时候,加载资产内容
+			
+			uni.request({
+				url:getApp().globalData.envprefix + "/admin-api/lbt/extends/fund/get",
+				header:{
+					'tenant-id':1,
+					'Authorization':"Bearer " + getApp().globalData.accessToken
+				},
+				data:{
+					'accountBookId':getApp().globalData.accountBookId
+				},
+				success(res){
+					if(res.data.code!=200){
+						console.log("获取资产失败");
+						return;
+					}
+					console.log(res.data.data.total);
+					console.log(res.data.data.debt);
+					console.log(res.data.data.fundExtendsGetVOList);
+					that.total = res.data.data.total;
+					that.debt = res.data.data.debt;
+					that.assetList = res.data.data.fundExtendsGetVOList;
+				}
+			})
 		}
 	}
 </script>

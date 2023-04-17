@@ -19,6 +19,7 @@
 			accountBookId:"",//当前选定的账本id
 			monthlyBudget:1500,//当前设置的本月预算
 			billInfo:"",//用户选中的账单,用于加载账单详情
+			assetInfo:"",//用户选中的资产,用于加载资产详情
 		}
 	}
 </script>
