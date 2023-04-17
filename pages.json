@@ -166,6 +166,15 @@
 		    }
 		    
 		}
+        ,{
+            "path" : "pages/OCRAddBillPage/OCRAddBillPage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

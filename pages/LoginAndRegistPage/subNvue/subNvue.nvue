@@ -145,7 +145,7 @@
 			sendCode(){
 				//发送短信验证码
 				uni.request({
-					url: 'http://47.100.211.157/lbt/admin-api/system/auth/send-sms-code',
+					url: getApp().globalData.envprefix + '/admin-api/system/auth/send-sms-code',
 					method: 'POST',
 					header:{
 						
