@@ -55,6 +55,7 @@
 
 <script>
 	import urlToCanvas from '@/utils/pic2base64.js'
+	import { pathToBase64, base64ToPath } from 'image-tools'
 	export default {
 		data() {
 			return {
@@ -78,7 +79,7 @@
 				var that = this;
 				
 				//加个判断
-				if(this.Img64List.length==0||this.Img64List==null){
+				if(this.Img64List.length==0&&this.Img64List==null){
 					uni.showToast({
 						icon:'none',
 						title:"图片未选择"
@@ -86,6 +87,7 @@
 					return;
 				}
 				
+				console.log("要请求的次数为" + this.Img64List.length);
 				for(var i = 0;i<this.Img64List.length;i++){
 					//添加加载
 					uni.showLoading({
@@ -97,7 +99,9 @@
 						method:'POST',
 						data:this.Img64List[i],
 						success(res) {
+							console.log(res)
 							if(res.data.code!=200){
+								console.log(res.data.code);
 								console.log("扫描失败")
 								uni.hideLoading();
 								uni.showToast({
@@ -126,24 +130,84 @@
 					sourceType: ['camera','album'], //从相册选择
 					success:(res) => {
 						console.log("tempFilePaths")
-						console.log(res.tempFilePaths)
+						console.log(res.tempFilePaths)//输出文件默认路径
 						const tempFilePaths = res.tempFilePaths
 						//将图片地址写入图片数组进行显示
 						for(var i=0;i<tempFilePaths.length;i++){
 							 _this.totalImg.push(tempFilePaths[i]);
-							// console.log("tempFilePaths" + tempFilePaths[i])
-							urlToCanvas(tempFilePaths[i]).then(res=>{
-								// console.log(res);
-								_this.Img64List.push(res)
-							}).catch((err)=>{
-								console.log(err);
-							})
+							console.log("tempFilePaths" + tempFilePaths[i])
+							var that = _this;
+							pathToBase64(tempFilePaths[i])
+							  .then(base64 => {
+							    console.log(base64)
+								that.Img64List.push(base64)
+							  })
+							  .catch(error => {
+							    console.error(error)
+							  })
+							
+							// 将图片转为base64,手机上失败
+							// urlToCanvas(tempFilePaths[i]).then(res=>{
+							// 	console.log(res);
+							// 	_this.Img64List.push(res)
+							// }).catch((err)=>{
+							// 	console.log(err);
+							// })
+							
+							// 试试ajax,手机上失败
+							// let xhr = new XMLHttpRequest();
+							// xhr.open('get',tempFilePaths[i], true);
+							// // 重点1
+							// xhr.responseType = 'blob';
+							
+							// var that = _this;
+							// xhr.onload = function() {
+							//     if (this.status == 200) {
+							//         //得到一个blob对象
+							//         let blob = this.response;
+							//         // 重点2
+							//         let oFileReader = new FileReader();
+							//         oFileReader.onloadend = function(e) {
+							//             // 结果
+							//             const base64 = e.target.result
+							// 			console.log(base64);
+							// 			that.Img64List.push(base64)
+							// 			console.log(that.Img64List.length);
+							//         };
+							//         oFileReader.readAsDataURL(blob);
+							//     }
+							// };
+							// xhr.send();
+							
+							//试试新方法
+							// this.urlTobase64(tempFilePaths[i]);
+							
+							
+							
+							
 						}
 									
 					}
 				})
 				
 			},
+			// urlTobase64(url){
+			//                     uni.getFileSystemManager().readFile({
+			//                         filePath: url, //选择图片返回的相对路径
+			//                         encoding: 'base64', //编码格式
+			//                         success: res => { //成功的回调
+			//                         console.log(res);
+			//                             let base64 = 'data:image/jpeg;base64,' + res.data //不加上这串字符，在页面无法显示的哦
+			// 							console.log(base64);
+			//                         },fail: (e) => {
+			//                             console.log("图片转换失败");
+			//                         }
+			//                     })
+			                
+			//             },
+			// /////////////////////////////////////////////////////////////////////////////////////////////////////
+			
+			
 			//图片预览
 			previewImage:function(e){
 				var _this = this

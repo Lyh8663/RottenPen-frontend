@@ -897,8 +897,13 @@
 				var that = this;
 							
 				//后门，先设置好用户，对接内容
-				getApp().globalData.userId = "1646777091362164738";
-				getApp().globalData.accessToken = "49a67be53d4f4de5bd6088b2b43088a9"
+				// getApp().globalData.userId = "1646777091362164738";
+				// getApp().globalData.accessToken = "49a67be53d4f4de5bd6088b2b43088a9"
+				
+				//到首页,输出内容看看
+				console.log("进入首页,全局内容为:")
+				console.log(getApp().globalData.userId);
+				console.log(getApp().globalData.accessToken);
 				
 				//获取该获取的页面信息
 				this.monthlyBudget = getApp().globalData.monthlyBudget;
@@ -906,7 +911,7 @@
 				//判断，用户未登录，则跳转到登录页面要求用户登录
 				if(getApp().globalData.userId==""){
 					console.log("用户未登录，跳转到登录页面");
-					uni.navigateTo({
+					uni.redirectTo({
 						url:"/pages/LoginAndRegistPage/LoginAndRegistPage"
 					})
 					return;

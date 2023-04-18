@@ -152,6 +152,8 @@
 				console.log("index: " + this.index)
 			},
 			sendCode(){
+				var that = this;
+				
 				if(this.regist_phone==""){
 					console.log("请输入正确的手机号")
 					return;
@@ -162,15 +164,17 @@
 					method: 'POST',
 					header:{
 						'tenant-id':1,
-						'scene':4
+						
 					},
 					data: {
-						'mobile': this.regist_phone
+						'mobile': this.regist_phone,
+						'scene':4
 					},
 					success: res => {
 						if(res.data.code!=200){
 							console.log("验证码发送失败");
 							console.log(res.data.code);
+							console.log(that.regist_phone)
 							uni.showToast({
 								icon:'none',
 								title:"验证码发送失败"
@@ -358,15 +362,18 @@
 					},
 					success: res => {
 						if(res.data.data.userId!=undefined){
-							//将userId传入全局变量
-							getApp().globalData.userId = res.data.data.userId;
-							//将token存入全局变量
-							getApp().globalData.accessToken = res.data.data.accessToken;
+							
 							//提示登陆成功
 							uni.showToast({
 								icon:'none',
 								title:"登录成功"
 							})
+							//将userId传入全局变量
+							getApp().globalData.userId = res.data.data.userId;
+							//将token存入全局变量
+							getApp().globalData.accessToken = res.data.data.accessToken;
+							console.log(getApp().globalData.userId);
+							console.log(getApp().globalData.accessToken);
 							//跳转到首页
 							uni.switchTab({
 								url:"/pages/HomePage/HomePage"
@@ -378,13 +385,18 @@
 		},
 		onLoad(){
 			//若用户已经登录，则不需要跳转到此页面
-			// if(getApp().globalData.userId!="" && getApp().globalData.accessToken!=""){
-			// 	console.log("用户已经登陆，userId：" + getApp().globalData.userId);
-			// 	uni.switchTab({
-			// 		url:"/pages/HomePage/HomePage"
-			// 	})
-			// }
-			
+			if(getApp().globalData.userId!="" && getApp().globalData.accessToken!=""){
+				console.log("用户已经登陆，userId：" + getApp().globalData.userId);
+				uni.switchTab({
+					url:"/pages/HomePage/HomePage",
+					success() {
+						// uni.showToast({
+						// 	icon:'none',
+						// 	title:"已登录"
+						// })
+					}
+				})
+			}
 		}
 	}
 </script>

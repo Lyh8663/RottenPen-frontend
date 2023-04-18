@@ -42,9 +42,21 @@
 			</view>
 			<!-- 日常-支出-收支信息 -->
 			<view class="info">
-				<view class="info_item" v-for="(info,i) in infoList" :key="i">
-					<view class="text1">{{info.text1}}</view>
-					<view class="text2">{{info.text2}}</view>
+				<view class="info_item">
+					<view class="text1">总收入</view>
+					<view class="text2">{{rctotalincome}}</view>
+				</view>
+				<view class="info_item">
+					<view class="text1">日均收入</view>
+					<view class="text2">{{rcdailyincome}}</view>
+				</view>
+				<view class="info_item">
+					<view class="text1">总支出</view>
+					<view class="text2">{{rctotaloutcome}}</view>
+				</view>
+				<view class="info_item">
+					<view class="text1">日均支出</view>
+					<view class="text2">{{rcdailyoutcome}}</view>
 				</view>
 			</view>
 			<!-- 日常-资产 -->
@@ -193,7 +205,7 @@
 			</view>
 			
 			<!--月统计弹出窗-->
-			<uni-popup :mask-click="false" ref="popup" background-color="transparent" @change="change">
+			<uni-popup :mask-click="true" ref="popup" background-color="transparent" @change="change">
 				<view class="chart_popup">
 					<view class="chart_view">
 						<view class="chart_item" v-for="(md,m) in monthChartData" :key="m">
@@ -201,7 +213,7 @@
 							<view class="chart_data">{{md.text2}}</view>
 						</view>	
 					</view>
-					<image @click="close()" class="chart_cancel" src="../../static/cancel_chart.png"></image>	
+					<!-- <image @click="close()" class="chart_cancel" src="../../static/cancel_chart.png"></image>	 -->
 				</view>			
 			</uni-popup>
 		</scroll-view>
@@ -314,7 +326,7 @@
 			</view>
 			
 			<!--年统计-弹出窗设置-->
-			<uni-popup :mask-click="false" ref="popupYear" background-color="transparent" @change="change">
+			<uni-popup :mask-click="true" ref="popupYear" background-color="transparent" @change="change">
 				<view class="chart_popup">
 					<view class="chart_view">
 						<view class="chart_item" v-for="(yd,y) in yearChartData" :key="y">
@@ -322,7 +334,7 @@
 							<view class="chart_data">{{yd.text2}}</view>
 						</view>	
 					</view>
-					<image @click="close()" class="chart_cancel" src="../../static/cancel_chart.png"></image>	
+					<!-- <image @click="close()" class="chart_cancel" src="../../static/cancel_chart.png"></image>	 -->
 				</view>			
 			</uni-popup>
 		</scroll-view>
@@ -352,6 +364,14 @@
 		    },
 		data() {
 			return {
+				//日常总收入
+				rctotalincome:0,
+				//日常总支出
+				rctotaloutcome:0,
+				//日常日均支出
+				rcdailyoutcome:0,
+				//日常日均收入
+				rcdailyincome:0,
 				//控制日常分区处  切换(支出/收入)
 				dailyInAndOut:0,
 				//控制月统计-资产走势栏目的显示和隐藏
@@ -603,7 +623,7 @@
 					this.choosedIndex = 1
 				}else if(index == 2){
 					this.choosedIndex = 2
-				}else{
+				}else if(index == 3){
 					// this.choosedIndex = 3
 					uni.showToast({
 						title: '暂未开通,敬请期待',
@@ -684,6 +704,240 @@
 				// open 方法传入参数 等同在 uni-popup 组件上绑定 type属性
 				this.$refs.popup.open(type)
 			},
+		},
+		onLoad() {
+			var that = this;
+			var rctotalincome = 0;
+			var rctotaloutcome = 0;
+			var rcdailyincome = 0;
+			var rcdailyoutcome = 0;
+			var outcomedatatemp = [];
+			var incomedatatemp = [];
+			
+			//进入图标页面的时候，需要提前加载数据
+			
+			//日常-支出/收入是第一个显示的
+			
+			//查询近七日的支出/收入
+			uni.request({
+				url:getApp().globalData.envprefix + "/admin-api/lbt/extends/data/bill/calendar",
+				header:{
+					"tenant-id":1,
+					"Authorization":"Bearer " + getApp().globalData.accessToken
+				},
+				data:{
+					'accountBookId':getApp().globalData.accountBookId,
+					'day':that.getAnyDate(-6)[2] + "," + that.getAnyDate(-6)[2],
+					'month':that.getAnyDate(-6)[1],
+					'year':that.getAnyDate(-6)[0]
+				},
+				success(res){
+					if(res.data.code!=200){
+						console.log(that.getAnyDate(-6)[0] + "年" + that.getAnyDate(-6)[1] + "月" + that.getAnyDate(-6)[2] + "日" + "的请求失败")
+						return;
+					}
+					console.log(that.getAnyDate(-6)[0] + "年" + that.getAnyDate(-6)[1] + "月" + that.getAnyDate(-6)[2] + "日" + "的请求成功")
+					
+					//成功后处理返回的数据
+					rctotalincome += res.data.data.income;//总收入
+					rctotaloutcome += res.data.data.outcome;//总支出
+					incomedatatemp.push(res.data.data.income);//收入数组
+					outcomedatatemp.push(res.data.data.outcome);//支出数组
+					
+					//处理完毕，再次发起请求
+					uni.request({
+						url:getApp().globalData.envprefix + "/admin-api/lbt/extends/data/bill/calendar",
+						header:{
+							"tenant-id":1,
+							"Authorization":"Bearer " + getApp().globalData.accessToken
+						},
+						data:{
+							'accountBookId':getApp().globalData.accountBookId,
+							'day':that.getAnyDate(-5)[2] + "," + that.getAnyDate(-5)[2],
+							'month':that.getAnyDate(-5)[1],
+							'year':that.getAnyDate(-5)[0]
+						},
+						success(res) {
+							if(res.data.code!=200){
+								console.log(that.getAnyDate(-5)[0] + "年" + that.getAnyDate(-5)[1] + "月" + that.getAnyDate(-5)[2] + "日" + "的请求失败")
+								return;
+							}
+							console.log(that.getAnyDate(-5)[0] + "年" + that.getAnyDate(-5)[1] + "月" + that.getAnyDate(-5)[2] + "日" + "的请求成功")
+							
+							//成功后处理返回的数据
+							rctotalincome += res.data.data.income;//总收入
+							rctotaloutcome += res.data.data.outcome;//总支出
+							incomedatatemp.push(res.data.data.income);//收入数组
+							outcomedatatemp.push(res.data.data.outcome);//支出数组
+							
+							//处理完毕，再次发起请求
+							uni.request({
+								url:getApp().globalData.envprefix + "/admin-api/lbt/extends/data/bill/calendar",
+								header:{
+									"tenant-id":1,
+									"Authorization":"Bearer " + getApp().globalData.accessToken
+								},
+								data:{
+									'accountBookId':getApp().globalData.accountBookId,
+									'day':that.getAnyDate(-4)[2] + "," + that.getAnyDate(-4)[2],
+									'month':that.getAnyDate(-4)[1],
+									'year':that.getAnyDate(-4)[0]
+								},
+								success(res) {
+									if(res.data.code!=200){
+										console.log(that.getAnyDate(-4)[0] + "年" + that.getAnyDate(-4)[1] + "月" + that.getAnyDate(-4)[2] + "日" + "的请求失败")
+										return;
+									}
+									console.log(that.getAnyDate(-4)[0] + "年" + that.getAnyDate(-4)[1] + "月" + that.getAnyDate(-4)[2] + "日" + "的请求成功")
+									
+									//成功后处理返回的数据
+									rctotalincome += res.data.data.income;//总收入
+									rctotaloutcome += res.data.data.outcome;//总支出
+									incomedatatemp.push(res.data.data.income);//收入数组
+									outcomedatatemp.push(res.data.data.outcome);//支出数组
+									
+									//处理完毕，再次发起请求
+									uni.request({
+										url:getApp().globalData.envprefix + "/admin-api/lbt/extends/data/bill/calendar",
+										header:{
+											"tenant-id":1,
+											"Authorization":"Bearer " + getApp().globalData.accessToken
+										},
+										data:{
+											'accountBookId':getApp().globalData.accountBookId,
+											'day':that.getAnyDate(-3)[2] + "," + that.getAnyDate(-3)[2],
+											'month':that.getAnyDate(-3)[1],
+											'year':that.getAnyDate(-3)[0]
+										},
+										success(res) {
+											if(res.data.code!=200){
+												console.log(that.getAnyDate(-3)[0] + "年" + that.getAnyDate(-3)[1] + "月" + that.getAnyDate(-3)[2] + "日" + "的请求失败")
+												return;
+											}
+											console.log(that.getAnyDate(-3)[0] + "年" + that.getAnyDate(-3)[1] + "月" + that.getAnyDate(-3)[2] + "日" + "的请求成功")
+											
+											//成功后处理返回的数据
+											rctotalincome += res.data.data.income;//总收入
+											rctotaloutcome += res.data.data.outcome;//总支出
+											incomedatatemp.push(res.data.data.income);//收入数组
+											outcomedatatemp.push(res.data.data.outcome);//支出数组
+											
+											//处理完毕，再次发起请求
+											uni.request({
+												url:getApp().globalData.envprefix + "/admin-api/lbt/extends/data/bill/calendar",
+												header:{
+													"tenant-id":1,
+													"Authorization":"Bearer " + getApp().globalData.accessToken
+												},
+												data:{
+													'accountBookId':getApp().globalData.accountBookId,
+													'day':that.getAnyDate(-2)[2] + "," + that.getAnyDate(-2)[2],
+													'month':that.getAnyDate(-2)[1],
+													'year':that.getAnyDate(-2)[0]
+												},
+												success(res) {
+													if(res.data.code!=200){
+														console.log(that.getAnyDate(-2)[0] + "年" + that.getAnyDate(-2)[1] + "月" + that.getAnyDate(-2)[2] + "日" + "的请求失败")
+														return;
+													}
+													console.log(that.getAnyDate(-2)[0] + "年" + that.getAnyDate(-2)[1] + "月" + that.getAnyDate(-2)[2] + "日" + "的请求成功")
+													
+													//成功后处理返回的数据
+													rctotalincome += res.data.data.income;//总收入
+													rctotaloutcome += res.data.data.outcome;//总支出
+													incomedatatemp.push(res.data.data.income);//收入数组
+													outcomedatatemp.push(res.data.data.outcome);//支出数组
+													
+													//处理完毕，再次发起请求
+													uni.request({
+														url:getApp().globalData.envprefix + "/admin-api/lbt/extends/data/bill/calendar",
+														header:{
+															"tenant-id":1,
+															"Authorization":"Bearer " + getApp().globalData.accessToken
+														},
+														data:{
+															'accountBookId':getApp().globalData.accountBookId,
+															'day':that.getAnyDate(-1)[2] + "," + that.getAnyDate(-1)[2],
+															'month':that.getAnyDate(-1)[1],
+															'year':that.getAnyDate(-1)[0]
+														},
+														success(res) {
+															if(res.data.code!=200){
+																console.log(that.getAnyDate(-1)[0] + "年" + that.getAnyDate(-1)[1] + "月" + that.getAnyDate(-1)[2] + "日" + "的请求失败")
+																return;
+															}
+															console.log(that.getAnyDate(-1)[0] + "年" + that.getAnyDate(-1)[1] + "月" + that.getAnyDate(-1)[2] + "日" + "的请求成功")
+															
+															//成功后处理返回的数据
+															rctotalincome += res.data.data.income;//总收入
+															rctotaloutcome += res.data.data.outcome;//总支出
+															incomedatatemp.push(res.data.data.income);//收入数组
+															outcomedatatemp.push(res.data.data.outcome);//支出数组
+															
+															//处理完毕，再次发起请求
+															uni.request({
+																url:getApp().globalData.envprefix + "/admin-api/lbt/extends/data/bill/calendar",
+																header:{
+																	"tenant-id":1,
+																	"Authorization":"Bearer " + getApp().globalData.accessToken
+																},
+																data:{
+																	'accountBookId':getApp().globalData.accountBookId,
+																	'day':that.getAnyDate(0)[2] + "," + that.getAnyDate(0)[2],
+																	'month':that.getAnyDate(0)[1],
+																	'year':that.getAnyDate(0)[0]
+																},
+																success(res) {
+																	if(res.data.code!=200){
+																		console.log(that.getAnyDate(0)[0] + "年" + that.getAnyDate(0)[1] + "月" + that.getAnyDate(0)[2] + "日" + "的请求失败")
+																		return;
+																	}
+																	console.log(that.getAnyDate(0)[0] + "年" + that.getAnyDate(0)[1] + "月" + that.getAnyDate(0)[2] + "日" + "的请求成功")
+																	
+																	//成功后处理返回的数据
+																	rctotalincome += res.data.data.income;//总收入
+																	rctotaloutcome += res.data.data.outcome;//总支出
+																	incomedatatemp.push(res.data.data.income);//收入数组
+																	outcomedatatemp.push(res.data.data.outcome);//支出数组
+																	
+																	//数据处理完毕
+																	var label = [that.getAnyDate(-6)[3],that.getAnyDate(-5)[3],that.getAnyDate(-4)[3],that.getAnyDate(-3)[3],that.getAnyDate(-2)[3],that.getAnyDate(-1)[3],that.getAnyDate(0)[3]]
+																	var value = [
+																		{
+																			name:'支出',
+																			data:outcomedatatemp
+																		},
+																	]
+																	that.histogramData = {
+																		'label':label,
+																		'value':value
+																	};
+																	console.log("正在为图标赋值");
+																	console.log(that.histogramData)
+																	that.rctotaloutcome = rctotaloutcome;
+																	that.rctotalincome = rctotalincome;
+																	that.rcdailyincome = (rctotalincome / 7).toFixed(2)
+																	that.rcdailyoutcome = (rctotaloutcome / 7).toFixed(2)
+																	
+																}
+															})
+														}
+													})
+												}
+											})
+										}
+									})
+								}
+							})
+							
+						}
+					})
+					
+					
+				}
+				
+			})
+			
 		}
 	}
 </script>
@@ -768,6 +1022,7 @@
 	}
 	.info{
 		background-color: #FFFFFF;
+		/* background-color: red; */
 		display: flex;
 		width: 90vw;
 		flex-wrap: wrap;
@@ -781,6 +1036,9 @@
 		width: 41vw;
 		display: flex;
 		padding: 2vw;
+		align-items: center;
+		/* justify-content: center; */
+		/* background-color: #FF5733; */
 	}
 	.month_info_area{
 		width: 96vw;
@@ -800,12 +1058,13 @@
 		color: #FFFFFF;
 	}
 	.text2{
-		margin-top: 2vw;
+		/* margin-top: 2vw; */
 		font-weight: 500;
 		font-size: 14px;
 	}
 	.text1{
 		font-size: 14px;
+		margin-right: 50rpx;
 	}
 	.text0{
 		font-weight: 500;

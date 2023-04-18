@@ -247,6 +247,7 @@
 	}
 	.bill_info{
 		display: flex;
+		width: 100%;
 		justify-content: space-between;
 		//margin-top: 6vw;
 		//margin-bottom: 6vw;
@@ -259,10 +260,23 @@
 		height: 6.8vw;
 	}
 	.bill_type_text{
-		margin-left: -20vw;
+		margin-left: -15vw;
+		width: 40vw;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		/* background-color: aqua; */
 	}
 	.bill_info_detail{
+		/* background-color: aqua; */
 		color: #FF5733FF;
+		width: 15vw;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-right: 50rpx;
+		margin-left: -5vw;
+		
 	}
 	.redMoney{
 		color: #FF5733FF;

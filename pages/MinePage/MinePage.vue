@@ -70,9 +70,15 @@
 		},
 		methods: {
 			toLogin(){
-				uni.navigateTo({
-					url:'/pages/LoginAndRegistPage/LoginAndRegistPage'
+				uni.switchTab({
+					url:"/pages/HomePage/HomePage",
+					success() {
+						uni.redirectTo({
+							url:'/pages/LoginAndRegistPage/LoginAndRegistPage'
+						})
+					}
 				})
+				
 			},
 			toPage(index){
 				if(index==0){
